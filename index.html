@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- 百度网址认证 -->
+  <!-- <meta name="baidu-site-verification" content="" /> -->
+  <meta name="keywords" content="">
+  <meta name="description" content="">
+  <meta name="apple-mobile-web-app-title" content="">
+  <!-- 添加到ios主屏后的标题 -->
+  <meta charset="utf-8">
+  <!-- IE8及其以上版本使用 高版本渲染 -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <!-- 360等双核 使用webkit内核 -->
+  <meta name="renderer" content="webkit">
+  <!-- 禁止百度转码 -->
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <!-- 禁止iPhone添加链接样式 -->
+  <meta name="format-detection" content="telephone=no">
+  <meta name="format-detection" content="email=no">
+  <!-- 告诉iphone的safari浏览器 这个网站对应的app是什么 在页面上面显示一个下载banner -->
+  <!-- <meta name="apple-itunes-app" content="app-id=1192163634"> -->
+  <!-- ios 添加至主屏 在从主屏进入会隐藏地址栏和状态栏 -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <!-- iphone中safari顶端的状态条的样式 -->
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <!-- 淘宝flexible 切记 不要加meta:vp -->
+  <script>
+  ! function (a, b) {
+    function c() {
+      var b = f.getBoundingClientRect().width;
+      b / i > 540 && (b = 540 * i);
+      var c = b / 10;
+      f.style.fontSize = c + "px", k.rem = a.rem = c
+    }
+    var d, e = a.document,
+      f = e.documentElement,
+      g = e.querySelector('meta[name="viewport"]'),
+      h = e.querySelector('meta[name="flexible"]'),
+      i = 0,
+      j = 0,
+      k = b.flexible || (b.flexible = {});
+    if (g) {
+      var l = g.getAttribute("content").match(/initial\-scale=([\d\.]+)/);
+      l && (j = parseFloat(l[1]), i = parseInt(1 / j))
+    } else {
+      if (h) {
+        var m = h.getAttribute("content");
+        if (m) {
+          var n = m.match(/initial\-dpr=([\d\.]+)/),
+            o = m.match(/maximum\-dpr=([\d\.]+)/);
+          n && (i = parseFloat(n[1]), j = parseFloat((1 / i).toFixed(2))), o && (i = parseFloat(o[1]), j = parseFloat((1 / i).toFixed(2)))
+        }
+      }
+    }
+    if (!i && !j) {
+      var p = a.navigator.userAgent,
+        q = (!!p.match(/android/gi), !!p.match(/iphone/gi)),
+        r = q && !!p.match(/OS 9_3/),
+        s = a.devicePixelRatio;
+      i = q && !r ? s >= 3 && (!i || i >= 3) ? 3 : s >= 2 && (!i || i >= 2) ? 2 : 1 : 1, j = 1 / i
+    }
+    if (f.setAttribute("data-dpr", i), !g) {
+      if (g = e.createElement("meta"), g.setAttribute("name", "viewport"), g.setAttribute("content", "initial-scale=" + j + ", maximum-scale=" + j + ", minimum-scale=" + j + ", user-scalable=no"), f.firstElementChild) {
+        f.firstElementChild.appendChild(g)
+      } else {
+        var t = e.createElement("div");
+        t.appendChild(g), e.write(t.innerHTML)
+      }
+    }
+    a.addEventListener("resize", function () {
+      clearTimeout(d), d = setTimeout(c, 300)
+    }, !1), a.addEventListener("pageshow", function (a) {
+      a.persisted && (clearTimeout(d), d = setTimeout(c, 300))
+    }, !1), "complete" === e.readyState ? e.body.style.fontSize = 12 * i + "px" : e.addEventListener("DOMContentLoaded", function () {
+      e.body.style.fontSize = 12 * i + "px"
+    }, !1), c(), k.dpr = a.dpr = i, k.refreshRem = c, k.rem2px = function (a) {
+      var b = parseFloat(a) * this.rem;
+      return "string" == typeof a && a.match(/rem$/) && (b += "px"), b
+    }, k.px2rem = function (a) {
+      var b = parseFloat(a) / this.rem;
+      return "string" == typeof a && a.match(/px$/) && (b += "rem"), b
+    }
+  }(window, window.lib || (window.lib = {}));
+  </script>
+  <title>溯源地图</title>
+</head>
+
+<body>
+  <div id="app"></div>
+  <!-- built files will be auto injected -->
+</body>
+
+</html>
