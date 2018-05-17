@@ -17,7 +17,7 @@ const store = new Vuex.Store({
   mutations,
   actions
 })
-console.log(store)
+
 // 热重载模块
 if (module.hot) {
   module.hot.accept([

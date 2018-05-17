@@ -1,19 +1,16 @@
 <template>
-  <div>
-    商家
-  </div>
+  <div>login</div>
 </template>
-
 <script>
 export default {
-  data () {
+  data() {
     return {
 
     }
   }
 }
-</script>
 
-<style lang = 'scss'>
+</script>
+<style lang="scss">
 
 </style>

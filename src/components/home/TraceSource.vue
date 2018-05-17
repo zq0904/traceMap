@@ -1,19 +1,16 @@
 <template>
-  <div>
-    评价
-  </div>
+  <div>TraceSource.vue</div>
 </template>
-
 <script>
 export default {
-  data () {
+  data() {
     return {
 
     }
   }
 }
-</script>
 
-<style lang = 'scss'>
+</script>
+<style lang="scss">
 
 </style>
