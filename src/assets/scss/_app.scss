@@ -1,0 +1,146 @@
+// C3属性兼容 @include c3(transform,translate3d(0,0,0));
+@mixin c3($key, $value) {
+  -webkit-#{$key}: $value;
+  -moz-#{$key}: $value;
+  -ms-#{$key}: $value;
+  -o-#{$key}: $value;
+  #{$key}: $value;
+}
+
+// C3单行显示省略号 @include se();
+@mixin se() {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// rem布局 @include px2rem(margin, 1 2 3 4); 如果设计稿 宽度800px 基准字体大小 80
+@mixin px2rem($property, $values, $baseline-rem: 75) {
+  $max: length($values);
+  $pxValues: '';
+  $remValues: '';
+  @for $i from 1 through $max {
+    $value: (nth($values, $i));
+    $remValues: #{$remValues + $value/$baseline-rem}rem;
+    @if $i < $max {
+      $remValues: #{$remValues + " "};
+    }
+  }
+  #{$property}: $remValues;
+}
+
+// 任何手机屏幕上px的统一 px2px(font-size, 32);
+@mixin px2px($name, $px) {
+  #{$name}: round($px/2)*1px;
+  [data-dpr="2"] & {
+    #{$name}: $px*1px;
+  }
+  [data-dpr="2.5"] & {
+    #{$name}: round($px*2.5/2)*1px;
+  }
+  [data-dpr="2.75"] & {
+    #{$name}: round($px*2.75/2)*1px;
+  }
+  [data-dpr="3"] & {
+    #{$name}: round($px*3/2)*1px;
+  }
+  [data-dpr="4"] & {
+    #{$name}: round($px*2)*1px;
+  }
+}
+
+// @include font-dpr(200);
+@mixin font-dpr($px) {
+  @include px2px(font-size, $px)
+}
+
+@mixin wh($w, $h) {
+  @include px2rem(width, $w);
+  @include px2rem(height, $h);
+}
+
+@mixin lh($h, $lh) {
+  @include px2rem(height, $h);
+  @include px2rem(line-height, $lh);
+}
+
+@mixin wlh($w, $h, $lh) {
+  @include px2rem(width, $w);
+  @include px2rem(height, $h);
+  @include px2rem(line-height, $lh);
+}
+
+// absolute 居中 父元素设置 position: relative; @include absolute_center(10px, 10px);
+@mixin absolute_center($w, $h) {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  @include wh($w, $h);
+  @include c3(transform, translate(-50%, -50%));
+}
+
+// 背景图完全放入设置
+@mixin _icon($w, $h, $mt) {
+  display: inline-block;
+  vertical-align: middle;
+  @include px2rem(width, $w);
+  @include px2rem(height, $h);
+  @include px2rem(margin-top, $mt);
+  background: {
+    repeat: no-repeat;
+    position: center center;
+    size: contain; // 背景图完全放入
+  }
+}
+
+@mixin _icondb($w, $h, $mt) {
+  display: block;
+  vertical-align: middle;
+  @include px2rem(width, $w);
+  @include px2rem(height, $h);
+  margin: 0 auto;
+  @include px2rem(margin-top, $mt);
+  background: {
+    repeat: no-repeat;
+    position: center center;
+    size: contain;
+  }
+}
+
+// 伪元素线 @include border(#ccc, right)
+@mixin border($color, $size: 1, $d:bottom) {
+  position: relative;
+  &::before {
+    content: '';
+    position: absolute;
+    background-color: $color;
+    @if $d==left or $d==right {
+      top: 0;
+      #{$d}: 0;
+      height: 100%;
+      width: $size + px;
+    }
+    @else {
+      #{$d}: 0;
+      left: 0;
+      width: 100%;
+      height: $size + px;
+    }
+  }
+}
+
+// 2倍图 3倍图 处理
+// $url: '../../assets/images/';
+// @include border-image($url + 'guarantee_3');
+@mixin background-image($url, $suffix: '.png') {
+  background-image: url($url + "@2x" + $suffix);
+  @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
+    background-image: url($url + "@3x" + $suffix);
+  }
+}
+
+// 两栏布局子元素设置
+@mixin flex-basis($number) {
+  @include px2rem(flex-basis, $number);
+  @include px2rem(width, $number); // 兼容安卓
+}
