@@ -34,6 +34,15 @@ module.exports = {
       config.dev.assetsPublicPath
   },
   devtool: 'inline-source-map', // source map 错误和警告 在源文件中的映射位置
+  externals: { // 防止将import的包打入bundle中 而是在运行时直接用全局变量
+    // a: 'zhaoqi' 当我们去import ZQ from 'a' 不去从node_modules里找依赖 而直接使用全局变量zhaoqi
+    'BMap': 'BMap',
+    'BMAP_ANCHOR_TOP_RIGHT': 'BMAP_ANCHOR_TOP_RIGHT',
+    'BMAP_NORMAL_MAP': 'BMAP_NORMAL_MAP',
+    'BMAP_SATELLITE_MAP': 'BMAP_SATELLITE_MAP',
+    'BMAP_HYBRID_MAP': 'BMAP_HYBRID_MAP',
+    'echarts': 'echarts'
+  },
   resolve: {
     extensions: ['.js', '.vue', '.json'],
     alias: {

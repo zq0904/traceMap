@@ -6,22 +6,15 @@ import router from './router'
 import store from './store'
 import axios from 'axios'
 import VueLazyload from 'vue-lazyload'
-
-// 引入初始化样式
+import ElementUI from 'element-ui' // 引入element-ui
+// 引入样式
 import './assets/css/reset_m.css'
 import './assets/fonts/iconfont.css'
-import './assets/css/ie10-viewport-bug-workaround.css'
-import './assets/css/dashboard.css'
-
-// 引入bootstrap样式
-// import '../node_modules/bootstrap/dist/css/bootstrap.min.css'
-
-// 完整引入 element-ui
-import ElementUI from 'element-ui'
-import '../node_modules/element-ui/lib/theme-chalk/index.css'
-Vue.use(ElementUI)
+import '../node_modules/element-ui/lib/theme-chalk/index.css' // 引入element-ui
+// import '../node_modules/bootstrap/dist/css/bootstrap.min.css' // 引入bootstrap
 
 Vue.prototype.$http = axios // axios挂到Vue原型中
+Vue.use(ElementUI)
 Vue.use(VueLazyload) // 使用 :src="" 换成 v-lazy=""
 
 Vue.config.productionTip = false

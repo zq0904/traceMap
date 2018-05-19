@@ -1,5 +1,5 @@
 <template>
-  <div>PollutionSource.vue</div>
+  <div>污染源</div>
 </template>
 <script>
 export default {

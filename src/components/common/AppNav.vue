@@ -37,6 +37,7 @@ export default {
 </script>
 <style lang="scss">
 .navbar {
+  margin-bottom: 0;
   .navbar-brand {
     margin-left: 20px !important;
     color: #fff;

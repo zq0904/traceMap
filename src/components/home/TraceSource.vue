@@ -1,5 +1,5 @@
 <template>
-  <div>TraceSource.vue</div>
+  <div>溯源</div>
 </template>
 <script>
 export default {

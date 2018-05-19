@@ -4,7 +4,7 @@
     <div class="container-fluid">
       <div class="row">
         <SideBar></SideBar>
-        <div class="col-sm-9 col-sm-offset-3 col-md-12 col-md-offset-0 main">
+        <div class="main">
           <!-- 二级路由 -->
           <router-view></router-view>
 
@@ -34,8 +34,9 @@ export default {
 .main {
   position: fixed;
   top: 50px;
-  left: 170px;
   bottom: 0;
+  left: 170px;
+  right: 0;
   padding: 0;
   overflow-y: auto;
 }

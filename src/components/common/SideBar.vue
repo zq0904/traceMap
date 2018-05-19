@@ -1,5 +1,5 @@
 <template>
-  <div class="col-sm-3 col-md-1 sidebar">
+  <div class="sidebar">
     <ul class="nav nav-sidebar">
       <router-link tag="li" to="/"><a>首页</a></router-link>
       <router-link tag="li" to="/air"><a>空气</a></router-link>
@@ -27,6 +27,10 @@ export default {
 </script>
 <style lang="scss">
  .sidebar {
+  position: fixed;
+  top: 50px;
+  bottom: 0;
+  left: 0;
   width: 170px;
   text-align: center;
  }
