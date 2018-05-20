@@ -32,6 +32,9 @@ export const AQIColor = (name, value) => {
     case 'o3':
       array = [0, 160, 200, 300, 400, 800, 1000, 1200]
       break
+    case 'synthesis': // 目前使用aqi的
+      array = [0, 50, 100, 150, 200, 300, 400, 500]
+      break
   }
   for (let i = 0; i < colors.length; i++) { // i最大能取到6
     if (Number(value) <= array[i]) {

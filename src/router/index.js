@@ -5,14 +5,16 @@ import Login from '../components/Login'
 import Register from '../components/Register'
 import Home from '../components/home/Home'
 import HomePage from '../components/home/HomePage'
-import Air from '../components/home/Air'
+import Air from '../components/home/air/Air'
+import AirMap from '../components/home/air/Map'
+import AirList from '../components/home/air/List'
 import PollutionSource from '../components/home/PollutionSource'
 import TraceSource from '../components/home/TraceSource'
 
 Vue.use(Router)
 
 export default new Router({
-  linkExactActiveClass: 'active',
+  linkActiveClass: 'active',
   routes: [
     { path: '/test', component: Test }, // 测试文件
     { path: '/login', component: Login },
@@ -22,7 +24,13 @@ export default new Router({
       component: Home,
       children: [
         { path: '', component: HomePage },
-        { path: 'air', component: Air },
+        { path: 'air',
+          component: Air,
+          children: [
+            { path: '', component: AirMap },
+            { path: 'list', component: AirList }
+          ]
+        },
         { path: 'pollutionSource', component: PollutionSource },
         { path: 'traceSource', component: TraceSource }
       ]

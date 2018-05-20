@@ -1,7 +1,7 @@
 <template>
   <div class="sidebar">
     <ul class="nav nav-sidebar">
-      <router-link tag="li" to="/"><a>首页</a></router-link>
+      <router-link tag="li" to="/" exact><a>首页</a></router-link>
       <router-link tag="li" to="/air"><a>空气</a></router-link>
       <router-link tag="li" to="/pollutionSource"><a>污染源</a></router-link>
       <router-link tag="li" to="/traceSource"><a>溯源</a></router-link>

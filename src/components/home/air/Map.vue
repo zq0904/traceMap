@@ -1,5 +1,19 @@
 <template>
-  <div style="width: 100%; height: 100%;">
+  <div class="vessel">
+    <div class="weather_wrap">
+      <Weather></Weather>
+    </div>
+    <div class="btn-group">
+      <router-link to="/air" class="btn btn-primary">地图</router-link>
+      <router-link to="/air/list" class="btn btn-default">报表</router-link>
+    </div>
+    <div class="btn-group-vertical">
+      <button type="button" class="btn"
+      v-for="(item, index) in buttonMap"
+      :key="index"
+      @click="nowPoint = item.point"
+      :class="nowPoint === item.point ? 'btn-primary' : 'btn-default'">{{item.text}}</button>
+    </div>
     <div id="echartsMap"></div>
   </div>
 
@@ -12,61 +26,79 @@ import BMAP_NORMAL_MAP from 'BMAP_NORMAL_MAP'
 import BMAP_SATELLITE_MAP from 'BMAP_SATELLITE_MAP'
 import BMAP_HYBRID_MAP from 'BMAP_HYBRID_MAP'
 import echarts from 'echarts'
-import { debugMap, drawPolygon, AQIColor, windLevel } from '../../assets/js/common'
+import { debugMap, drawPolygon, AQIColor, windLevel } from '../../../assets/js/common'
 import moment from 'moment'
+import Weather from '../../common/Weather'
 
-// 溯源跳转 全局公共方法
-window.traceSkip = function (e) {
-  console.log(e)
-}
 export default {
+  components: {
+    Weather
+  },
   data() {
     return {
       // 最终的数据格式
-      dataAlarm: [
-        {
+      data: {
+        alarm: [{
           name: '报警',
           value: [114.73414, 36.912634],
-          itemStyle: {color: 'red'},
-          rest: {text: '这个玩意有问题了........asdasd.a啊d.as.', name: '邯郸.矿山', time: 1526706372828, aqi: -1, synthesis: 5.86, pm25: 70, pm10: 125, so2: 29, no2: 37, co: 20, o3: 66, t: 21, humidity: 61, weatherText: '阴转阵雨', windDirection: '东风', windSpeed: 9, windRank: 1}
-        }
-      ],
-      dataState: [
-        {
-          name: '国',
-          value: [114.628646, 36.885853],
+          itemStyle: {color: 'red'}, // 写死 红色
+          rest: {text: '报警信息报警信息报警信息报警信息报警信息报警信息报警信息', name: '邯郸.矿山', time: 1526706372828, aqi: -1, synthesis: 5.86, pm25: 70, pm10: 125, so2: 29, no2: 37, co: 20, o3: 66, t: 21, humidity: 61, weatherText: '阴转阵雨', windDirection: '东风', windSpeed: 9, windRank: 1}
+        }],
+        state: [],
+        province: [{
+          name: '省',
+          value: [114.684698, 36.856288],
           itemStyle: {color: 'green'},
-          rest: {name: '邯郸.矿山', time: 1526706372828, aqi: -1, synthesis: 5.86, pm25: 70, pm10: 125, so2: 29, no2: 37, co: 20, o3: 66, temperature: 21, humidity: 61, weatherText: '阴转阵雨', windDirection: '东风', windSpeed: 9, windRank: 13}
-        }
-        // ,
-        // { name: '菏泽', value: [114.73673, 36.83642] },
-        // { name: '合肥', value: [114.7718, 36.752263] },
-        // { name: '武汉', value: [114.596451, 36.691631] },
-        // { name: '大庆', value: [114.429726, 36.795277] }
-      ],
-      // dataProvince: [
-      //   {
-      //     name: '省',
-      //     value: [114.628646, 36.885853],
-      //     itemStyle: {color: 'green'},
-      //     rest: {name: '邯郸.矿山', time: 1526706372828, aqi: -1, synthesis: 5.86, pm25: 70, pm10: 125, so2: 29, no2: 37, co: 20, o3: 66, t: 21, humidity: 61, weatherText: '阴转阵雨', windDirection: '东风', windSpeed: 9, windRank: 1}
-      //   }
-      // ],
-      // dataGridding: [
-      //   {
-      //     name: '网格',
-      //     value: [114.628646, 36.885853],
-      //     itemStyle: {color: 'green'},
-      //     rest: {name: '邯郸.矿山', time: 1526706372828, aqi: -1, synthesis: 5.86, pm25: 70, pm10: 125, so2: 29, no2: 37, co: 20, o3: 66, t: 21, humidity: 61, weatherText: '阴转阵雨', windDirection: '东风', windSpeed: 9, windRank: 1}
-      //   }
-      // ]
-      nowPoint: 'aqi'
+          rest: {name: '邯郸.省', time: 1526706372828, aqi: 190, synthesis: 6.86, pm25: 80, pm10: 80, so2: 80, no2: 80, co: 80, o3: 80, temperature: 20, humidity: 10, weatherText: '阴转阵雨省', windDirection: '东风省', windSpeed: 10, windRank: 40}
+        }],
+        gridding: [{
+          name: '网格',
+          value: [114.732991, 36.808223],
+          itemStyle: {color: 'green'},
+          rest: {name: '邯郸.网格', time: 1526706372828, aqi: 200, synthesis: 9.99, pm25: 90, pm10: 90, so2: 90, no2: 90, co: 90, o3: 90, temperature: 39, humidity: 20, weatherText: '阴转阵雨网格', windDirection: '东风网格', windSpeed: 5, windRank: 30}
+        }]
+      },
+      nowPoint: 'aqi',
+      buttonMap: [
+        {text: 'AQI', point: 'aqi'},
+        {text: 'PM2.5', point: 'pm25'},
+        {text: 'PM10', point: 'pm10'},
+        {text: 'SO2', point: 'so2'},
+        {text: 'NO2', point: 'no2'},
+        {text: 'CO', point: 'co'},
+        {text: 'O3', point: 'o3'},
+        {text: '综合指数', point: 'synthesis'}
+      ]
     }
   },
   created() {
+    this.request()
     this.$nextTick(this.initMap) // 保证dom已经更新
   },
+  watch: {
+    nowPoint() { // 监听当nowPoint 重新计算颜色 重新渲染
+      for (let key in this.data) {
+        console.log(key)
+        if (key === 'alarm') continue // 警报不计算
+        this.data[key].map(e => {
+          e.itemStyle.color = AQIColor(this.nowPoint, e.rest[this.nowPoint])
+          return e
+        })
+      }
+      this.initMap()
+    }
+  },
+  computed: {
+  },
   methods: {
+    request() { // 第一次请求数据 数据项中的itemStyle 需要计算一次
+      this.data.state = [{
+        name: '国',
+        value: [114.628646, 36.885853],
+        itemStyle: {color: 'green'},
+        rest: {name: '邯郸.矿山', time: 1526706372828, aqi: 125, synthesis: 5.86, pm25: 70, pm10: 125, so2: 29, no2: 37, co: 20, o3: 66, temperature: 21, humidity: 61, weatherText: '阴转阵雨', windDirection: '东风', windSpeed: 9, windRank: 13}
+      }]
+    },
     initMap() {
       const option = {
         bmap: {
@@ -201,10 +233,12 @@ export default {
           formatter: p => { // 提示框浮层内容格式器
             console.log(p)
             const d = p.data.rest
-            // return '<button onclick="traceSkip(this)" data-aaa="' + 123 + '">事件触发？</button>'
             // 如果是报警类型单独展示一种弹窗
             return p.componentSubType === 'effectScatter' ? `
-            报警的
+            <div class="trace">
+              <p class="text">${d.text}</p>
+              <a href="#/traceSource?lon=${p.data.value[0]}&lat=${p.data.value[1]}" class="btn btn-danger">去溯源</a>
+            </div>
             ` : `
             <div class="details">
               <div class="item1 i">
@@ -216,7 +250,7 @@ export default {
                 <p>${d.aqi}</p>
               </div>
               <div class="item2 i">
-                <div style="background-color: ${AQIColor('aqi', d.synthesis)};">综合指数</div>
+                <div style="background-color: ${AQIColor('synthesis', d.synthesis)};">综合指数</div>
                 <p>${d.synthesis}</p>
               </div>
 
@@ -265,18 +299,18 @@ export default {
           name: '报警', // 排名靠前
           type: 'effectScatter', // 扩散式的
           coordinateSystem: 'bmap',
-          data: this.dataAlarm,
-          symbolSize: 30,
+          data: this.data.alarm,
+          symbolSize: 25,
           symbol: 'circle', // '针头水滴状' 'pin'  '正方形' 'rect' '钻石' 'diamond' '圆形' 'circle' '圆角矩形' 'roundRect' '正三角' 'triangle' '箭头' 'arrow'
           showEffectOn: 'render', // 配置何时显示特效 绘制完成后显示特效
           rippleEffect: {
             brushType: 'stroke' // 波纹的绘制方式 敲击式
           },
-          hoverAnimation: true,
+          hoverAnimation: false,
           // label: {
           //   normal: {
-          //     color: '#000',
           //     show: true // 显示文本
+          //     color: '#000',
           //   }
           // },
           zlevel: 1 // canvas的层级 覆盖在低层级的上面
@@ -285,10 +319,10 @@ export default {
           name: '国',
           type: 'scatter',
           coordinateSystem: 'bmap',
-          data: this.dataState,
+          data: this.data.state,
           symbolSize: (val, p) => { // 标记点的大小
             // console.log(p.data.rest[this.nowPoint])
-            return p.data.rest[this.nowPoint] / 12 + 30
+            return p.data.rest[this.nowPoint] / 20 + 45
           },
           symbol: 'pin',
           label: {
@@ -300,9 +334,42 @@ export default {
                 return p.data.rest[this.nowPoint]
               }
             }
-            // emphasis: {
-            //   show: true // 提示文本是否显示
-            // }
+          }
+        },
+        {
+          name: '省',
+          type: 'scatter',
+          coordinateSystem: 'bmap',
+          data: this.data.province,
+          symbolSize: 25,
+          symbol: 'rect',
+          label: {
+            normal: {
+              show: true, // 显示文本
+              color: '#000',
+              formatter: p => {
+                // console.log(p)
+                return p.data.rest[this.nowPoint]
+              }
+            }
+          }
+        },
+        {
+          name: '网格',
+          type: 'scatter',
+          coordinateSystem: 'bmap',
+          data: this.data.gridding,
+          symbolSize: 35,
+          symbol: 'diamond',
+          label: {
+            normal: {
+              show: true, // 显示文本
+              color: '#000',
+              formatter: p => {
+                // console.log(p)
+                return p.data.rest[this.nowPoint]
+              }
+            }
           }
         }]
       }
@@ -331,12 +398,47 @@ export default {
 
 </script>
 <style lang="scss">
-@import '../../assets/scss/app';
+@import '../../../assets/scss/app';
+.vessel {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  .weather_wrap {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    color: #fff;
+    z-index: 10;
+  }
+  .btn-group {
+    position: absolute;
+    top: 4px;
+    right: 100px;
+    z-index: 10;
+  }
+  .btn-group-vertical {
+    position: absolute;
+    top: 45px;
+    right: 7px;
+    z-index: 10
+  }
+}
 #echartsMap {
   width: 100%;
   height: 100%;
 }
-// 弹框样式
+// 报警弹框
+.trace {
+  width: 400px;
+  padding: 10px;
+  text-align: center;
+  .text {
+    margin-bottom: 20px;
+    line-height: 16px;
+    white-space: normal;
+  }
+}
+// 正常弹框
 .details {
   @include c3(display, flex);
   @include c3(flex-wrap, wrap);
