@@ -7,6 +7,8 @@ export const nameUpperCase = name => name.trim() === 'pm25' ? 'PM2.5' : name.tri
 export const nameLowerCase = name => name.trim().toLocaleLowerCase().replace(/\./g, '')
 // 污染物名称(尽量小写) 转换成 颜色 AQIColor('pm25', -1)  ->  'rgb(204, 204, 204)'
 export const AQIColor = (name, value) => {
+  // 对没有数据 约定 返回 '-' 颜色处理
+  if (value === '-') return 'rgb(204, 204, 204)'
   // 灰 绿 黄 橙 深橙 深粉 深紫
   const colors = ['rgb(204, 204, 204)', 'rgb(67, 206, 23)', 'rgb(255, 255, 0)', 'rgb(255, 170, 0)', 'rgb(255, 64, 26)', 'rgb(210, 0, 64)', 'rgb(156, 10, 78)']
   let array

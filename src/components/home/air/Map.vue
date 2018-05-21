@@ -1,5 +1,5 @@
 <template>
-  <div class="vessel">
+  <div class="air_vessel">
     <div class="weather_wrap">
       <Weather></Weather>
     </div>
@@ -19,6 +19,7 @@
 
 </template>
 <script>
+import { mapActions } from 'vuex'
 import $ from 'jquery'
 import BMap from 'BMap'
 import BMAP_ANCHOR_TOP_RIGHT from 'BMAP_ANCHOR_TOP_RIGHT'
@@ -26,7 +27,7 @@ import BMAP_NORMAL_MAP from 'BMAP_NORMAL_MAP'
 import BMAP_SATELLITE_MAP from 'BMAP_SATELLITE_MAP'
 import BMAP_HYBRID_MAP from 'BMAP_HYBRID_MAP'
 import echarts from 'echarts'
-import { debugMap, drawPolygon, AQIColor, windLevel } from '../../../assets/js/common'
+import { debugMap, drawPolygon, AQIColor } from '../../../assets/js/common'
 import moment from 'moment'
 import Weather from '../../common/Weather'
 
@@ -38,25 +39,17 @@ export default {
     return {
       // 最终的数据格式
       data: {
-        alarm: [{
-          name: '报警',
-          value: [114.73414, 36.912634],
-          itemStyle: {color: 'red'}, // 写死 红色
-          rest: {text: '报警信息报警信息报警信息报警信息报警信息报警信息报警信息', name: '邯郸.矿山', time: 1526706372828, aqi: -1, synthesis: 5.86, pm25: 70, pm10: 125, so2: 29, no2: 37, co: 20, o3: 66, t: 21, humidity: 61, weatherText: '阴转阵雨', windDirection: '东风', windSpeed: 9, windRank: 1}
-        }],
+        alarm: [
+        // {
+        //   name: '报警',
+        //   value: [114.73414, 36.912634],
+        //   itemStyle: {color: 'red'}, // 写死 红色
+        //   rest: {text: '报警信息报警信息报警信息报警信息报警信息报警信息报警信息', name: '邯郸.矿山', time: 1526706372828, aqi: -1, synthesis: 5.86, pm25: 70, pm10: 125, so2: 29, no2: 37, co: 20, o3: 66, temperature: 21, humidity: 61, weatherText: '阴转阵雨', windDirection: '东风', windSpeed: 9, windRank: '一级'}
+        // }
+        ],
         state: [],
-        province: [{
-          name: '省',
-          value: [114.684698, 36.856288],
-          itemStyle: {color: 'green'},
-          rest: {name: '邯郸.省', time: 1526706372828, aqi: 190, synthesis: 6.86, pm25: 80, pm10: 80, so2: 80, no2: 80, co: 80, o3: 80, temperature: 20, humidity: 10, weatherText: '阴转阵雨省', windDirection: '东风省', windSpeed: 10, windRank: 40}
-        }],
-        gridding: [{
-          name: '网格',
-          value: [114.732991, 36.808223],
-          itemStyle: {color: 'green'},
-          rest: {name: '邯郸.网格', time: 1526706372828, aqi: 200, synthesis: 9.99, pm25: 90, pm10: 90, so2: 90, no2: 90, co: 90, o3: 90, temperature: 39, humidity: 20, weatherText: '阴转阵雨网格', windDirection: '东风网格', windSpeed: 5, windRank: 30}
-        }]
+        province: [],
+        gridding: []
       },
       nowPoint: 'aqi',
       buttonMap: [
@@ -71,14 +64,9 @@ export default {
       ]
     }
   },
-  created() {
-    this.request()
-    this.$nextTick(this.initMap) // 保证dom已经更新
-  },
   watch: {
     nowPoint() { // 监听当nowPoint 重新计算颜色 重新渲染
       for (let key in this.data) {
-        console.log(key)
         if (key === 'alarm') continue // 警报不计算
         this.data[key].map(e => {
           e.itemStyle.color = AQIColor(this.nowPoint, e.rest[this.nowPoint])
@@ -88,16 +76,33 @@ export default {
       this.initMap()
     }
   },
-  computed: {
+  created() {
+    this.request()
   },
   methods: {
-    request() { // 第一次请求数据 数据项中的itemStyle 需要计算一次
-      this.data.state = [{
-        name: '国',
-        value: [114.628646, 36.885853],
-        itemStyle: {color: 'green'},
-        rest: {name: '邯郸.矿山', time: 1526706372828, aqi: 125, synthesis: 5.86, pm25: 70, pm10: 125, so2: 29, no2: 37, co: 20, o3: 66, temperature: 21, humidity: 61, weatherText: '阴转阵雨', windDirection: '东风', windSpeed: 9, windRank: 13}
-      }]
+    ...mapActions([
+      'changeloading'
+    ]),
+    async request() { // 第一次请求数据 数据项中的itemStyle 需要计算一次
+      this.changeloading(true)
+      const {data} = await this.$http.get('/proxy/airMap')
+      console.log(data)
+      this.changeloading(false)
+      if (data.status !== 1) return this.$message.error(data.message)
+      for (let key in data.data) {
+        this.data[key] = data.data[key].map(e => {
+          console.log(e[this.nowPoint])
+          return {
+            name: key,
+            value: [e.lon, e.lat],
+            itemStyle: { // 报警 红色
+              color: key === 'alarm' ? 'red' : AQIColor(this.nowPoint, e[this.nowPoint])
+            },
+            rest: e
+          }
+        })
+      }
+      this.$nextTick(this.initMap) // 保证dom已经更新
     },
     initMap() {
       const option = {
@@ -289,7 +294,7 @@ export default {
               </div>
               <div class="item3 i">
                 <p>天气: ${d.weatherText}</p>
-                <p>风级: ${windLevel(d.windRank)}</p>
+                <p>风级: ${d.windRank}</p>
               </div>
             </div>
             `
@@ -322,7 +327,7 @@ export default {
           data: this.data.state,
           symbolSize: (val, p) => { // 标记点的大小
             // console.log(p.data.rest[this.nowPoint])
-            return p.data.rest[this.nowPoint] / 20 + 45
+            return p.data.rest[this.nowPoint] === '-' ? 40 : p.data.rest[this.nowPoint] / 20 + 45
           },
           symbol: 'pin',
           label: {
@@ -375,9 +380,9 @@ export default {
       }
       const myChart = echarts.init($('#echartsMap')[0]) // 初始化实例 dom元素
       myChart.setOption(option) // 配置图表
-      myChart.on('click', function (params) {
-        console.log(params)
-      })
+      // myChart.on('click', function (params) {
+      //   console.log(params)
+      // })
       const map = myChart.getModel().getComponent('bmap').getBMap() // 在echarts与百度地图结合中 获取百度地图实例
       map.addControl(new BMap.MapTypeControl({ // 地图类型 控件
         mapTypes: [
@@ -399,7 +404,7 @@ export default {
 </script>
 <style lang="scss">
 @import '../../../assets/scss/app';
-.vessel {
+.air_vessel {
   position: relative;
   width: 100%;
   height: 100%;
@@ -412,7 +417,7 @@ export default {
   }
   .btn-group {
     position: absolute;
-    top: 4px;
+    top: 7px;
     right: 100px;
     z-index: 10;
   }
@@ -427,7 +432,7 @@ export default {
   width: 100%;
   height: 100%;
 }
-// 报警弹框
+// 报警提示框
 .trace {
   width: 400px;
   padding: 10px;
@@ -438,7 +443,7 @@ export default {
     white-space: normal;
   }
 }
-// 正常弹框
+// 正常提示框
 .details {
   @include c3(display, flex);
   @include c3(flex-wrap, wrap);

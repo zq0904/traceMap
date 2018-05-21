@@ -1,24 +1,193 @@
 <template>
-  <div>
-    list.vue
+  <div class="air_list">
+    <div class="cityType-group">
+      <button class="btn" :class="condition.city === '永年区' ? 'btn-primary' : 'btn-default'" @click="condition.city = '永年区'">永年区</button>
+      <button class="btn" :class="condition.city === '2+26城市' ? 'btn-primary' : 'btn-default'" @click="condition.city = '2+26城市'">2+26城市</button>
+      <button class="btn" :class="condition.city === '74城市' ? 'btn-primary' : 'btn-default'" @click="condition.city = '74城市'">74城市</button>
+      <button class="btn" :class="condition.city === '338城市' ? 'btn-primary' : 'btn-default'" @click="condition.city = '338城市'">338城市</button>
+    </div>
+    <div class="date-group">
+      <button class="btn" :class="condition.date === 'H' ? 'btn-primary' : 'btn-default'" @click="condition.date = 'H'">时</button>
+      <button class="btn" :class="condition.date === 'D' ? 'btn-primary' : 'btn-default'" @click="condition.date = 'D'">日</button>
+      <button class="btn" :class="condition.date === 'M' ? 'btn-primary' : 'btn-default'" @click="condition.date = 'M'">月</button>
+      <button class="btn" :class="condition.date === 'Y' ? 'btn-primary' : 'btn-default'" @click="condition.date = 'Y'">年</button>
+    </div>
+    <div class="search-group">
+      <button class="btn btn-success" @click="search">搜索</button>
+    </div>
     <div class="btn-group">
       <router-link to="/air" class="btn btn-default">地图</router-link>
       <router-link to="/air/list" class="btn btn-primary">报表</router-link>
     </div>
+    <div class="table_wrap">
+      <el-table
+        :data="tableData"
+        style="width: 100%"
+        height="500"
+        :default-sort = "{prop: 'aqi', order: 'descending'}"
+        >
+        <el-table-column
+          label="序号"
+          width="50"
+          type="index"
+          :index="order">
+        </el-table-column>
+        <el-table-column
+          prop="name"
+          label="名称"
+          width="180">
+        </el-table-column>
+        <el-table-column
+          prop="aqi"
+          label="AQI"
+          sortable
+          width="70">
+        </el-table-column>
+        <el-table-column
+          prop="pm25"
+          label="PM2.5"
+          sortable
+          width="90">
+        </el-table-column>
+        <el-table-column
+          prop="pm10"
+          label="PM10"
+          sortable
+          width="90">
+        </el-table-column>
+        <el-table-column
+          prop="so2"
+          label="SO2"
+          sortable
+          width="75">
+        </el-table-column>
+        <el-table-column
+          prop="no2"
+          label="NO10"
+          sortable
+          width="90">
+        </el-table-column>
+        <el-table-column
+          prop="co"
+          label="CO"
+          sortable
+          width="70">
+        </el-table-column>
+        <el-table-column
+          prop="o3"
+          label="O3"
+          sortable
+          width="70">
+        </el-table-column>
+        <el-table-column
+          prop="synthesis"
+          label="综合指数"
+          sortable
+          width="100">
+        </el-table-column>
+        <el-table-column
+          prop="temperature"
+          label="温度/℃"
+          width="70">
+        </el-table-column>
+        <el-table-column
+          prop="humidity"
+          label="湿度/%"
+          width="70">
+        </el-table-column>
+        <el-table-column
+          prop="windDirection"
+          label="风向"
+          width="70">
+        </el-table-column>
+        <el-table-column
+          prop="windForce"
+          label="风力"
+          width="120">
+        </el-table-column>
+        <el-table-column
+          prop="polluteLevel"
+          label="污染等级"
+          width="80">
+        </el-table-column>
+        <el-table-column
+          prop="chiefly"
+          label="首要污染物"
+          width="90">
+        </el-table-column>
+      </el-table>
+    </div>
   </div>
-
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
   data () {
     return {
-
+      tableData: [],
+      condition: {
+        city: '永年区',
+        date: 'H'
+      }
+    }
+  },
+  created() {
+    this.search()
+  },
+  methods: {
+    ...mapActions([
+      'changeloading'
+    ]),
+    // 自定义序号
+    order(index) {
+      return index + 1
+    },
+    // 搜索
+    async search() {
+      this.changeloading(true)
+      const {data} = await this.$http.get('/proxy/airList', {params: this.condition})
+      // console.log(data)
+      this.changeloading(false)
+      if (data.status !== 1) return this.$message.error(data.message)
+      this.tableData = data.data
     }
   }
 }
 </script>
 
 <style lang="scss">
-
+.air_list {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  .cityType-group {
+    position: absolute;
+    top: 7px;
+    left: 10px;
+    z-index: 10;
+  }
+  .date-group {
+    position: absolute;
+    top: 7px;
+    left: 345px;
+    z-index: 10;
+  }
+  .search-group {
+    position: absolute;
+    top: 7px;
+    left: 535px;
+    z-index: 10;
+  }
+  .btn-group {
+    position: absolute;
+    top: 7px;
+    right: 100px;
+    z-index: 10;
+  }
+  .table_wrap {
+    padding: 50px 10px 0;
+  }
+}
 </style>

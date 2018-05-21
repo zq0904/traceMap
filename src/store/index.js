@@ -8,7 +8,8 @@ Vue.use(Vuex)
 
 const state = {
   test: 0,
-  testArr: []
+  testArr: [],
+  loading: false
 }
 
 const store = new Vuex.Store({
