@@ -7,6 +7,7 @@ import store from './store'
 import axios from 'axios'
 import VueLazyload from 'vue-lazyload'
 import ElementUI from 'element-ui' // 引入element-ui
+import $http from './lib/httpPlugin' // 简单封装$ftach
 // 引入样式
 import './assets/css/reset_m.css'
 import './assets/fonts/iconfont.css'
@@ -16,6 +17,7 @@ import '../node_modules/element-ui/lib/theme-chalk/index.css' // 引入element-u
 Vue.prototype.$http = axios // axios挂到Vue原型中
 Vue.use(ElementUI)
 Vue.use(VueLazyload) // 使用 :src="" 换成 v-lazy=""
+Vue.use($http)
 
 Vue.config.productionTip = false
 

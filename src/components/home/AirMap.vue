@@ -1,5 +1,5 @@
 <template>
-  <div class="air_vessel">
+  <div class="air_vessel" v-loading="loading">
     <div class="weather_wrap">
       <Weather></Weather>
     </div>
@@ -16,10 +16,9 @@
     </div>
     <div id="echartsMap"></div>
   </div>
-
 </template>
 <script>
-import { mapActions } from 'vuex'
+import { mapGetters } from 'vuex'
 import $ from 'jquery'
 import BMap from 'BMap'
 import BMAP_ANCHOR_TOP_RIGHT from 'BMAP_ANCHOR_TOP_RIGHT'
@@ -27,9 +26,14 @@ import BMAP_NORMAL_MAP from 'BMAP_NORMAL_MAP'
 import BMAP_SATELLITE_MAP from 'BMAP_SATELLITE_MAP'
 import BMAP_HYBRID_MAP from 'BMAP_HYBRID_MAP'
 import echarts from 'echarts'
-import { debugMap, drawPolygon, AQIColor } from '../../../assets/js/common'
-import moment from 'moment'
-import Weather from '../../common/Weather'
+import { debugMap, styleJson, AQIColor, airDetails } from '../../lib/common'
+import { drawPolygon } from '../../lib/config'
+import Weather from '../common/Weather'
+// 可以选中
+// console.log($('body'))
+// $('body').on('click', '.details', function() {
+//   console.log(2)
+// })
 
 export default {
   components: {
@@ -37,21 +41,16 @@ export default {
   },
   data() {
     return {
+      loading: false,
       // 最终的数据格式
       data: {
-        alarm: [
-        // {
-        //   name: '报警',
-        //   value: [114.73414, 36.912634],
-        //   itemStyle: {color: 'red'}, // 写死 红色
-        //   rest: {text: '报警信息报警信息报警信息报警信息报警信息报警信息报警信息', name: '邯郸.矿山', time: 1526706372828, aqi: -1, synthesis: 5.86, pm25: 70, pm10: 125, so2: 29, no2: 37, co: 20, o3: 66, temperature: 21, humidity: 61, weatherText: '阴转阵雨', windDirection: '东风', windSpeed: 9, windRank: '一级'}
-        // }
-        ],
+        alarm: [],
         state: [],
         province: [],
         gridding: []
       },
       nowPoint: 'aqi',
+      bmapCL: [114.624619, 36.799901, 12], // bmap中心点 和 缩放级别 实现持久
       buttonMap: [
         {text: 'AQI', point: 'aqi'},
         {text: 'PM2.5', point: 'pm25'},
@@ -76,22 +75,23 @@ export default {
       this.initMap()
     }
   },
+  computed: {
+    ...mapGetters({
+      api: 'getApi'
+    })
+  },
   created() {
     this.request()
   },
   methods: {
-    ...mapActions([
-      'changeloading'
-    ]),
     async request() { // 第一次请求数据 数据项中的itemStyle 需要计算一次
-      this.changeloading(true)
-      const {data} = await this.$http.get('/proxy/airMap')
-      console.log(data)
-      this.changeloading(false)
-      if (data.status !== 1) return this.$message.error(data.message)
-      for (let key in data.data) {
-        this.data[key] = data.data[key].map(e => {
-          console.log(e[this.nowPoint])
+      this.loading = true
+      const {data} = await this.$fetch({ url: this.api.AirMap })
+      // console.log(data)
+      this.loading = false
+      // 数据组装
+      for (let key in data.result) {
+        this.data[key] = data.result[key].map(e => {
           return {
             name: key,
             value: [e.lon, e.lat],
@@ -107,136 +107,17 @@ export default {
     initMap() {
       const option = {
         bmap: {
-          center: [114.624619, 36.799901], // 地图中心
-          zoom: 12, // 地图级别
+          center: [this.bmapCL[0], this.bmapCL[1]], // 地图中心
+          zoom: this.bmapCL[2], // 地图级别
           roam: true, // 是否开启 可拖拽 可缩放
           mapStyle: { // 自定义样式
-            styleJson: [{
-              'featureType': 'all',
-              'elementType': 'all',
-              'stylers': {
-                'color': '#313745',
-                'hue': '#313745'
-              }
-            },
-            {
-              'featureType': 'building',
-              'elementType': 'geometry',
-              'stylers': {
-                'color': '#2b2b2b',
-                'visibility': 'off'
-              }
-            },
-            {
-              'featureType': 'highway',
-              'elementType': 'all',
-              'stylers': {
-                'lightness': -42,
-                'saturation': -91,
-                'visibility': 'off'
-              }
-            },
-            {
-              'featureType': 'water',
-              'elementType': 'all',
-              'stylers': {
-                'color': '#222931',
-                'weight': '0.6',
-                'lightness': 8,
-                'saturation': 20
-              }
-            },
-            {
-              'featureType': 'green',
-              'elementType': 'geometry',
-              'stylers': {
-                'color': '#1b1b1b',
-                'visibility': 'off'
-              }
-            },
-            {
-              'featureType': 'water',
-              'elementType': 'geometry',
-              'stylers': {
-                'color': '#181818'
-              }
-            },
-            {
-              'featureType': 'subway',
-              'elementType': 'geometry.stroke',
-              'stylers': {
-                'color': '#181818'
-              }
-            },
-            {
-              'featureType': 'railway',
-              'elementType': 'geometry',
-              'stylers': {
-                'lightness': -52
-              }
-            },
-            {
-              'featureType': 'all',
-              'elementType': 'labels.text.stroke',
-              'stylers': {
-                'color': '#313131'
-              }
-            },
-            {
-              'featureType': 'all',
-              'elementType': 'labels.text.fill',
-              'stylers': {
-                'color': '#ffffff'
-              }
-            },
-            {
-              'featureType': 'manmade',
-              'elementType': 'geometry',
-              'stylers': {
-                'color': '#1b1b1b'
-              }
-            },
-            {
-              'featureType': 'local',
-              'elementType': 'geometry',
-              'stylers': {
-                'lightness': -75,
-                'saturation': -91
-              }
-            },
-            {
-              'featureType': 'subway',
-              'elementType': 'geometry',
-              'stylers': {
-                'lightness': -65
-              }
-            },
-            {
-              'featureType': 'railway',
-              'elementType': 'all',
-              'stylers': {}
-            },
-            {
-              'featureType': 'boundary',
-              'elementType': 'geometry',
-              'stylers': {
-                'color': '#8b8787',
-                'weight': '0.6',
-                'lightness': -29
-              }
-            }
-            ]}
+            styleJson
+          }
         },
-        // title: {
-        //   text: '全国主要城市空气质量 - 百度地图',
-        //   subtext: '小标题', // 小标题
-        //   sublink: 'http://www.baidu.com', // 小标题链接
-        //   left: 'center' // 文本居中
-        // },
         tooltip: { // 是否显示提示工具
           enterable: true, // 鼠标是否可进入提示框浮层中 如需详情内交互可设置
           formatter: p => { // 提示框浮层内容格式器
-            console.log(p)
+            // console.log(p)
             const d = p.data.rest
             // 如果是报警类型单独展示一种弹窗
             return p.componentSubType === 'effectScatter' ? `
@@ -244,60 +125,7 @@ export default {
               <p class="text">${d.text}</p>
               <a href="#/traceSource?lon=${p.data.value[0]}&lat=${p.data.value[1]}" class="btn btn-danger">去溯源</a>
             </div>
-            ` : `
-            <div class="details">
-              <div class="item1 i">
-                <div class="name">${d.name}</div>
-                <p class="time">${moment(d.time).format('YYYY-MM-DD HH:mm:ss')}</p>
-              </div>
-              <div class="item2 i">
-                <div style="background-color: ${AQIColor('aqi', d.aqi)};">AQI</div>
-                <p>${d.aqi}</p>
-              </div>
-              <div class="item2 i">
-                <div style="background-color: ${AQIColor('synthesis', d.synthesis)};">综合指数</div>
-                <p>${d.synthesis}</p>
-              </div>
-
-              <div class="item6 i">
-                <div style="background-color: ${AQIColor('pm25', d.pm25)};">PM2.5</div>
-                <p>${d.pm25}</p>
-              </div>
-              <div class="item6 i">
-                <div style="background-color: ${AQIColor('pm10', d.pm10)};">PM10</div>
-                <p>${d.pm10}</p>
-              </div>
-              <div class="item6 i">
-                <div style="background-color: ${AQIColor('so2', d.so2)};">SO2</div>
-                <p>${d.so2}</p>
-              </div>
-              <div class="item6 i">
-                <div style="background-color: ${AQIColor('no2', d.no2)};">NO2</div>
-                <p>${d.no2}</p>
-              </div>
-              <div class="item6 i">
-                <div style="background-color: ${AQIColor('co', d.co)};">CO</div>
-                <p>${d.co}</p>
-              </div>
-              <div class="item6 i">
-                <div style="background-color: ${AQIColor('o3', d.o3)};">O3</div>
-                <p>${d.o3}</p>
-              </div>
-
-              <div class="item3 i">
-                <p>温度: ${d.temperature}℃</p>
-                <p>风向: ${d.windDirection}</p>
-              </div>
-              <div class="item3 i">
-                <p>湿度: ${d.humidity}%</p>
-                <p>风速: ${d.windSpeed}km/h</p>
-              </div>
-              <div class="item3 i">
-                <p>天气: ${d.weatherText}</p>
-                <p>风级: ${d.windRank}</p>
-              </div>
-            </div>
-            `
+            ` : airDetails(d)
           }
         },
         series: [{
@@ -385,16 +213,22 @@ export default {
       // })
       const map = myChart.getModel().getComponent('bmap').getBMap() // 在echarts与百度地图结合中 获取百度地图实例
       map.addControl(new BMap.MapTypeControl({ // 地图类型 控件
+        anchor: BMAP_ANCHOR_TOP_RIGHT,
         mapTypes: [
           BMAP_NORMAL_MAP, // 正常
           BMAP_SATELLITE_MAP, // 卫星 （混合是子向）
           BMAP_HYBRID_MAP // 混合
-        ],
-        anchor: BMAP_ANCHOR_TOP_RIGHT
+        ]
       }))
-      // map.addEventListener('click', '.tt', e => { // 拖拽完成时触发 获取地图中心点
-      //   console.log(1)
-      // })
+      // 实现保持
+      map.addEventListener('dragend', e => {
+        const center = map.getCenter()
+        this.bmapCL[0] = center.lng
+        this.bmapCL[1] = center.lat
+      })
+      map.addEventListener('zoomend', e => {
+        this.bmapCL[2] = map.getZoom()
+      })
       debugMap(map)
       drawPolygon(map)
     }
@@ -403,7 +237,7 @@ export default {
 
 </script>
 <style lang="scss">
-@import '../../../assets/scss/app';
+@import '../../assets/scss/app';
 .air_vessel {
   position: relative;
   width: 100%;
@@ -427,10 +261,10 @@ export default {
     right: 7px;
     z-index: 10
   }
-}
-#echartsMap {
-  width: 100%;
-  height: 100%;
+  #echartsMap {
+    width: 100%;
+    height: 100%;
+  }
 }
 // 报警提示框
 .trace {

@@ -1,10 +1,10 @@
 <template>
-  <div class="air_list">
+  <div class="air_list" v-loading="loading">
     <div class="cityType-group">
       <button class="btn" :class="condition.city === '永年区' ? 'btn-primary' : 'btn-default'" @click="condition.city = '永年区'">永年区</button>
-      <button class="btn" :class="condition.city === '2+26城市' ? 'btn-primary' : 'btn-default'" @click="condition.city = '2+26城市'">2+26城市</button>
+      <!-- <button class="btn" :class="condition.city === '2+26城市' ? 'btn-primary' : 'btn-default'" @click="condition.city = '2+26城市'">2+26城市</button>
       <button class="btn" :class="condition.city === '74城市' ? 'btn-primary' : 'btn-default'" @click="condition.city = '74城市'">74城市</button>
-      <button class="btn" :class="condition.city === '338城市' ? 'btn-primary' : 'btn-default'" @click="condition.city = '338城市'">338城市</button>
+      <button class="btn" :class="condition.city === '338城市' ? 'btn-primary' : 'btn-default'" @click="condition.city = '338城市'">338城市</button> -->
     </div>
     <div class="date-group">
       <button class="btn" :class="condition.date === 'H' ? 'btn-primary' : 'btn-default'" @click="condition.date = 'H'">时</button>
@@ -33,7 +33,7 @@
           :index="order">
         </el-table-column>
         <el-table-column
-          prop="name"
+          prop="station.dname"
           label="名称"
           width="180">
         </el-table-column>
@@ -63,7 +63,7 @@
         </el-table-column>
         <el-table-column
           prop="no2"
-          label="NO10"
+          label="NO2"
           sortable
           width="90">
         </el-table-column>
@@ -80,38 +80,48 @@
           width="70">
         </el-table-column>
         <el-table-column
-          prop="synthesis"
+          prop="ci"
           label="综合指数"
           sortable
           width="100">
         </el-table-column>
         <el-table-column
-          prop="temperature"
-          label="温度/℃"
+          prop="mData.tOut"
+          label="温度℃"
           width="70">
         </el-table-column>
         <el-table-column
-          prop="humidity"
-          label="湿度/%"
+          prop="mData.hOut"
+          label="湿度%"
           width="70">
         </el-table-column>
         <el-table-column
-          prop="windDirection"
+          prop="mData.wdOut"
           label="风向"
           width="70">
         </el-table-column>
         <el-table-column
-          prop="windForce"
-          label="风力"
-          width="120">
+          prop="mData.pOut"
+          label="气压Pa"
+          width="80">
         </el-table-column>
         <el-table-column
-          prop="polluteLevel"
+          prop="mData.wp"
+          label="风级"
+          width="70">
+        </el-table-column>
+        <el-table-column
+          prop="mData.wsOut"
+          label="风速m/s"
+          width="85">
+        </el-table-column>
+        <el-table-column
+          prop="AQIlevel"
           label="污染等级"
           width="80">
         </el-table-column>
         <el-table-column
-          prop="chiefly"
+          prop="most"
           label="首要污染物"
           width="90">
         </el-table-column>
@@ -121,11 +131,13 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapGetters } from 'vuex'
+import { nameUpperCase, AQIlevel } from '../../lib/common'
 
 export default {
   data () {
     return {
+      loading: false,
       tableData: [],
       condition: {
         city: '永年区',
@@ -133,25 +145,33 @@ export default {
       }
     }
   },
+  computed: {
+    ...mapGetters({
+      api: 'getApi'
+    })
+  },
   created() {
     this.search()
   },
   methods: {
-    ...mapActions([
-      'changeloading'
-    ]),
     // 自定义序号
     order(index) {
       return index + 1
     },
     // 搜索
     async search() {
-      this.changeloading(true)
-      const {data} = await this.$http.get('/proxy/airList', {params: this.condition})
+      this.loading = true
+      const {data} = await this.$fetch({
+        url: this.api.AirList,
+        data: this.condition
+      })
       // console.log(data)
-      this.changeloading(false)
-      if (data.status !== 1) return this.$message.error(data.message)
-      this.tableData = data.data
+      this.loading = false
+      this.tableData = data.result.map(e => {
+        e.most = nameUpperCase(e.most) // 对首要污染物转换大写
+        e.AQIlevel = AQIlevel('aqi', e.aqi) // 污染等级 按aqi排
+        return e
+      })
     }
   }
 }

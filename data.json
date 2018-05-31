@@ -1,52 +1,356 @@
 {
   "airMap": {
-    "status": 1,
-    "message": "请求成功",
-    "data": {
-      "alarm": [{"lon": 114.73414, "lat": 36.912634, "text": "报警信息报警信息报警信息报警信息报警信息报警信息报警信息", "name": "邯郸.矿山", "time": 1526706372828, "aqi": 90, "synthesis": 5.86, "pm25": 70, "pm10": 125, "so2": 29, "no2": 37, "co": 20, "o3": 66, "temperature": 21, "humidity": 61, "weatherText": "阴转阵雨", "windDirection": "东风", "windSpeed": 9, "windRank": "四级"}],
-      "state": [{"lon": 114.628646, "lat": 36.885853, "name": "邯郸.矿山", "time": 1526706372828, "aqi": "-", "synthesis": 5.86, "pm25": 70, "pm10": 125, "so2": 29, "no2": 37, "co": 20, "o3": 66, "temperature": 21, "humidity": 61, "weatherText": "阴转阵雨", "windDirection": "东风", "windSpeed": 9, "windRank": "三级"}],
-      "province": [{"lon": 114.684698, "lat": 36.856288, "name": "邯郸.省", "time": 1526706372828, "aqi": 190, "synthesis": 6.86, "pm25": 80, "pm10": 80, "so2": 80, "no2": 80, "co": 80, "o3": 80, "temperature": 20, "humidity": 10, "weatherText": "阴转阵雨省", "windDirection": "东风省", "windSpeed": 10, "windRank": "二级"}],
-      "gridding": [{"lon": 114.732991, "lat": 36.808223, "name": "邯郸.网格", "time": 1526706372828, "aqi": 200, "synthesis": 9.99, "pm25": 90, "pm10": 90, "so2": 90, "no2": 90, "co": 90, "o3": 90, "temperature": 39, "humidity": 20, "weatherText": "阴转阵雨网格", "windDirection": "东风网格", "windSpeed": 5, "windRank": "一级"}]
-    }
+    "a": "asd",
+    "b": "asdasd"
   },
-  "airList":
-  {
+  "airList": {
     "status": 1,
     "message": "请求成功",
     "data": [
-    {
-      "name": "永年001",
-      "aqi": 108,
-      "pm25": 52,
-      "pm10": 166,
-      "so2": -1,
-      "no2": -1,
-      "co": -1,
-      "o3": -1,
-      "synthesis": 5.98,
-      "temperature": 30,
-      "humidity": 20,
-      "windDirection": "西北风",
-      "windForce": "12级(100km/h)",
-      "polluteLevel": "轻度污染",
-      "chiefly": "PM10"
-    },
-    {
-      "name": "永年001",
-      "aqi": 108,
-      "pm25": 52,
-      "pm10": 166,
-      "so2": -1,
-      "no2": -1,
-      "co": -1,
-      "o3": -1,
-      "synthesis": 5.98,
-      "temperature": 30,
-      "humidity": 20,
-      "windDirection": "西北风",
-      "windForce": "12级(100km/h)",
-      "polluteLevel": "轻度污染",
-      "chiefly": "PM10"
-    }]
+      {
+        "name": "永年001",
+        "aqi": 108,
+        "pm25": 52,
+        "pm10": 166,
+        "so2": -1,
+        "no2": -1,
+        "co": -1,
+        "o3": -1,
+        "synthesis": 5.98,
+        "temperature": 30,
+        "humidity": 20,
+        "windDirection": "西北风",
+        "windForce": "12级(100km/h)",
+        "polluteLevel": "轻度污染",
+        "chiefly": "PM10"
+      },
+      {
+        "name": "永年001",
+        "aqi": 108,
+        "pm25": 52,
+        "pm10": 166,
+        "so2": -1,
+        "no2": -1,
+        "co": -1,
+        "o3": -1,
+        "synthesis": 5.98,
+        "temperature": 30,
+        "humidity": 20,
+        "windDirection": "西北风",
+        "windForce": "12级(100km/h)",
+        "polluteLevel": "轻度污染",
+        "chiefly": "PM10"
+      }
+    ]
+  },
+  "pollutionMap": {
+    "status": 1,
+    "msg": "请求成功",
+    "result": [
+      {
+        "iconUrl": "http://demo.coilabs.com:2000/file//BJFTAir/pType/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20180403134915_20180403134940132195.png",
+        "name": "污染名字1",
+        "location": "XX镇XX区",
+        "type": "道路扬尘",
+        "lon": 114.717756,
+        "lat": 36.754808,
+        "startT": 1527048483435,
+        "endT": "-",
+        "status": "未处理",
+        "person": "张三",
+        "main": "区居委会",
+        "phone": "15568435567/010-8654549",
+        "qther": "其他信息其他信息其他信息其他信息其他信息其他信息",
+        "area": 3000,
+        "locationInfo": "集体的位置信息",
+        "opinion": "增加湿扫，增加湿扫增加湿扫增加湿扫增加湿扫。",
+        "beforeImg": ["http://iconfont.alicdn.com/t/1520749823689.jpg@100h_100w.jpg"],
+        "afterImg": ["http://demo.coilabs.com:2000/file//BJFTAir/pType/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20180403134915_20180403134940132195.png", "http://demo.coilabs.com:2000/file//BJFTAir/pType/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20180403134911_20180403134948037303.png"]
+      }, {
+        "iconUrl": "http://demo.coilabs.com:2000/file//BJFTAir/pType/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20180403134911_20180403134948037303.png",
+        "name": "污染名字2",
+        "location": "XX镇XX区",
+        "type": "道路扬尘",
+        "lon": 114.631231,
+        "lat": 36.797128,
+        "startT": 1527048483435,
+        "endT": "-",
+        "status": "未处理",
+        "person": "张三",
+        "main": "区居委会",
+        "phone": "15568435567/010-8654549",
+        "qther": "其他信息其他信息其他信息其他信息其他信息其他信息",
+        "area": 3000,
+        "locationInfo": "集体的位置信息",
+        "opinion": "增加湿扫，增加湿扫增加湿扫增加湿扫增加湿扫。",
+        "beforeImg": ["http://demo.coilabs.com:2000/file//BJFTAir/pType/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20180403134915_20180403134940132195.png", "http://demo.coilabs.com:2000/file//BJFTAir/pType/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20180403134911_20180403134948037303.png"],
+        "afterImg": ["http://iconfont.alicdn.com/t/1494395652678.png@100h_100w.jpg"]
+      }
+    ]
+  },
+  "pollutionList": {
+    "status": 1,
+    "msg": "请求成功",
+    "data": {
+      "list": {
+        "status": [
+          {
+            "value": "",
+            "label": "全部"
+          },
+          {
+            "value": 1,
+            "label": "疑似污染源",
+            "color": "黑色"
+          },
+          {
+            "value": 2,
+            "label": "未处理",
+            "color": "红色"
+          },
+          {
+            "value": 3,
+            "label": "处理中",
+            "color": "蓝色"
+          },
+          {
+            "value": 4,
+            "label": "已处理",
+            "color": "绿色"
+          }
+        ],
+        "type": [
+          {
+            "value": "",
+            "label": "全部"
+          },
+          {
+            "value": 1,
+            "label": "道路扬尘"
+          },
+          {
+            "value": 2,
+            "label": "工地"
+          },
+          {
+            "value": 3,
+            "label": "落地扬尘"
+          }
+        ]
+      },
+      "data": []
+    }
+  },
+  "traceSource": {
+    "status": 1,
+    "message": "请求成功",
+    "data": [
+      {
+        "lon": 114.518835,
+        "lat": 36.653886,
+        "text": "报警信息报警信息报警信息报警信息报警信息报警信息报警信息",
+        "name": "邯郸.矿山",
+        "time": 1526706372828,
+        "aqi": "-",
+        "synthesis": 5.86,
+        "pm25": 70,
+        "pm10": 125,
+        "so2": 29,
+        "no2": 37,
+        "co": 20,
+        "o3": 66,
+        "temperature": 21,
+        "humidity": 61,
+        "weatherText": "阴转阵雨",
+        "windDirection": "东风",
+        "windSpeed": 9,
+        "windRank": "四级",
+        "relevance": [
+          {
+            "distance": 200,
+            "iconUrl": "http://demo.coilabs.com:2000/file//BJFTAir/pType/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20180403134915_20180403134940132195.png",
+            "name": "污染名字1",
+            "location": "XX镇XX区",
+            "type": [
+              "道路扬尘",
+              1
+            ],
+            "lon": 114.631231,
+            "lat": 36.79759,
+            "startT": 1527048483435,
+            "endT": "-",
+            "status": [
+              "疑似污染源",
+              1
+            ],
+            "person": "张三",
+            "main": "区居委会",
+            "phone": "15568435567/010-8654549",
+            "qther": "其他信息其他信息其他信息其他信息其他信息其他信息",
+            "area": 3000,
+            "locationInfo": "集体的位置信息",
+            "opinion": "增加湿扫，增加湿扫增加湿扫增加湿扫增加湿扫。",
+            "beforeImg": [
+              "http://iconfont.alicdn.com/t/1520749823689.jpg@100h_100w.jpg"
+            ],
+            "afterImg": [
+              "http://demo.coilabs.com:2000/file//BJFTAir/pType/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20180403134915_20180403134940132195.png",
+              "http://demo.coilabs.com:2000/file//BJFTAir/pType/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20180403134911_20180403134948037303.png"
+            ]
+          },
+          {
+            "distance": 1151,
+            "iconUrl": "http://demo.coilabs.com:2000/file//BJFTAir/pType/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20180403134915_20180403134940132195.png",
+            "name": "污染名字1",
+            "location": "XX镇XX区",
+            "type": [
+              "道路扬尘",
+              1
+            ],
+            "lon": 114.350385,
+            "lat": 36.80938,
+            "startT": 1527048483435,
+            "endT": "-",
+            "status": [
+              "疑似污染源",
+              1
+            ],
+            "person": "张三",
+            "main": "区居委会",
+            "phone": "15568435567/010-8654549",
+            "qther": "其他信息其他信息其他信息其他信息其他信息其他信息",
+            "area": 3000,
+            "locationInfo": "集体的位置信息",
+            "opinion": "增加湿扫，增加湿扫增加湿扫增加湿扫增加湿扫。",
+            "beforeImg": [
+              "http://iconfont.alicdn.com/t/1520749823689.jpg@100h_100w.jpg"
+            ],
+            "afterImg": [
+              "http://demo.coilabs.com:2000/file//BJFTAir/pType/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20180403134915_20180403134940132195.png",
+              "http://demo.coilabs.com:2000/file//BJFTAir/pType/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20180403134911_20180403134948037303.png"
+            ]
+          },
+          {
+            "distance": 1111,
+            "iconUrl": "http://demo.coilabs.com:2000/file//BJFTAir/pType/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20180403134915_20180403134940132195.png",
+            "name": "污染名字1",
+            "location": "XX镇XX区",
+            "type": [
+              "道路扬尘",
+              1
+            ],
+            "lon": 114.875283,
+            "lat": 36.646936,
+            "startT": 1527048483435,
+            "endT": "-",
+            "status": [
+              "疑似污染源",
+              1
+            ],
+            "person": "张三",
+            "main": "区居委会",
+            "phone": "15568435567/010-8654549",
+            "qther": "其他信息其他信息其他信息其他信息其他信息其他信息",
+            "area": 3000,
+            "locationInfo": "集体的位置信息",
+            "opinion": "增加湿扫，增加湿扫增加湿扫增加湿扫增加湿扫。",
+            "beforeImg": [
+              "http://iconfont.alicdn.com/t/1520749823689.jpg@100h_100w.jpg"
+            ],
+            "afterImg": [
+              "http://demo.coilabs.com:2000/file//BJFTAir/pType/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20180403134915_20180403134940132195.png",
+              "http://demo.coilabs.com:2000/file//BJFTAir/pType/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20180403134911_20180403134948037303.png"
+            ]
+          }
+        ]
+      },
+      {
+        "lon": 114.854586,
+        "lat": 36.891164,
+        "text": "报警信息报警信息报警信息报警信息报警信息报警信息报警信息",
+        "name": "邯郸.矿山",
+        "time": 1526706372828,
+        "aqi": -1,
+        "synthesis": 5.86,
+        "pm25": 70,
+        "pm10": 125,
+        "so2": 29,
+        "no2": 37,
+        "co": 20,
+        "o3": 66,
+        "temperature": 21,
+        "humidity": 61,
+        "weatherText": "阴转阵雨",
+        "windDirection": "东风",
+        "windSpeed": 9,
+        "windRank": "四级",
+        "relevance": [
+          {
+            "distance": 1000,
+            "iconUrl": "http://demo.coilabs.com:2000/file//BJFTAir/pType/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20180403134915_20180403134940132195.png",
+            "name": "污染名字1",
+            "location": "XX镇XX区",
+            "type": [
+              "道路扬尘",
+              1
+            ],
+            "lon": 114.495838,
+            "lat": 36.844045,
+            "startT": 1527048483435,
+            "endT": "-",
+            "status": [
+              "疑似污染源",
+              1
+            ],
+            "person": "张三",
+            "main": "区居委会",
+            "phone": "15568435567/010-8654549",
+            "qther": "其他信息其他信息其他信息其他信息其他信息其他信息",
+            "area": 3000,
+            "locationInfo": "集体的位置信息",
+            "opinion": "增加湿扫，增加湿扫增加湿扫增加湿扫增加湿扫。",
+            "beforeImg": [
+              "http://iconfont.alicdn.com/t/1520749823689.jpg@100h_100w.jpg"
+            ],
+            "afterImg": [
+              "http://demo.coilabs.com:2000/file//BJFTAir/pType/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20180403134915_20180403134940132195.png",
+              "http://demo.coilabs.com:2000/file//BJFTAir/pType/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20180403134911_20180403134948037303.png"
+            ]
+          },
+          {
+            "distance": 1060,
+            "iconUrl": "http://demo.coilabs.com:2000/file//BJFTAir/pType/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20180403134915_20180403134940132195.png",
+            "name": "污染名字1",
+            "location": "XX镇XX区",
+            "type": [
+              "道路扬尘",
+              1
+            ],
+            "lon": 114.708557,
+            "lat": 36.738151,
+            "startT": 1527048483435,
+            "endT": "-",
+            "status": [
+              "疑似污染源",
+              1
+            ],
+            "person": "张三",
+            "main": "区居委会",
+            "phone": "15568435567/010-8654549",
+            "qther": "其他信息其他信息其他信息其他信息其他信息其他信息",
+            "area": 3000,
+            "locationInfo": "集体的位置信息",
+            "opinion": "增加湿扫，增加湿扫增加湿扫增加湿扫增加湿扫。",
+            "beforeImg": [
+              "http://iconfont.alicdn.com/t/1520749823689.jpg@100h_100w.jpg"
+            ],
+            "afterImg": [
+              "http://demo.coilabs.com:2000/file//BJFTAir/pType/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20180403134915_20180403134940132195.png",
+              "http://demo.coilabs.com:2000/file//BJFTAir/pType/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20180403134911_20180403134948037303.png"
+            ]
+          }
+        ]
+      }
+    ]
   }
 }

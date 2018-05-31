@@ -14,6 +14,14 @@ module.exports = {
       '/proxy': { // 配代理
         target: "http://localhost:3000", // 请求路径是以 /proxy 开头的 会代理到
         pathRewrite: { "^/proxy": "" } // 路径重写规则
+      },
+      '/api': {
+        target: "http://192.168.199.222:8080",
+        pathRewrite: { "^/api": "" }
+      },
+      '/cc': {
+        target: "http://192.168.199.181:8080",
+        pathRewrite: { "^/cc": "" }
       }
     },
 

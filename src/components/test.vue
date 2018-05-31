@@ -1,6 +1,7 @@
 <template>
   <div>
-    <img src="../assets/images/Aimer.jpg" height="50" width="50" alt="">
+    test
+    <!-- <img src="../assets/images/Aimer.jpg" height="50" width="50" alt="">
     <p>{{ message }}</p>
     <p>number:{{ number }}</p>
     <p>store: {{test}}</p>
@@ -9,7 +10,7 @@
     <p>
       <span class="glyphicon glyphicon-user"></span>
       <span class="el-icon-success"></span>
-    </p>
+    </p> -->
     <!-- 测试bootstrap -->
     <!-- <ul class="pagination">
       <li><a href="#">1</a></li>
@@ -27,13 +28,14 @@
 // import $ from 'jquery'
 // import moment from 'moment'
 // import zepto from 'zepto'
-import { mapState, mapGetters, mapActions } from 'vuex'
+// import { mapState, mapGetters, mapActions } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   data() {
     return {
-      message: '测试信息',
-      number: 0
+      // message: '测试信息',
+      // number: 0
     }
   },
   async created() {
@@ -52,17 +54,46 @@ export default {
     // // 测试代理 测试$http
     // const data = await this.$http.get('/proxy/topics')
     // console.log(data)
+    // 测试自己封装的$fetch
+    // const {data} = await this.$fetch({
+    //   type: 'post',
+    //   url: '/cc/data/airList',
+    //   data: {
+    //     a: 'asd',
+    //     b: 'asdasd'
+    //   }
+    // })
+    // console.log(data)
+    // const {data: name} = await this.$http.get('/proxy/airMap')
+    // console.log(name)
+    console.log(this.test)
+    // setTimeout(() => this.mergeTest({
+    //   testArr: [6, 6, 6, 8], // 数组 merge按照 索引
+    //   testInfo: {
+    //     a: 2,
+    //     b: '测试1'
+    //   },
+    //   a: 1
+    // }), 5000)
+    // this.replaceTestArr({ a: 1 })
   },
   computed: {
     // 测试 state
-    ...mapState([
-      'test'
-    ]),
-    ...mapGetters([
-      'getTestArrLength'
-    ])
+    // ...mapState([
+    //   'test'
+    // ]),
+    // ...mapGetters([
+    //   'getTestArrLength'
+    // ])
+    ...mapGetters({
+      test: 'getTest'
+    })
   },
   methods: {
+    ...mapActions([
+      'mergeTest',
+      'replaceTestArr'
+    ])
     // add() {
     //   if (++this.number === 101) {
     //     this.number = 0
@@ -75,10 +106,10 @@ export default {
     // increment() {
     //   this.$store.dispatch('INCREMENT')
     // }
-    // 测试 actions
-    ...mapActions([
-      'increment'
-    ])
+    // // 测试 actions
+    // ...mapActions([
+    //   'increment'
+    // ])
   }
 }
 

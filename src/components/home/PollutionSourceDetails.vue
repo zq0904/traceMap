@@ -1,18 +1,18 @@
 <template>
-  <!-- 三级路由 -->
-  <router-view></router-view>
+  <div>
+    污染源详情页
+  </div>
 </template>
-
 <script>
 export default {
-  data () {
+  data() {
     return {
 
     }
   }
 }
-</script>
 
+</script>
 <style lang="scss">
 
 </style>
