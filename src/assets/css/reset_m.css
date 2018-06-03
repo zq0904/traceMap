@@ -100,20 +100,11 @@ a, a:hover {
 
 .clearfix::before,
 .clearfix::after {
-  content: '';
+  content:
+  ;
   display: inline-block; /*block无法清除margin-top所带来的塌陷*/
   height: 0;
   line-height: 0;
   visibility: hidden;
   clear: both;
 }
-
-/*去掉logo和版权*/
-.anchorBL {
-  display: none;
-}
-/* 修改BMapLib提示框下三角位置 */
-.BMapLib_trans {
-  top: auto !important;
-}
-

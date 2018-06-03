@@ -1,5 +1,5 @@
 <template>
-  <div class="homePage" v-loading="loading">
+  <div v-loading="loading">
     <!-- <div class="trace">
       <p class="text">报警报警报警报警报警报警报警报警报警报警报警报警报警报警报警报警报警报警报警报警报警报警</p>
       <button onclick="function () {console.log(1)}" type="button" class="btn btn-danger">去溯源</button>
@@ -21,11 +21,6 @@ export default {
 
 </script>
 <style lang="scss">
-  .homePage {
-    position: relative;
-    width: 100%;
-    height: 100%;
-  }
   .trace {
     width: 400px;
     padding: 10px;

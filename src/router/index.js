@@ -9,8 +9,8 @@ import AirMap from '../components/home/AirMap' // 空气地图
 import AirList from '../components/home/AirList' // 空气列表
 import PollutionSourceMap from '../components/home/PollutionSourceMap' // 污染源地图
 import PollutionSourceList from '../components/home/PollutionSourceList' // 污染源列表
-import PollutionSourceDetails from '../components/home/PollutionSourceDetails' // 污染源详情
-import TraceSource from '../components/home/TraceSource' // 溯源
+import PollutionSourcCrud from '../components/home/PollutionSourcCrud' // 污染源详情
+import TraceSourceMap from '../components/home/TraceSourceMap' // 溯源地图
 
 Vue.use(Router)
 
@@ -29,8 +29,8 @@ export default new Router({
         { path: 'air/list', component: AirList },
         { path: 'pollutionSource', component: PollutionSourceMap },
         { path: 'pollutionSource/list', component: PollutionSourceList },
-        { path: 'pollutionSource/details', component: PollutionSourceDetails },
-        { path: 'traceSource', component: TraceSource }
+        { path: 'pollutionSource/crud', component: PollutionSourcCrud },
+        { path: 'traceSource', component: TraceSourceMap }
       ]
     }
   ]

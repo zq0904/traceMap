@@ -14,7 +14,7 @@ import BMAP_NORMAL_MAP from 'BMAP_NORMAL_MAP'
 import BMAP_SATELLITE_MAP from 'BMAP_SATELLITE_MAP'
 import BMAP_HYBRID_MAP from 'BMAP_HYBRID_MAP'
 import { debugMap, styleJson, ComplexCustomOverlay, airDetails, pollutionInfoWindow } from '../../lib/common'
-import { drawPolygon } from '../../lib/config'
+import { mapCZ, drawPolygon } from '../../lib/config'
 import Weather from '../common/Weather'
 
 export default {
@@ -23,6 +23,7 @@ export default {
   },
   data() {
     return {
+      map: {},
       loading: false,
       traceSource: []
     }
@@ -38,7 +39,6 @@ export default {
   methods: {
     async request() {
       this.loading = true
-      // const {data} = await this.$http.get('/proxy/traceSource')
       const {data} = await this.$fetch({ url: this.api.traceMap })
       // console.log(data)
       this.loading = false
@@ -46,10 +46,10 @@ export default {
       this.$nextTick(this.initMap)
     },
     initMap() {
-      const map = new BMap.Map('echartsMap', { enableMapClick: false }) // 创建地图实例 直接写ID 容器要给大小
+      const map = this.map = new BMap.Map('echartsMap', { enableMapClick: false }) // 创建地图实例 直接写ID 容器要给大小
       const query = this.$route.query // 判断 是否传递了 点位 没有取默认
-      const point = query.lat ? new BMap.Point(query.lon, query.lat) : new BMap.Point(114.631231, 36.79759)
-      map.centerAndZoom(point, 12) // 设置中心点坐标 地图级别 （也可以重新设置）
+      const point = query.lat ? new BMap.Point(query.lon, query.lat) : new BMap.Point(mapCZ[0], mapCZ[1])
+      map.centerAndZoom(point, mapCZ[2]) // 设置中心点坐标 地图级别 （也可以重新设置）
       map.enableScrollWheelZoom(true) // 开启鼠标滚轮缩放
       map.addControl(new BMap.MapTypeControl({ // 地图类型 控件
         anchor: BMAP_ANCHOR_TOP_RIGHT,
@@ -62,7 +62,9 @@ export default {
       map.setMapStyle({styleJson})
       debugMap(map)
       drawPolygon(map)
-
+      this.drawPoint()
+    },
+    drawPoint() {
       this.traceSource.forEach(item => {
         // 报警每一项
         const itemPoint = new BMap.Point(item.lon, item.lat)
@@ -74,14 +76,14 @@ export default {
           // width: 420,
           title: '<h4 style="text-align: center; color: transparent;">标题</h4>' // 信息窗口标题
         })
-        marker.addEventListener('click', () => map.openInfoWindow(infoWindow, itemPoint))
-        map.addOverlay(marker)
+        marker.addEventListener('click', () => this.map.openInfoWindow(infoWindow, itemPoint))
+        this.map.addOverlay(marker)
 
         // 关联项渲染
         item.relevance.forEach(e => {
           const ePoint = new BMap.Point(e.baiduLongitude, e.baiduLatitude)
           // 添加封装好的 自定义覆盖物
-          map.addOverlay(new ComplexCustomOverlay(
+          this.map.addOverlay(new ComplexCustomOverlay(
             ePoint, 'http://iconfont.alicdn.com/t/1520749823689.jpg@100h_100w.jpg', '距离: ' + (Number(e.distance) >= 1000 ? Number(e.distance / 1000).toFixed(1) + '公里' : e.distance + '米')
           ))
           // 添加 透明的marker点 以便 触发infoWindow
@@ -93,10 +95,10 @@ export default {
             // width: 530,
             title: '<h4 style="text-align: center;font-size: 18px;padding-bottom: 5px;border-bottom: 1px solid #000;">' + e.polluteName + '</h4>' // 信息窗口标题
           })
-          marker.addEventListener('click', () => map.openInfoWindow(infoWindow, ePoint))
-          map.addOverlay(marker)
+          marker.addEventListener('click', () => this.map.openInfoWindow(infoWindow, ePoint))
+          this.map.addOverlay(marker)
           // 添加线
-          map.addOverlay(new BMap.Polyline(
+          this.map.addOverlay(new BMap.Polyline(
             [ePoint, itemPoint], // 坐标
             {strokeColor: 'red', strokeWeight: 3, strokeOpacity: 0.5} // 样式
           ))
@@ -110,9 +112,6 @@ export default {
 <style lang="scss">
 @import '../../assets/scss/app';
 .traceSource_vessel {
-  position: relative;
-  width: 100%;
-  height: 100%;
   .weather_wrap {
     position: absolute;
     top: 10px;

@@ -27,7 +27,7 @@ import BMAP_SATELLITE_MAP from 'BMAP_SATELLITE_MAP'
 import BMAP_HYBRID_MAP from 'BMAP_HYBRID_MAP'
 import echarts from 'echarts'
 import { debugMap, styleJson, AQIColor, airDetails } from '../../lib/common'
-import { drawPolygon } from '../../lib/config'
+import { mapCZ, drawPolygon } from '../../lib/config'
 import Weather from '../common/Weather'
 // 可以选中
 // console.log($('body'))
@@ -42,16 +42,15 @@ export default {
   data() {
     return {
       loading: false,
-      // 最终的数据格式
-      data: {
+      data: { // 最终的数据格式
         alarm: [],
         state: [],
         province: [],
         gridding: []
       },
-      nowPoint: 'aqi',
-      bmapCL: [114.624619, 36.799901, 12], // bmap中心点 和 缩放级别 实现持久
-      buttonMap: [
+      bmapCZ: [mapCZ[0], mapCZ[1], mapCZ[2]], // bmap 中心点 和 缩放级别 实现持久
+      nowPoint: 'aqi', // 当前选中的btn
+      buttonMap: [ // btn按钮映射
         {text: 'AQI', point: 'aqi'},
         {text: 'PM2.5', point: 'pm25'},
         {text: 'PM10', point: 'pm10'},
@@ -107,8 +106,8 @@ export default {
     initMap() {
       const option = {
         bmap: {
-          center: [this.bmapCL[0], this.bmapCL[1]], // 地图中心
-          zoom: this.bmapCL[2], // 地图级别
+          center: [this.bmapCZ[0], this.bmapCZ[1]], // 地图中心
+          zoom: this.bmapCZ[2], // 地图级别
           roam: true, // 是否开启 可拖拽 可缩放
           mapStyle: { // 自定义样式
             styleJson
@@ -223,11 +222,11 @@ export default {
       // 实现保持
       map.addEventListener('dragend', e => {
         const center = map.getCenter()
-        this.bmapCL[0] = center.lng
-        this.bmapCL[1] = center.lat
+        this.bmapCZ[0] = center.lng
+        this.bmapCZ[1] = center.lat
       })
       map.addEventListener('zoomend', e => {
-        this.bmapCL[2] = map.getZoom()
+        this.bmapCZ[2] = map.getZoom()
       })
       debugMap(map)
       drawPolygon(map)
@@ -239,9 +238,6 @@ export default {
 <style lang="scss">
 @import '../../assets/scss/app';
 .air_vessel {
-  position: relative;
-  width: 100%;
-  height: 100%;
   .weather_wrap {
     position: absolute;
     top: 10px;

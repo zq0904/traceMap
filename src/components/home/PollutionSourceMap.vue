@@ -7,7 +7,7 @@
     <div class="type_select">
       <el-select v-model="nowStatus" filterable placeholder="请选择状态"
       size="small"
-      @change="filterDate">
+      @change="drawPoint">
         <el-option
           v-for="item in status"
           :key="item.code"
@@ -17,7 +17,7 @@
       </el-select>
       <el-select v-model="nowType" filterable placeholder="请选择污染源类型"
       size="small"
-      @change="filterDate">
+      @change="drawPoint">
         <el-option
           v-for="item in type"
           :key="item.code"
@@ -44,7 +44,7 @@ import BMAP_NORMAL_MAP from 'BMAP_NORMAL_MAP'
 import BMAP_SATELLITE_MAP from 'BMAP_SATELLITE_MAP'
 import BMAP_HYBRID_MAP from 'BMAP_HYBRID_MAP'
 import { debugMap, styleJson, pollutionInfoWindow } from '../../lib/common'
-import { drawPolygon } from '../../lib/config'
+import { mapCZ, drawPolygon } from '../../lib/config'
 import Weather from '../common/Weather'
 
 export default {
@@ -53,12 +53,12 @@ export default {
   },
   data() {
     return {
+      map: {},
       loading: false,
-      bmapCL: [114.631231, 36.79759, 12], // 中心点 和 缩放级别 实现持久
       data: [], // 源数据
       fData: [], // 过滤后的数据
-      status: [], // 状态list
-      type: [],
+      status: [], // 污染源状态
+      type: [], // 污染源类型
       nowStatus: '全部', // 当前选中值 这里使用本地过滤 只使用文本
       nowType: '全部'
     }
@@ -92,20 +92,19 @@ export default {
       // console.log(data)
       this.loading = false
       this.data = data.result
-      this.filterDate() // 初始过滤
       this.$nextTick(this.initMap()) // 初始加载
     },
     // 过滤 标准数据
     filterDate() {
       this.fData = this.data.filter(e => (this.nowStatus === '全部' ? true : (e.handlingStatus === this.nowStatus)) && (this.nowType === '全部' ? true : (e.polluteTypeName === this.nowType))
       )
-      this.initMap()
     },
+    // 初始化地图
     initMap() {
-      const map = new BMap.Map('echartsMap', { enableMapClick: false })
-      const query = this.$route.query // 判断 是否传递了 点位 没有取默认
-      const point = query.lat ? new BMap.Point(query.lon, query.lat) : new BMap.Point(this.bmapCL[0], this.bmapCL[1])
-      map.centerAndZoom(point, this.bmapCL[2]) // 设置中心点坐标 地图级别 （也可以重新设置）
+      const map = this.map = new BMap.Map('echartsMap', { enableMapClick: false })
+      const query = this.$route.query // 判断 是否传递了 点位 没有 取默认
+      const point = query.lat ? new BMap.Point(query.lon, query.lat) : new BMap.Point(mapCZ[0], mapCZ[1])
+      map.centerAndZoom(point, mapCZ[2]) // 设置中心点坐标 地图级别 （也可以重新设置）
       map.enableScrollWheelZoom(true) // 开启鼠标滚轮缩放
       map.addControl(new BMap.MapTypeControl({ // 地图类型 控件
         anchor: BMAP_ANCHOR_TOP_RIGHT,
@@ -116,18 +115,15 @@ export default {
         ]
       }))
       map.setMapStyle({styleJson})
-      // 实现保持
-      map.addEventListener('dragend', e => {
-        const center = map.getCenter()
-        this.bmapCL[0] = center.lng
-        this.bmapCL[1] = center.lat
-      })
-      map.addEventListener('zoomend', e => {
-        this.bmapCL[2] = map.getZoom()
-      })
       debugMap(map)
-      drawPolygon(map)
-      // 只适用 过滤后的数据
+      this.drawPoint() // 初始绘制点位
+    },
+    // 绘制点位
+    drawPoint() {
+      this.map.clearOverlays() // 清空所有覆盖物
+      this.filterDate() // 过滤
+      drawPolygon(this.map) // 绘制行政区
+      // 使用 过滤后的数据
       this.fData.forEach(item => {
         const itemPoint = new BMap.Point(item.baiduLongitude, item.baiduLatitude)
         const myIcon = new BMap.Icon('http://demo.coilabs.com:2000/file//BJFTAir/pType/微信图片_20180403134911_20180403134948037303.png', new BMap.Size(30, 44), {
@@ -138,8 +134,8 @@ export default {
           // width: 530,
           title: '<h4 style="text-align: center;font-size: 18px;padding-bottom: 5px;border-bottom: 1px solid #000;">' + item.polluteName + '</h4>' // 信息窗口标题
         })
-        marker.addEventListener('click', () => map.openInfoWindow(infoWindow, itemPoint))
-        map.addOverlay(marker)
+        marker.addEventListener('click', () => this.map.openInfoWindow(infoWindow, itemPoint))
+        this.map.addOverlay(marker)
       })
     }
   }
@@ -149,9 +145,6 @@ export default {
 <style lang="scss">
 @import '../../assets/scss/app';
 .pollutionSource_vessel {
-  position: relative;
-  width: 100%;
-  height: 100%;
   .weather_wrap {
     position: absolute;
     top: 10px;

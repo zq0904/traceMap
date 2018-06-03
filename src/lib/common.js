@@ -12,8 +12,8 @@ export const nameLowerCase = name => name.trim().toLocaleLowerCase().replace(/\.
 export const AQIColor = (name, value) => {
   // 对没有数据 约定 返回 '-' 颜色处理
   if (value === '-') return 'rgb(204, 204, 204)'
-  // 灰 绿 黄 橙 深橙 深粉 深紫
-  const colors = ['rgb(204, 204, 204)', 'rgb(67, 206, 23)', 'rgb(255, 255, 0)', 'rgb(255, 170, 0)', 'rgb(255, 64, 26)', 'rgb(210, 0, 64)', 'rgb(156, 10, 78)']
+  // 灰 绿 黄 橙 红 紫 褐红
+  const colors = ['rgb(204, 204, 204)', 'rgb(0, 228, 0)', 'rgb(255, 255, 0)', 'rgb(255, 126, 0)', 'rgb(255, 0, 0)', 'rgb(153, 0, 76)', 'rgb(126, 0, 35)']
   let array
   switch (nameLowerCase(name)) {
     case 'aqi':

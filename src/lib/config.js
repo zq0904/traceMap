@@ -1,14 +1,19 @@
 import BMap from 'BMap'
 
+// 地图 中心点 和 缩放级别
+export const mapCZ = [114.624907, 36.806375, 12]
+
 // 绘制行政区   地图实例 填充色(透明) 边框颜色(粉色)
 export const drawPolygon = (map, fillColor = 'rgba(0,0,0,0)', strokeColor = 'rgba(255, 0, 222, .8)') => {
-  // 绘制已存在行政区
-  ((str, fillColor, boolean) => {
+  // 绘制已存在行政区 为了解决 渲染不上等问题 采用多次调用
+  let frequency = 0 // 计数
+  const drawExistEegion = (str, fillColor, boolean) => {
+    frequency++
     const bdary = new BMap.Boundary()
     bdary.get(str, function (rs) { // 获取行政区域
       if (boolean) map.clearOverlays() // 清除所有地图覆盖物
       const count = rs.boundaries.length // 行政区域定位个数
-      if (count === 0) return window.alert('未能获取当前输入行政区域')
+      if (count === 0) return frequency >= 3 ? window.alert('未能获取当前输入行政区域') : drawExistEegion(str, fillColor, boolean)
       let pointArray = []
       for (let i = 0; i < count; i++) {
         const ply = new BMap.Polygon(rs.boundaries[i], { fillColor, strokeWeight: 2, strokeColor }) // 创建多边形
@@ -17,7 +22,8 @@ export const drawPolygon = (map, fillColor = 'rgba(0,0,0,0)', strokeColor = 'rgb
       }
       // map.setViewport(pointArray) // 调整视野
     })
-  })('永年区', fillColor, false) // 北京市 北京市东城区, 填充颜色, 是否清除所有的覆盖物
+  }
+  drawExistEegion('邯郸市永年区', fillColor, false) // 北京市 北京市东城区, 填充颜色, 是否清除所有的覆盖物
 
   // // 画圆 中心点 半径
   // map.addOverlay(new BMap.Circle(new BMap.Point(114.567165, 37.063838), 3000, {

@@ -151,10 +151,6 @@ export default {
 <style lang="scss">
 @import '../../assets/scss/app';
 .traceSource_vessel {
-  position: relative;
-  width: 100%;
-  height: 100%;
-
   .btn-group {
     position: absolute;
     top: 7px;

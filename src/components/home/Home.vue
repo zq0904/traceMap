@@ -39,6 +39,11 @@ export default {
   right: 0;
   padding: 0;
   overflow-y: auto;
+  z-index: 2000;
+  > * { // 撑开任何二级路由
+    width: 100%;
+    height: 100%;
+  }
 }
 
 </style>

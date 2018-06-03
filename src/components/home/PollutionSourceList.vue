@@ -50,13 +50,18 @@
         </el-option>
       </el-select>
     </div>
+    <!-- 删除 搜索 -->
     <div class="search">
       <el-button
         size="small"
-        type="primary"
+        type="danger"
         v-show="destroyIds.length"
         @click="destroy">删除</el-button>
-      <el-button type="primary" size="small" @click="request">搜索</el-button>
+      <el-button type="primary" size="small"
+      @click="$router.push(`/pollutionSource/crud?operation=C`)">添加</el-button>
+      <el-button type="primary" size="small" style="height: 32px;" icon="el-icon-search"
+      @click="request">搜索</el-button>
+      <el-button type="primary" size="small" style="height: 32px;">导入<i class="el-icon-upload el-icon--right"></i></el-button>
     </div>
     <div class="btn-group">
       <router-link to="/pollutionSource" class="btn btn-default">地图</router-link>
@@ -66,7 +71,7 @@
       <el-table
         :data="tableData"
         style="width: 100%"
-        height="500"
+        max-height="580"
         @selection-change="handleSelectionChange">
         <el-table-column
           type="selection"
@@ -142,7 +147,7 @@
             <el-button
             size="mini"
             type="primary"
-            @click="particulars(scope.row)"
+            @click="$router.push(`/pollutionSource/crud?operation=R&id=${scope.row.polluteId}`)"
             plain>详情</el-button>
             <el-button
             size="mini"
@@ -152,7 +157,7 @@
             <el-button
             size="mini"
             type="primary"
-            @click="update(scope.row)"
+            @click="$router.push(`/pollutionSource/crud?operation=U&id=${scope.row.polluteId}`)"
             plain>修改</el-button>
             <el-button
             size="mini"
@@ -185,8 +190,8 @@ export default {
     return {
       loading: false,
       tableData: [],
-      status: [],
-      type: [],
+      status: [], // 污染源状态
+      type: [], // 污染源类型
       areaDict: [], // 三级联动字典
       dictIndex: [0, 0], // 三级联动字典关联index
       total: 0, // 总页数
@@ -314,9 +319,6 @@ export default {
 
 <style lang="scss">
 .pollution_list {
-  position: relative;
-  width: 100%;
-  height: 100%;
   .type_select {
     position: absolute;
     top: 10px;
@@ -328,8 +330,8 @@ export default {
   }
   .search {
     position: absolute;
-    top: 7px;
-    right: 264px;;
+    top: 8px;
+    right: 222px;
     z-index: 10;
   }
   .btn-group {

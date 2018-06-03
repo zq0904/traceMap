@@ -23,7 +23,8 @@
       <el-table
         :data="tableData"
         style="width: 100%"
-        height="500"
+        :cell-class-name="cellClassName"
+        max-height="580"
         :default-sort = "{prop: 'aqi', order: 'descending'}"
         >
         <el-table-column
@@ -36,6 +37,11 @@
           prop="station.dname"
           label="名称"
           width="180">
+        </el-table-column>
+        <el-table-column
+          prop="AQIlevel"
+          label="AQI污染等级"
+          width="102">
         </el-table-column>
         <el-table-column
           prop="aqi"
@@ -116,11 +122,6 @@
           width="85">
         </el-table-column>
         <el-table-column
-          prop="AQIlevel"
-          label="污染等级"
-          width="80">
-        </el-table-column>
-        <el-table-column
           prop="most"
           label="首要污染物"
           width="90">
@@ -132,7 +133,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { nameUpperCase, AQIlevel } from '../../lib/common'
+import { nameUpperCase, AQIColor, AQIlevel } from '../../lib/common'
 
 export default {
   data () {
@@ -158,6 +159,12 @@ export default {
     order(index) {
       return index + 1
     },
+    // 单元格颜色
+    cellClassName({row, columnIndex}) {
+      if (columnIndex === 2) {
+        return AQIColor('aqi', row.aqi).replace(/[\s|)]/g, '').replace(/[,|(]/g, '-')
+      }
+    },
     // 搜索
     async search() {
       this.loading = true
@@ -179,9 +186,6 @@ export default {
 
 <style lang="scss">
 .air_list {
-  position: relative;
-  width: 100%;
-  height: 100%;
   .cityType-group {
     position: absolute;
     top: 7px;
