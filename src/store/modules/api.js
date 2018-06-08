@@ -17,11 +17,13 @@ const state = {
   pollutionThreeLinkage: p2 + '/areacode/getAllList', // 污染源报表 3级联动字典
   pollutionList: p2 + '/pollutionSoil/getPageList', // 污染源报表 分页列表
   pollutionListDel: p2 + '/pollutionSoil/delete', // 污染源报表 多删除
-  pollutionlistRetrieve: p2 + '/warn/traceSource', // 污染源报表 查单个
-  pollutionlistCreate: p2 + '/warn/traceSource', // 污染源报表 添加单个
-  pollutionListImg: p2 + '/warn/traceSource', // 污染源 图片
+  pollutionlistRetrieve: p2 + '/pollutionSoil/getInfo', // 污染源报表 查单个
+  pollutionlistCreate: p2 + '/pollutionSoil/savePollute', // 污染源报表 添加单个
+  pollutionListUploadImg: p2 + '/attach/upload', // 污染源 上传图片
+  pollutionListDelImg: p2 + '/pollutionSoil/deleteAttach', // 污染源 删除图片
   traceMap: p2 + '/warn/traceSource' // 溯源地图
 }
+
 const actions = {}
 const mutations = {}
 

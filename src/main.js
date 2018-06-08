@@ -8,6 +8,9 @@ import axios from 'axios'
 import VueLazyload from 'vue-lazyload'
 import ElementUI from 'element-ui' // 引入element-ui
 import $http from './lib/httpPlugin' // 简单封装$ftach
+import sessionStorage from './lib/sessionStoragePlugin' // 兼容safari无痕模式
+import formVerify from './lib/formVerify' // 自定义校验
+
 // 引入样式
 import './assets/css/reset_m.css'
 import './assets/fonts/iconfont.css'
@@ -18,6 +21,8 @@ Vue.prototype.$http = axios // axios挂到Vue原型中
 Vue.use(ElementUI)
 Vue.use(VueLazyload) // 使用 :src="" 换成 v-lazy=""
 Vue.use($http)
+Vue.use(sessionStorage)
+Vue.use(formVerify)
 
 Vue.config.productionTip = false
 

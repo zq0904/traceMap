@@ -100,11 +100,14 @@ a, a:hover {
 
 .clearfix::before,
 .clearfix::after {
-  content:
-  ;
+  content: '';
   display: inline-block; /*block无法清除margin-top所带来的塌陷*/
   height: 0;
   line-height: 0;
   visibility: hidden;
   clear: both;
+}
+
+.clearfix{
+  zoom: 1;
 }

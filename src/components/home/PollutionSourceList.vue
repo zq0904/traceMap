@@ -219,7 +219,7 @@ export default {
   methods: {
     // 三级联动字典
     async linkage3() {
-      const {data} = await this.$fetch({ url: this.api.pollutionThreeLinkage })
+      const {data} = await this.$fetch({ url: this.api.pollutionThreeLinkage, data: {type: 1} })
       // console.log(data)
       this.areaDict = data.result.areaDict
     },

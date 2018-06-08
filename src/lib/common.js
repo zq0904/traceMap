@@ -354,7 +354,7 @@ export const pollutionInfoWindow = e => {
   return `
   <div class="container pollutionSource" style="width: 500px;padding-top: 5px;font-size: 16px;line-height: 22px;">
     <div class="row">
-      <div class="col-sm-6"><lable>位置: </lable><span>${e.location || ''}</span></div>
+      <div class="col-sm-6"><lable>位置: </lable><span>${e.areacode.village || e.areacode.town || e.areacode.county || ''}</span></div>
       <div class="col-sm-6"><lable>污染源类型: </lable><span>${e.polluteTypeName}</span></div>
     </div>
     <div class="row">
@@ -365,7 +365,7 @@ export const pollutionInfoWindow = e => {
       <div class="col-sm-6"><lable>结束时间: </lable><span>${e.endTime === '-' ? '-' : e.endTime}</span></div>
     </div>
     <div class="row">
-      <div class="col-sm-12"><lable>处理状态: </lable><span>${e.handlingStatus}</span></div>
+      <div class="col-sm-12"><lable>处理状态: </lable><span>${e.handlingStatusName}</span></div>
     </div>
     <div class="row">
       <div class="col-sm-6"><lable>负责人: </lable><span>${e.liablePerson}</span></div>
@@ -375,13 +375,10 @@ export const pollutionInfoWindow = e => {
       <div class="col-sm-12"><lable>联系电话: </lable><span>${e.liablePhoneNumber}</span></div>
     </div>
     <div class="row">
-      <div class="col-sm-12"><lable>其他: </lable><span>${e.qther || ''}</span></div>
-    </div>
-    <div class="row">
       <div class="col-sm-6"><lable>污染面积: </lable><span>${e.area || ''}平方米</span></div>
       <div class="col-sm-6"><lable>位置信息补充: </lable><span>${e.msg}</span></div></div>
     <div class="row">
-      <div class="col-sm-12"><lable>处理意见: </lable><span>${e.advise}</span></div>
+      <div class="col-sm-12"><lable>处理意见: </lable><span>${e.advise || ''}</span></div>
     </div>
     <div class="row">
       <div class="col-sm-6">
@@ -391,9 +388,9 @@ export const pollutionInfoWindow = e => {
         <div class="col-sm-12" style="padding: 0;display: flex; justify-content: space-between;">` +
           (e => {
             let str = ''
-            if (!e.beforeImg) return str
-            e.beforeImg.forEach(url => {
-              str += `<img src="${url}" style="width: 100px;height: 100px;margin-bottom: 5px;">`
+            if (!e.beforePhotoList) return str
+            e.beforePhotoList.forEach(item => {
+              str += `<img src="${item.saveName}" style="width: 100px;height: 100px;margin-bottom: 5px;">`
             })
             return str
           })(e) +
@@ -406,9 +403,9 @@ export const pollutionInfoWindow = e => {
         <div class="col-sm-12" style="padding: 0;display: flex; justify-content: space-between;">` +
           (e => {
             let str = ''
-            if (!e.afterImg) return str
-            e.afterImg.forEach(url => {
-              str += `<img src="${url}" style="width: 100px;height: 100px;margin-bottom: 5px;">`
+            if (!e.afterPhotoList) return str
+            e.afterPhotoList.forEach(item => {
+              str += `<img src="${item.saveName}" style="width: 100px;height: 100px;margin-bottom: 5px;">`
             })
             return str
           })(e) +

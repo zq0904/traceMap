@@ -1,6 +1,18 @@
 <template>
-  <div>
-    test
+  <div clsas="test">
+    <!-- <input id="input" :pass="123" type="text" v-model="test.testInfo.a"> -->
+    <!-- <ul>
+      <li v-for="item in test.testArr" :key="item">{{ item }}</li>
+    </ul>
+    <button @click="splice">splice testArr</button> -->
+    <!-- <form id="root" @submit.prevent="submit">
+      <input type="text" reg="registerPwd" pass="pass"><br>
+      <input type="text" reg="bankCard,identity"><br>
+      <input type="text" reg="site"><br>
+      <span reg="loginPwd">123456</span><br>
+      <p class="pp" reg="loginPwd">12345</p>
+      <button>提交表单vuex regex校验</button>
+    </form> -->
     <!-- <img src="../assets/images/Aimer.jpg" height="50" width="50" alt="">
     <p>{{ message }}</p>
     <p>number:{{ number }}</p>
@@ -30,6 +42,8 @@
 // import zepto from 'zepto'
 // import { mapState, mapGetters, mapActions } from 'vuex'
 import { mapGetters, mapActions } from 'vuex'
+import { isMobile } from '../lib/until'
+// import { Base64 } from 'js-base64'
 
 export default {
   data() {
@@ -66,7 +80,7 @@ export default {
     // console.log(data)
     // const {data: name} = await this.$http.get('/proxy/airMap')
     // console.log(name)
-    console.log(this.test)
+    // console.log(this.test)
     // setTimeout(() => this.mergeTest({
     //   testArr: [6, 6, 6, 8], // 数组 merge按照 索引
     //   testInfo: {
@@ -76,6 +90,20 @@ export default {
     //   a: 1
     // }), 5000)
     // this.replaceTestArr({ a: 1 })
+    // // 测试safari兼容无痕模式
+    // this.sessionSetItem('bbb', 'qw1e32qw12e')
+    // this.sessionSetItem('aaa', 'aaaaa')
+    // // this.sessionRemoveItem('bbb')
+    // this.sessionClear()
+    // console.log(this.sessionGetItem('bbb'))
+    // console.log(this.sessionGetItem('aaa'))
+    // // 测试 Base64
+    // console.log(Base64.encode('asdsa'))
+    // console.log(Base64.decode('YXNkc2E='))
+    // 测试是否是 手机
+    this.$nextTick(() => {
+      window.alert(isMobile())
+    })
   },
   computed: {
     // 测试 state
@@ -86,14 +114,29 @@ export default {
     //   'getTestArrLength'
     // ])
     ...mapGetters({
-      test: 'getTest'
+      test: 'getTest',
+      regex: 'getRegex'
     })
   },
   methods: {
     ...mapActions([
       'mergeTest',
-      'replaceTestArr'
-    ])
+      'replaceTestArr',
+      'spliceTestArr'
+    ]),
+    // submit() {
+    //   // 截取手机号
+    //   // console.log('12345678901'.match(this.$store.state.regex.echoPhone))
+    //   const checkInfo = this.check('#root', 'span, .pp')
+    //   if (checkInfo) {
+    //     this.$message(checkInfo)
+    //     return
+    //   }
+    //   console.log('校验通过走请求')
+    // }
+    // splice() {
+    //   this.replaceTestArr([5, 4, 3])
+    // }
     // add() {
     //   if (++this.number === 101) {
     //     this.number = 0

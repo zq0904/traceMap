@@ -1,4 +1,4 @@
-import { MERGETEST, REPLACETESTARR } from '../mutation-types'
+import { MERGETEST, REPLACETESTARR, SPLICETESTARR } from '../mutation-types'
 import _ from 'lodash'
 
 const state = {
@@ -8,6 +8,7 @@ const state = {
     b: '测试文本'
   }
 }
+
 // 提交异步 mutaion
 const actions = {
   mergeTest: ({ commit }, ...args) => {
@@ -15,6 +16,9 @@ const actions = {
   },
   replaceTestArr: ({ commit }, ...args) => {
     commit(REPLACETESTARR, ...args)
+  },
+  spliceTestArr: ({ commit }, ...args) => {
+    commit(SPLICETESTARR, ...args)
   }
 }
 
@@ -26,6 +30,10 @@ const mutations = {
   // 替换testArr
   [REPLACETESTARR] (state, obj) {
     state.testArr = obj
+  },
+  // splice testArr
+  [SPLICETESTARR] (state, obj) {
+    state.testArr.splice(obj.index, 1)
   }
 }
 

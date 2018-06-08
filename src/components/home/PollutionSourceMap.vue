@@ -3,7 +3,6 @@
     <div class="weather_wrap">
       <Weather></Weather>
     </div>
-    <!-- 这里使用本地过滤 只使用文本 -->
     <div class="type_select">
       <el-select v-model="nowStatus" filterable placeholder="请选择状态"
       size="small"
@@ -12,7 +11,7 @@
           v-for="item in status"
           :key="item.code"
           :label="item.name"
-          :value="item.name">
+          :value="item.code">
         </el-option>
       </el-select>
       <el-select v-model="nowType" filterable placeholder="请选择污染源类型"
@@ -22,7 +21,7 @@
           v-for="item in type"
           :key="item.code"
           :label="item.name"
-          :value="item.name">
+          :value="item.code">
         </el-option>
       </el-select>
     </div>
@@ -59,8 +58,8 @@ export default {
       fData: [], // 过滤后的数据
       status: [], // 污染源状态
       type: [], // 污染源类型
-      nowStatus: '全部', // 当前选中值 这里使用本地过滤 只使用文本
-      nowType: '全部'
+      nowStatus: '', // 当前选code值
+      nowType: ''
     }
   },
   computed: {
@@ -96,8 +95,7 @@ export default {
     },
     // 过滤 标准数据
     filterDate() {
-      this.fData = this.data.filter(e => (this.nowStatus === '全部' ? true : (e.handlingStatus === this.nowStatus)) && (this.nowType === '全部' ? true : (e.polluteTypeName === this.nowType))
-      )
+      this.fData = this.data.filter(e => (this.nowStatus === '' ? true : (this.nowStatus === e.handlingStatus)) && (this.nowType === '' ? true : (this.nowType === e.polluteTypeId)))
     },
     // 初始化地图
     initMap() {

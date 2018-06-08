@@ -3,8 +3,8 @@
   <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel"
     :class="show ? 'showModal' : 'hideModal'"
     @click.self="$emit('close')">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content" :style="'width: ' + width + 'px'">
+    <div class="modal-dialog" role="document" :style="'width: ' + width + 'px'">
+      <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"
             @click="$emit('close')"><span aria-hidden="true">&times;</span></button>
