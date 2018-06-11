@@ -35,12 +35,12 @@ export default {
   position: fixed;
   top: 50px;
   bottom: 0;
-  left: 170px;
+  left: 160px;
   right: 0;
   padding: 0;
   overflow-y: auto;
   z-index: 2000;
-  > * { // 撑开任何二级路由
+  > div, > section { // 撑开二级路由
     width: 100%;
     height: 100%;
   }

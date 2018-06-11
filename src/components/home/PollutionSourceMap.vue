@@ -1,8 +1,6 @@
 <template>
   <div class="pollutionSource_vessel" v-loading="loading">
-    <div class="weather_wrap">
-      <Weather></Weather>
-    </div>
+    <Weather></Weather>
     <div class="type_select">
       <el-select v-model="nowStatus" filterable placeholder="请选择状态"
       size="small"
@@ -25,11 +23,7 @@
         </el-option>
       </el-select>
     </div>
-    <div class="btn-group">
-      <router-link to="/pollutionSource" class="btn btn-primary">地图</router-link>
-      <router-link to="/pollutionSource/list" class="btn btn-default">报表</router-link>
-    </div>
-    <div class="info">
+    <div class="color-info">
       <p v-if="item.value !== ''" v-for="(item, index) in status" :key="index">{{item.color}}: {{item.name}}</p>
     </div>
     <div id="echartsMap"></div>
@@ -143,26 +137,14 @@ export default {
 <style lang="scss">
 @import '../../assets/scss/app';
 .pollutionSource_vessel {
-  .weather_wrap {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    color: #fff;
-    z-index: 10;
-  }
   .type_select {
     position: absolute;
     top: 10px;
-    left: 200px;
+    left: 50%;
+    transform: translateX(-50%);
     z-index: 10;
   }
-  .btn-group {
-    position: absolute;
-    top: 7px;
-    right: 100px;
-    z-index: 10;
-  }
-  .info {
+  .color-info {
     position: absolute;
     top: 200px;
     right: 10px;

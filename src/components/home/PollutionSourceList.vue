@@ -63,10 +63,6 @@
       @click="request">搜索</el-button>
       <el-button type="primary" size="small" style="height: 32px;">导入<i class="el-icon-upload el-icon--right"></i></el-button>
     </div>
-    <div class="btn-group">
-      <router-link to="/pollutionSource" class="btn btn-default">地图</router-link>
-      <router-link to="/pollutionSource/list" class="btn btn-primary">报表</router-link>
-    </div>
     <div class="table_wrap">
       <el-table
         :data="tableData"
@@ -332,12 +328,6 @@ export default {
     position: absolute;
     top: 8px;
     right: 222px;
-    z-index: 10;
-  }
-  .btn-group {
-    position: absolute;
-    top: 7px;
-    right: 100px;
     z-index: 10;
   }
   .table_wrap {

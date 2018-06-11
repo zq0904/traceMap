@@ -1,4 +1,4 @@
-// C3属性兼容 @include c3(transform,translate3d(0,0,0));
+// C3属性兼容 @include c3(transform, translate3d(0,0,0));
 @mixin c3($key, $value) {
   -webkit-#{$key}: $value;
   -moz-#{$key}: $value;
@@ -14,10 +14,10 @@
   white-space: nowrap;
 }
 
-// rem布局 @include px2rem(margin, 1 2 3 4); 如果设计稿 宽度800px 基准字体大小 80
-@mixin px2rem($property, $values, $baseline-rem: 75) {
+$baseline-rem: 75; // 如果设计稿 宽度800px 基准字体大小 80
+// 将 一组px转化为rem
+@function px2rem($values) {
   $max: length($values);
-  $pxValues: '';
   $remValues: '';
   @for $i from 1 through $max {
     $value: (nth($values, $i));
@@ -26,7 +26,11 @@
       $remValues: #{$remValues + " "};
     }
   }
-  #{$property}: $remValues;
+  @return $remValues;
+}
+// 直接生成css @include px2rem(margin, 1 2 3 4);
+@mixin px2rem($property, $values) {
+  #{$property}: px2rem($values);
 }
 
 // 任何手机屏幕上px的统一 px2px(font-size, 32);

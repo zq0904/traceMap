@@ -15,10 +15,6 @@
     <div class="search-group">
       <button class="btn btn-success" @click="search">搜索</button>
     </div>
-    <div class="btn-group">
-      <router-link to="/air" class="btn btn-default">地图</router-link>
-      <router-link to="/air/list" class="btn btn-primary">报表</router-link>
-    </div>
     <div class="table_wrap">
       <el-table
         :data="tableData"
@@ -202,12 +198,6 @@ export default {
     position: absolute;
     top: 7px;
     left: 535px;
-    z-index: 10;
-  }
-  .btn-group {
-    position: absolute;
-    top: 7px;
-    right: 100px;
     z-index: 10;
   }
   .table_wrap {

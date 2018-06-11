@@ -1,8 +1,6 @@
 <template>
   <div class="traceSource_vessel" v-loading="loading">
-    <div class="weather_wrap">
-      <Weather></Weather>
-    </div>
+    <Weather></Weather>
     <div id="echartsMap"></div>
   </div>
 </template>
@@ -112,13 +110,6 @@ export default {
 <style lang="scss">
 @import '../../assets/scss/app';
 .traceSource_vessel {
-  .weather_wrap {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    color: #fff;
-    z-index: 10;
-  }
   #echartsMap {
     width: 100%;
     height: 100%;

@@ -1,19 +1,7 @@
 <template>
   <div class="air_vessel" v-loading="loading">
-    <div class="weather_wrap">
-      <Weather></Weather>
-    </div>
-    <div class="btn-group">
-      <router-link to="/air" class="btn btn-primary">地图</router-link>
-      <router-link to="/air/list" class="btn btn-default">报表</router-link>
-    </div>
-    <div class="btn-group-vertical">
-      <button type="button" class="btn"
-      v-for="(item, index) in buttonMap"
-      :key="index"
-      @click="nowPoint = item.point"
-      :class="nowPoint === item.point ? 'btn-primary' : 'btn-default'">{{item.text}}</button>
-    </div>
+    <Weather></Weather>
+    <Btns @select-point="selectPoint"></Btns>
     <div id="echartsMap"></div>
   </div>
 </template>
@@ -29,6 +17,7 @@ import echarts from 'echarts'
 import { debugMap, styleJson, AQIColor, airDetails } from '../../lib/common'
 import { mapCZ, drawPolygon } from '../../lib/config'
 import Weather from '../common/Weather'
+import Btns from '../common/Bths'
 // 可以选中
 // console.log($('body'))
 // $('body').on('click', '.details', function() {
@@ -37,7 +26,8 @@ import Weather from '../common/Weather'
 
 export default {
   components: {
-    Weather
+    Weather,
+    Btns
   },
   data() {
     return {
@@ -49,17 +39,7 @@ export default {
         gridding: []
       },
       bmapCZ: [mapCZ[0], mapCZ[1], mapCZ[2]], // bmap 中心点 和 缩放级别 实现持久
-      nowPoint: 'aqi', // 当前选中的btn
-      buttonMap: [ // btn按钮映射
-        {text: 'AQI', point: 'aqi'},
-        {text: 'PM2.5', point: 'pm25'},
-        {text: 'PM10', point: 'pm10'},
-        {text: 'SO2', point: 'so2'},
-        {text: 'NO2', point: 'no2'},
-        {text: 'CO', point: 'co'},
-        {text: 'O3', point: 'o3'},
-        {text: '综合指数', point: 'synthesis'}
-      ]
+      nowPoint: 'aqi' // 当前选中按钮值
     }
   },
   watch: {
@@ -83,6 +63,8 @@ export default {
     this.request()
   },
   methods: {
+    // 选择按钮point值
+    selectPoint(val) { this.nowPoint = val },
     async request() { // 第一次请求数据 数据项中的itemStyle 需要计算一次
       this.loading = true
       const {data} = await this.$fetch({ url: this.api.AirMap })
@@ -239,23 +221,7 @@ export default {
 @import '../../assets/scss/app';
 .air_vessel {
   .weather_wrap {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    color: #fff;
-    z-index: 10;
-  }
-  .btn-group {
-    position: absolute;
-    top: 7px;
-    right: 100px;
-    z-index: 10;
-  }
-  .btn-group-vertical {
-    position: absolute;
-    top: 45px;
-    right: 7px;
-    z-index: 10
+
   }
   #echartsMap {
     width: 100%;

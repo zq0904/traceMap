@@ -33,6 +33,9 @@
     </ul> -->
     <!-- 测试element-ui -->
     <!-- <el-progress type="circle" :percentage="number" status="success"></el-progress> -->
+    <!-- D3测试 -->
+    <svg id="fillgauge" width="250" height="250"></svg>
+    <div id="container"></div>
   </div>
 </template>
 <script>
@@ -42,15 +45,31 @@
 // import zepto from 'zepto'
 // import { mapState, mapGetters, mapActions } from 'vuex'
 import { mapGetters, mapActions } from 'vuex'
-import { isMobile } from '../lib/until'
+// import { isMobile } from '../lib/until'
 // import { Base64 } from 'js-base64'
+import { liquidFillGaugeDefaultSettings, loadLiquidFillGauge } from '../lib/liquidFillGauge'
+import Highcharts from 'highcharts'
 
 export default {
   data() {
     return {
       // message: '测试信息',
-      // number: 0
+      // number: 0,
+      config: {} // D3 配置项
     }
+  },
+  computed: {
+    // 测试 state
+    // ...mapState([
+    //   'test'
+    // ]),
+    // ...mapGetters([
+    //   'getTestArrLength'
+    // ])
+    ...mapGetters({
+      test: 'getTest',
+      regex: 'getRegex'
+    })
   },
   async created() {
     // // 测试 promis
@@ -101,21 +120,12 @@ export default {
     // console.log(Base64.encode('asdsa'))
     // console.log(Base64.decode('YXNkc2E='))
     // 测试是否是 手机
+    // this.$nextTick(() => {
+    //   window.alert(isMobile())
+    // })
     this.$nextTick(() => {
-      window.alert(isMobile())
-    })
-  },
-  computed: {
-    // 测试 state
-    // ...mapState([
-    //   'test'
-    // ]),
-    // ...mapGetters([
-    //   'getTestArrLength'
-    // ])
-    ...mapGetters({
-      test: 'getTest',
-      regex: 'getRegex'
+      this.initD3()
+      this.initHigcharts()
     })
   },
   methods: {
@@ -124,6 +134,150 @@ export default {
       'replaceTestArr',
       'spliceTestArr'
     ]),
+    initD3() {
+      this.config = liquidFillGaugeDefaultSettings()
+      this.config.minValue = 0 // 测量最小值
+      this.config.maxValue = 200 // 测量最大值
+      // this.config.circleThickness = 0.05 // 外圆的厚度是半径的百分数
+      this.config.circleFillGap = 0.01 // 外圈和波圈之间的间隙大小是外圆半径的百分比
+      // this.config.circleColor = '#178BCA' // 外圆的颜色
+      // this.config.waveHeight = 0.05 // 波高是波圆半径的百分数
+      // this.config.waveCount = 1 // 波圈每宽度的全波数
+      // this.config.waveRiseTime = 1000 // 波从0上升到它的最终高度的毫秒数
+      this.config.waveAnimateTime = 1000 // 整个波进入波圈的毫秒数
+      // this.config.waveRise = true // 控制如果波从0上升到它的高度，或者从它的高度开始
+      // this.config.waveHeightScaling = true
+      // this.config.waveAnimate = true // 控制波浪滚动或静止
+      // this.config.waveColor = '#178BCA' // 填充波的颜色
+      // this.config.waveOffset = 0 // 初始偏移量。0 =没有抵消。1 =一个全波的偏移。
+      this.config.textVertPosition = 0.5 // 文本距离底部百分比
+      this.config.textSize = 1 // 在波圈中显示的文本的相对高度。1 = 50%
+      // this.config.valueCountUp = true // 如果是true，则显示的值将从0计数到加载后的最终值。如果是false，则显示最终值。
+      this.config.displayPercent = false // 如果是true，则在值之后显示%符号
+      // this.config.textColor = '#045681' // 当波不重叠时，值文本的颜色
+      // this.config.waveTextColor = '#A4DBf8' // 当波重叠时，数值文本的颜色
+      // 自定义
+      this.config.lineWidth = 3 // 线的宽度
+      // this.config.lineInterval = 5 // 虚线间隔
+      this.config.lineColor = '#ff4444' // 线颜色
+      this.config.lineText = '警戒线文本1' // 警戒线文本
+      this.config.lineTextSize = 16 // 警戒线文本大小
+      this.config.lineTextColor = '#ff4444' // 警戒线文本颜色
+      loadLiquidFillGauge('fillgauge', 100, 100, this.config) // svgID, 当前值, 考核值, 配置项
+    },
+    initHigcharts() {
+      Highcharts.chart('container', {
+        chart: {
+          type: 'spline'
+        },
+        title: {
+          text: '某地积雪厚度监测'
+        },
+        subtitle: {
+          text: '非规律性时间内的变化'
+        },
+        xAxis: {
+          type: 'datetime',
+          title: {
+            text: null
+          }
+        },
+        yAxis: {
+          title: {
+            text: '积雪 厚度 (m)'
+          },
+          min: 0
+        },
+        tooltip: {
+          headerFormat: '<b>{series.name}</b><br>',
+          pointFormat: '{point.x:%e. %b}: {point.y:.2f} m'
+        },
+        plotOptions: {
+          spline: {
+            marker: {
+              enabled: true
+            }
+          }
+        },
+        series: [{
+          name: '2007-2008 冬',
+          // Define the data points. All series have a dummy year
+          // of 1970/71 in order to be compared on the same x axis. Note
+          // that in JavaScript, months start at 0 for January, 1 for February etc.
+          data: [
+            [Date.UTC(1970, 9, 27), 0],
+            [Date.UTC(1970, 10, 10), 0.6],
+            [Date.UTC(1970, 10, 18), 0.7],
+            [Date.UTC(1970, 11, 2), 0.8],
+            [Date.UTC(1970, 11, 9), 0.6],
+            [Date.UTC(1970, 11, 16), 0.6],
+            [Date.UTC(1970, 11, 28), 0.67],
+            [Date.UTC(1971, 0, 1), 0.81],
+            [Date.UTC(1971, 0, 8), 0.78],
+            [Date.UTC(1971, 0, 12), 0.98],
+            [Date.UTC(1971, 0, 27), 1.84],
+            [Date.UTC(1971, 1, 10), 1.80],
+            [Date.UTC(1971, 1, 18), 1.80],
+            [Date.UTC(1971, 1, 24), 1.92],
+            [Date.UTC(1971, 2, 4), 2.49],
+            [Date.UTC(1971, 2, 11), 2.79],
+            [Date.UTC(1971, 2, 15), 2.73],
+            [Date.UTC(1971, 2, 25), 2.61],
+            [Date.UTC(1971, 3, 2), 2.76],
+            [Date.UTC(1971, 3, 6), 2.82],
+            [Date.UTC(1971, 3, 13), 2.8],
+            [Date.UTC(1971, 4, 3), 2.1],
+            [Date.UTC(1971, 4, 26), 1.1],
+            [Date.UTC(1971, 5, 9), 0.25],
+            [Date.UTC(1971, 5, 12), 0]
+          ]
+        }, {
+          name: '2008-2009 冬',
+          data: [
+            [Date.UTC(1970, 9, 18), 0],
+            [Date.UTC(1970, 9, 26), 0.2],
+            [Date.UTC(1970, 11, 1), 0.47],
+            [Date.UTC(1970, 11, 11), 0.55],
+            [Date.UTC(1970, 11, 25), 1.38],
+            [Date.UTC(1971, 0, 8), 1.38],
+            [Date.UTC(1971, 0, 15), 1.38],
+            [Date.UTC(1971, 1, 1), 1.38],
+            [Date.UTC(1971, 1, 8), 1.48],
+            [Date.UTC(1971, 1, 21), 1.5],
+            [Date.UTC(1971, 2, 12), 1.89],
+            [Date.UTC(1971, 2, 25), 2.0],
+            [Date.UTC(1971, 3, 4), 1.94],
+            [Date.UTC(1971, 3, 9), 1.91],
+            [Date.UTC(1971, 3, 13), 1.75],
+            [Date.UTC(1971, 3, 19), 1.6],
+            [Date.UTC(1971, 4, 25), 0.6],
+            [Date.UTC(1971, 4, 31), 0.35],
+            [Date.UTC(1971, 5, 7), 0]
+          ]
+        }, {
+          name: '2009-2010 冬',
+          data: [
+            [Date.UTC(1970, 9, 9), 0],
+            [Date.UTC(1970, 9, 14), 0.15],
+            [Date.UTC(1970, 10, 28), 0.35],
+            [Date.UTC(1970, 11, 12), 0.46],
+            [Date.UTC(1971, 0, 1), 0.59],
+            [Date.UTC(1971, 0, 24), 0.58],
+            [Date.UTC(1971, 1, 1), 0.62],
+            [Date.UTC(1971, 1, 7), 0.65],
+            [Date.UTC(1971, 1, 23), 0.77],
+            [Date.UTC(1971, 2, 8), 0.77],
+            [Date.UTC(1971, 2, 14), 0.79],
+            [Date.UTC(1971, 2, 24), 0.86],
+            [Date.UTC(1971, 3, 4), 0.8],
+            [Date.UTC(1971, 3, 18), 0.94],
+            [Date.UTC(1971, 3, 24), 0.9],
+            [Date.UTC(1971, 4, 16), 0.39],
+            [Date.UTC(1971, 4, 21), 0]
+          ]
+        }]
+      })
+    }
     // submit() {
     //   // 截取手机号
     //   // console.log('12345678901'.match(this.$store.state.regex.echoPhone))

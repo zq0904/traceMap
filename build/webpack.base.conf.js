@@ -41,7 +41,8 @@ module.exports = {
     'BMAP_NORMAL_MAP': 'BMAP_NORMAL_MAP',
     'BMAP_SATELLITE_MAP': 'BMAP_SATELLITE_MAP',
     'BMAP_HYBRID_MAP': 'BMAP_HYBRID_MAP',
-    'echarts': 'echarts'
+    'echarts': 'echarts',
+    'd3': 'd3'
   },
   resolve: {
     extensions: ['.js', '.vue', '.json'],
