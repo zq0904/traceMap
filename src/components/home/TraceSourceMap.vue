@@ -1,23 +1,22 @@
 <template>
   <div class="traceSource_vessel" v-loading="loading">
     <Weather></Weather>
+    <MapTypeControl :map="map"></MapTypeControl>
     <div id="echartsMap"></div>
   </div>
 </template>
 <script>
 import { mapGetters } from 'vuex'
 import BMap from 'BMap'
-import BMAP_ANCHOR_TOP_RIGHT from 'BMAP_ANCHOR_TOP_RIGHT'
-import BMAP_NORMAL_MAP from 'BMAP_NORMAL_MAP'
-import BMAP_SATELLITE_MAP from 'BMAP_SATELLITE_MAP'
-import BMAP_HYBRID_MAP from 'BMAP_HYBRID_MAP'
 import { debugMap, styleJson, ComplexCustomOverlay, airDetails, pollutionInfoWindow } from '../../lib/common'
 import { mapCZ, drawPolygon } from '../../lib/config'
 import Weather from '../common/Weather'
+import MapTypeControl from '../common/MapTypeControl'
 
 export default {
   components: {
-    Weather
+    Weather,
+    MapTypeControl
   },
   data() {
     return {
@@ -49,14 +48,6 @@ export default {
       const point = query.lat ? new BMap.Point(query.lon, query.lat) : new BMap.Point(mapCZ[0], mapCZ[1])
       map.centerAndZoom(point, mapCZ[2]) // 设置中心点坐标 地图级别 （也可以重新设置）
       map.enableScrollWheelZoom(true) // 开启鼠标滚轮缩放
-      map.addControl(new BMap.MapTypeControl({ // 地图类型 控件
-        anchor: BMAP_ANCHOR_TOP_RIGHT,
-        mapTypes: [
-          BMAP_NORMAL_MAP, // 正常
-          BMAP_SATELLITE_MAP, // 卫星 （混合是子向）
-          BMAP_HYBRID_MAP // 混合
-        ]
-      }))
       map.setMapStyle({styleJson})
       debugMap(map)
       drawPolygon(map)
@@ -66,7 +57,7 @@ export default {
       this.traceSource.forEach(item => {
         // 报警每一项
         const itemPoint = new BMap.Point(item.lon, item.lat)
-        const myIcon = new BMap.Icon('http://imgs.focus.cn/upload/xianyang/39388/b_393873446.gif', new BMap.Size(50, 50), {
+        const myIcon = new BMap.Icon('http://wx4.sinaimg.cn/mw690/0060lm7Tly1fs8czpvcu4g3074074wef.gif', new BMap.Size(50, 50), {
           imageSize: new BMap.Size(50, 50) // background-size
         })
         const marker = new BMap.Marker(itemPoint, {icon: myIcon})

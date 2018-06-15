@@ -15,9 +15,9 @@
         <i class="SideBar SideBar-01"></i>
         <span slot="title">首页</span>
       </el-menu-item>
-      <el-submenu index="2">
+      <el-submenu index="2"> <!-- li -->
         <template slot="title">
-          <i class="SideBar SideBar-02"></i>
+          <i class="SideBar SideBar-02" data-flag="2"></i>
           <span alias="空气">溯源</span>
         </template>
         <el-menu-item index="/air">溯源地图</el-menu-item>
@@ -30,14 +30,14 @@
       </el-submenu>
       <el-submenu index="3">
         <template slot="title">
-          <i class="SideBar SideBar-03"></i>
+          <i class="SideBar SideBar-03" data-flag="3"></i>
           <span slot="title" alias="溯源">溯点</span>
         </template>
         <el-menu-item index="/traceSource">溯点地图</el-menu-item>
       </el-submenu>
       <el-submenu index="4">
         <template slot="title">
-          <i class="SideBar SideBar-04"></i>
+          <i class="SideBar SideBar-04" data-flag="4"></i>
           <span slot="title" alias="污染源">溯责</span>
         </template>
         <el-menu-item index="/pollutionSource">溯责地图</el-menu-item>
@@ -47,6 +47,7 @@
   </div>
 </template>
 <script>
+import $ from 'jquery'
 
 export default {
   data() {
@@ -59,22 +60,45 @@ export default {
     }
   },
   mounted() {
-    // 根据路由 设置默认展开
-    const path = this.$route.path
-    if (path === '/') return
-    for (let key in this.index) {
-      for (let e of this.index[key]) {
-        if (path === e) {
-          this.$refs.menu.open(key)
-        }
-      }
-    }
+    this.defaultUnfold()
+    this.handleDom()
   },
   methods: {
+    // 根据路由 设置默认展开
+    defaultUnfold() {
+      const path = this.$route.path
+      if (path === '/') { // 首页关闭所有
+        for (let key in this.indexs) {
+          this.$refs.menu.close(key)
+        }
+        return false
+      }
+      for (let key in this.indexs) {
+        for (let e of this.indexs[key]) {
+          if (path === e) {
+            this.$refs.menu.open(key)
+          }
+        }
+      }
+    },
+    // 操作dom
+    handleDom() {
+      const menu = this.$refs.menu
+      // 鼠标移入侧边栏头部 展开子项
+      $('.sidebar .el-submenu__title').on('mouseenter', function() {
+        menu.open($(this).children('.SideBar').data('flag'))
+      })
+      // 鼠标移出ul范围 设置默认展开
+      $('.sidebar ul[role="menubar"]').on('mouseleave', this.defaultUnfold)
+    },
     handleOpen(index, indexPath) {
       // console.log('handleOpen', index, indexPath)
     },
     handleClose(index, indexPath) {
+      // 由于没有before钩子 事件解绑也不好使
+      // 点击表头关闭 立即展开 默认选中第一个
+      this.$refs.menu.open(index)
+      this.$router.push(this.indexs[index][0])
       // console.log('handleClose', index, indexPath)
     },
     handleSelect(index, indexPath) {

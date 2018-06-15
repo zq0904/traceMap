@@ -129,7 +129,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { nameUpperCase, AQIColor, AQIlevel } from '../../lib/common'
+import { nameUpperCase, classColor, AQIlevel } from '../../lib/common'
 
 export default {
   data () {
@@ -158,7 +158,7 @@ export default {
     // 单元格颜色
     cellClassName({row, columnIndex}) {
       if (columnIndex === 2) {
-        return AQIColor('aqi', row.aqi).replace(/[\s|)]/g, '').replace(/[,|(]/g, '-')
+        return classColor('aqi', row.aqi)
       }
     },
     // 搜索

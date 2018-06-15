@@ -37,9 +37,9 @@ export const AQIColor = (name, value) => {
     case 'o3':
       array = [0, 160, 200, 300, 400, 800, 1000, 1200]
       break
-    case 'synthesis': // 目前使用aqi的
-      array = [0, 50, 100, 150, 200, 300, 400, 500]
-      break
+    // case 'synthesis': // 综合指数 使用 aqi规则计算
+    //   array = [0, 50, 100, 150, 200, 300, 400, 500]
+    //   break
   }
   for (let i = 0; i < colors.length; i++) { // i最大能取到6
     if (Number(value) <= array[i]) {
@@ -48,7 +48,11 @@ export const AQIColor = (name, value) => {
   }
   return colors[6]
 }
-// 污染物名称(尽量小写) 转换成 污染等级 AQIlevel('aqi', -1)  ->  'rgb(204, 204, 204)'
+// 污染物名称(尽量小写) 转换成 类颜色 classColor('pm25', -1)  ->  'rgb-204-204-204'
+export const classColor = (name, value) => {
+  return AQIColor(name, value).replace(/[\s|)]/g, '').replace(/[,|(]/g, '-')
+}
+// 污染物名称(尽量小写) 转换成 污染等级 AQIlevel('aqi', 10)  ->  '优'
 export const AQIlevel = (name, value) => {
   // 对没有数据 约定 返回 '-' 处理
   if (value === '-') return '-'
@@ -290,61 +294,39 @@ ComplexCustomOverlay.prototype.draw = function () {
   this._div.style.left = pixel.x - parseInt(this._arrow.style.left) - 30 + 'px'
   this._div.style.top = pixel.y - 132 + 'px'
 }
-// 空气 提示框 没有样式
+// 空气 提示框 样式在App.vue全局样式中
 export const airDetails = e => {
   // console.log(e)
   return `
-  <div class="details" ref="details">
-    <div class="item1 i">
-      <div class="name">${e.name}</div>
-      <p class="time">${moment(e.time).format('YYYY-MM-DD HH:mm:ss')}</p>
+  <div class="air-tooltip">
+    <h4 class="air-tooltip-h4">
+      ${e.name}
+      <span class="air-tooltip-time">${moment(e.time).format('YYYY-MM-DD HH:mm:ss')}</span>
+      <em id="AirTooltipQuestion" class="air-tooltip-em iconfont icon-wenhao"></em>
+      <em id="AirTooltipCollect" class="air-tooltip-em iconfont icon-shoucangxing2 ${'on'}"></em>
+    </h4>
+    <table class="air-tooltip-table">
+      <tr class="air-tooltip-table-tr"><td class="air-tooltip-table-td50 ${classColor('aqi', e.aqi)}" colspan="3">AQI</td><td class="air-tooltip-table-td50 ${classColor('aqi', e.aqi)}" colspan="3">综合指数</td></tr>
+      <tr class="air-tooltip-table-tr"><td class="air-tooltip-table-td50" colspan="3">${e.aqi}</td><td class="air-tooltip-table-td50" colspan="3">${e.synthesis}</td></tr>
+      <tr class="air-tooltip-table-tr"><td class="${classColor('pm25', e.pm25)}">PM2.5</td><td class="${classColor('pm10', e.pm10)}">PM10</td><td class="${classColor('so2', e.so2)}">SO<sub>2</sub></td><td class="${classColor('no2', e.no2)}">NO<sub>2</sub></td><td class="${classColor('co', e.co)}">CO</td><td class="${classColor('o3', e.o3)}">O<sub>3</sub></td></tr>
+      <tr class="air-tooltip-table-tr tooltip-most-${e.most ? nameLowerCase(e.most) : ''}"><td>${e.pm25}</td><td>${e.pm10}</td><td>${e.so2}</td><td>${e.no2}</td><td>${e.co}</td><td>${e.o3}</td></tr>
+    </table>
+    <div class="tooltip-weather">
+      <div class="tooltip-weather-item">
+        <p class="tooltip-weather-item-p">温度: ${e.temperature}°</p>
+        <p class="tooltip-weather-item-p">风向: ${e.windDirection}</p>
+      </div>
+      <div class="tooltip-weather-item">
+        <p class="tooltip-weather-item-p">湿度: ${e.humidity}%</p>
+        <p class="tooltip-weather-item-p">风速: ${e.windSpeed}m/s</p>
+      </div>
+      <div class="tooltip-weather-item">
+        <p class="tooltip-weather-item-p">天气: ${e.weatherText}</p>
+        <p class="tooltip-weather-item-p">风级: ${e.windRank}</p>
+      </div>
     </div>
-    <div class="item2 i">
-      <div style="background-color: ${AQIColor('aqi', e.aqi)};">AQI</div>
-      <p>${e.aqi}</p>
-    </div>
-    <div class="item2 i">
-      <div style="background-color: ${AQIColor('synthesis', e.synthesis)};">综合指数</div>
-      <p>${e.synthesis}</p>
-    </div>
-
-    <div class="item6 i">
-      <div style="background-color: ${AQIColor('pm25', e.pm25)};">PM2.5</div>
-      <p>${e.pm25}</p>
-    </div>
-    <div class="item6 i">
-      <div style="background-color: ${AQIColor('pm10', e.pm10)};">PM10</div>
-      <p>${e.pm10}</p>
-    </div>
-    <div class="item6 i">
-      <div style="background-color: ${AQIColor('so2', e.so2)};">SO2</div>
-      <p>${e.so2}</p>
-    </div>
-    <div class="item6 i">
-      <div style="background-color: ${AQIColor('no2', e.no2)};">NO2</div>
-      <p>${e.no2}</p>
-    </div>
-    <div class="item6 i">
-      <div style="background-color: ${AQIColor('co', e.co)};">CO</div>
-      <p>${e.co}</p>
-    </div>
-    <div class="item6 i">
-      <div style="background-color: ${AQIColor('o3', e.o3)};">O3</div>
-      <p>${e.o3}</p>
-    </div>
-
-    <div class="item3 i">
-      <p>温度: ${e.temperature}℃</p>
-      <p>风向: ${e.windDirection}</p>
-    </div>
-    <div class="item3 i">
-      <p>湿度: ${e.humidity}%</p>
-      <p>风速: ${e.windSpeed}m/s</p>
-    </div>
-    <div class="item3 i">
-      <p>天气: ${e.weatherText}</p>
-      <p>风级: ${e.windRank}</p>
-    </div>
+    <!-- highcharts渲染预留 -->
+    <div id="recent24" style="height: 110px;"></div>
   </div>
   `
 }

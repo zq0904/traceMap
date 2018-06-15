@@ -6,7 +6,7 @@ import _ from 'lodash'
 const $httpPlugin = {}
 // 初始化axios
 let instance = axios.create({
-  timeout: 20000
+  timeout: 60000
 })
 
 $httpPlugin.install = function (Vue) {
