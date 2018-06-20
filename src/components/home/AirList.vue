@@ -223,6 +223,10 @@ export default {
       text-align: center;
       padding: 12px 0;
     }
+    // 天坑的 样式！！！
+    .el-table--enable-row-hover .el-table__body tr:hover>td {
+      background-color: #F3F9FF;
+    }
     .el-table .cell {
       font-size: 12px;
       color: #666666;
