@@ -119,6 +119,7 @@ export default {
     text-align: center;
     border: 0 none;
     background-color: #fff;
+    border-right: 1px solid #E6E8EA;
   }
   // 侧栏样式
   .el-menu-vertical {

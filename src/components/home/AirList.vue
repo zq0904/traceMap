@@ -1,121 +1,112 @@
 <template>
-  <div class="air_list" v-loading="loading">
-    <div class="cityType-group">
-      <button class="btn" :class="condition.city === '永年区' ? 'btn-primary' : 'btn-default'" @click="condition.city = '永年区'">永年区</button>
-      <!-- <button class="btn" :class="condition.city === '2+26城市' ? 'btn-primary' : 'btn-default'" @click="condition.city = '2+26城市'">2+26城市</button>
-      <button class="btn" :class="condition.city === '74城市' ? 'btn-primary' : 'btn-default'" @click="condition.city = '74城市'">74城市</button>
-      <button class="btn" :class="condition.city === '338城市' ? 'btn-primary' : 'btn-default'" @click="condition.city = '338城市'">338城市</button> -->
-    </div>
-    <div class="date-group">
-      <button class="btn" :class="condition.date === 'H' ? 'btn-primary' : 'btn-default'" @click="condition.date = 'H'">时</button>
-      <button class="btn" :class="condition.date === 'D' ? 'btn-primary' : 'btn-default'" @click="condition.date = 'D'">日</button>
-      <button class="btn" :class="condition.date === 'M' ? 'btn-primary' : 'btn-default'" @click="condition.date = 'M'">月</button>
-      <button class="btn" :class="condition.date === 'Y' ? 'btn-primary' : 'btn-default'" @click="condition.date = 'Y'">年</button>
-    </div>
-    <div class="search-group">
-      <button class="btn btn-success" @click="search">搜索</button>
-    </div>
-    <div class="table_wrap">
+  <div class="air-list">
+    <RankingBtn @change-city="changeCity"></RankingBtn>
+    <TimeComponent @change-time="changeTime"></TimeComponent>
+    <ListLineTitle class="air-list-title" :title="title"></ListLineTitle>
+    <div class="air-list-warpTable">
       <el-table
+        v-loading="loading"
+        ref="table"
+        border
         :data="tableData"
-        style="width: 100%"
         :cell-class-name="cellClassName"
-        max-height="580"
+        style="max-width: 1225px;"
+        :max-height="maxHeight"
         :default-sort = "{prop: 'aqi', order: 'descending'}"
         >
         <el-table-column
           label="序号"
-          width="50"
+          width="48"
           type="index"
           :index="order">
         </el-table-column>
         <el-table-column
           prop="station.dname"
           label="名称"
-          width="180">
+          width="100">
         </el-table-column>
         <el-table-column
           prop="AQIlevel"
           label="AQI污染等级"
-          width="102">
+          width="100">
         </el-table-column>
         <el-table-column
           prop="aqi"
           label="AQI"
           sortable
-          width="70">
+          width="57">
         </el-table-column>
         <el-table-column
           prop="pm25"
           label="PM2.5"
           sortable
-          width="90">
+          width="72">
         </el-table-column>
         <el-table-column
           prop="pm10"
           label="PM10"
           sortable
-          width="90">
+          width="70">
         </el-table-column>
         <el-table-column
           prop="so2"
           label="SO2"
           sortable
-          width="75">
+          width="55">
         </el-table-column>
         <el-table-column
           prop="no2"
           label="NO2"
           sortable
-          width="90">
+          width="60">
         </el-table-column>
         <el-table-column
           prop="co"
           label="CO"
           sortable
-          width="70">
+          width="50">
         </el-table-column>
         <el-table-column
           prop="o3"
           label="O3"
           sortable
-          width="70">
+          width="48">
         </el-table-column>
         <el-table-column
           prop="ci"
           label="综合指数"
           sortable
-          width="100">
+          width="90">
         </el-table-column>
         <el-table-column
           prop="mData.tOut"
           label="温度℃"
-          width="70">
+          width="62">
         </el-table-column>
         <el-table-column
           prop="mData.hOut"
           label="湿度%"
-          width="70">
+          width="62">
         </el-table-column>
         <el-table-column
           prop="mData.wdOut"
           label="风向"
-          width="70">
+          width="58">
         </el-table-column>
         <el-table-column
           prop="mData.pOut"
           label="气压Pa"
-          width="80">
+          width="64">
         </el-table-column>
         <el-table-column
           prop="mData.wp"
           label="风级"
-          width="70">
+          width="48">
         </el-table-column>
         <el-table-column
           prop="mData.wsOut"
           label="风速m/s"
-          width="85">
+          width="74">
         </el-table-column>
         <el-table-column
           prop="most"
@@ -130,15 +121,26 @@
 <script>
 import { mapGetters } from 'vuex'
 import { nameUpperCase, classColor, AQIlevel } from '../../lib/common'
+import RankingBtn from '../common/RankingBtn'
+import ListLineTitle from '../common/ListLineTitle'
+import TimeComponent from '../common/TimeComponent'
 
 export default {
+  components: {
+    RankingBtn,
+    ListLineTitle,
+    TimeComponent
+  },
   data () {
     return {
       loading: false,
       tableData: [],
+      title: '站点排名', // 表格title文本
+      maxHeight: 0, // 动态计算 表格 高度
       condition: {
-        city: '永年区',
-        date: 'H'
+        city: 'site', // 与组件的默认值统一
+        type: '',
+        time: ''
       }
     }
   },
@@ -148,9 +150,27 @@ export default {
     })
   },
   created() {
-    this.search()
+    // 动态计算 表格 高度
+    this.$nextTick(() => {
+      const table = this.$refs.table.$el
+      const main = table.offsetParent
+      this.maxHeight = main.offsetHeight - table.offsetTop - 20
+    })
   },
   methods: {
+    // 城市 变更
+    changeCity(val) {
+      this.condition.city = val.val
+      this.title = val.text
+      this.request()
+    },
+    // 时间及类型 变更
+    changeTime(time, type) { // 选择的时间 对应的类型
+      // 初始化的时候 这个 watch immediate 默认执行一次
+      this.condition.time = time
+      this.condition.type = type
+      this.request()
+    },
     // 自定义序号
     order(index) {
       return index + 1
@@ -162,7 +182,7 @@ export default {
       }
     },
     // 搜索
-    async search() {
+    async request() {
       this.loading = true
       const {data} = await this.$fetch({
         url: this.api.AirList,
@@ -181,27 +201,33 @@ export default {
 </script>
 
 <style lang="scss">
-.air_list {
-  .cityType-group {
-    position: absolute;
-    top: 7px;
-    left: 10px;
-    z-index: 10;
+.air-list {
+  &-title {
+    float: left;
+    width: 100%;
   }
-  .date-group {
-    position: absolute;
-    top: 7px;
-    left: 345px;
-    z-index: 10;
-  }
-  .search-group {
-    position: absolute;
-    top: 7px;
-    left: 535px;
-    z-index: 10;
-  }
-  .table_wrap {
-    padding: 50px 10px 0;
+  &-warpTable {
+    margin: 0 20px;
+    .has-gutter tr th {
+      height: 35px;
+      padding: 0;
+      font-size: 14px;
+      color: #333333;
+      background-color: #F3F9FF;
+      text-align: center;
+      .cell {
+        padding: 0;
+      }
+    }
+    tbody td {
+      text-align: center;
+      padding: 12px 0;
+    }
+    .el-table .cell {
+      font-size: 12px;
+      color: #666666;
+      line-height: 1.1;
+    }
   }
 }
 </style>
