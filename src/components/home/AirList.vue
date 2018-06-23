@@ -10,108 +10,107 @@
         border
         :data="tableData"
         :cell-class-name="cellClassName"
-        style="max-width: 1225px;"
         :max-height="maxHeight"
         :default-sort = "{prop: 'aqi', order: 'descending'}"
         >
         <el-table-column
           label="序号"
-          width="48"
+          min-width="48"
           type="index"
           :index="order">
         </el-table-column>
         <el-table-column
           prop="station.dname"
           label="名称"
-          width="100">
+          min-width="100">
         </el-table-column>
         <el-table-column
           prop="AQIlevel"
           label="AQI污染等级"
-          width="100">
+          min-width="100">
         </el-table-column>
         <el-table-column
           prop="aqi"
           label="AQI"
           sortable
-          width="57">
+          min-width="57">
         </el-table-column>
         <el-table-column
           prop="pm25"
           label="PM2.5"
           sortable
-          width="72">
+          min-width="72">
         </el-table-column>
         <el-table-column
           prop="pm10"
           label="PM10"
           sortable
-          width="70">
+          min-width="70">
         </el-table-column>
         <el-table-column
           prop="so2"
           label="SO2"
           sortable
-          width="55">
+          min-width="55">
         </el-table-column>
         <el-table-column
           prop="no2"
           label="NO2"
           sortable
-          width="60">
+          min-width="60">
         </el-table-column>
         <el-table-column
           prop="co"
           label="CO"
           sortable
-          width="50">
+          min-width="50%">
         </el-table-column>
         <el-table-column
           prop="o3"
           label="O3"
           sortable
-          width="48">
+          min-width="48">
         </el-table-column>
         <el-table-column
           prop="ci"
           label="综合指数"
           sortable
-          width="90">
+          min-width="90">
         </el-table-column>
         <el-table-column
           prop="mData.tOut"
           label="温度℃"
-          width="62">
+          min-width="62">
         </el-table-column>
         <el-table-column
           prop="mData.hOut"
           label="湿度%"
-          width="62">
+          min-width="62">
         </el-table-column>
         <el-table-column
           prop="mData.wdOut"
           label="风向"
-          width="58">
+          min-width="58">
         </el-table-column>
         <el-table-column
           prop="mData.pOut"
           label="气压Pa"
-          width="64">
+          min-width="64">
         </el-table-column>
         <el-table-column
           prop="mData.wp"
           label="风级"
-          width="48">
+          min-width="48">
         </el-table-column>
         <el-table-column
           prop="mData.wsOut"
           label="风速m/s"
-          width="74">
+          min-width="74">
         </el-table-column>
         <el-table-column
           prop="most"
           label="首要污染物"
-          width="90">
+          min-width="90">
         </el-table-column>
       </el-table>
     </div>
