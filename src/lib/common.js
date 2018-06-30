@@ -109,9 +109,9 @@ export const nameUnit = name => {
     case 'aqi':
       return ''
     case 'co':
-      return 'mg/m<sup>3</sup>'
+      return 'mg/m³'
     default:
-      return 'μg/m<sup>3</sup>'
+      return 'μg/m³'
   }
 }
 // 调试地图 工具  debugMap(map)
@@ -294,7 +294,7 @@ ComplexCustomOverlay.prototype.draw = function () {
   this._div.style.left = pixel.x - parseInt(this._arrow.style.left) - 30 + 'px'
   this._div.style.top = pixel.y - 132 + 'px'
 }
-// 空气 提示框 样式在App.vue全局样式中
+// 空气地图 提示框
 export const airDetails = e => {
   // console.log(e)
   return `
@@ -330,73 +330,80 @@ export const airDetails = e => {
   </div>
   `
 }
-// 污染源 infoWindow 弹框
+// 污染源地图 infoWindow 弹框
 export const pollutionInfoWindow = e => {
   // console.log(e)
   return `
-  <div class="container pollutionSource" style="width: 500px;padding-top: 5px;font-size: 16px;line-height: 22px;">
+  <div class="sourceMap-infoWindow">
+    <h4 class="sourceMap-infoWindow-title">基本信息</h4>
     <div class="row">
-      <div class="col-sm-6"><lable>位置: </lable><span>${e.areacode.village || e.areacode.town || e.areacode.county || ''}</span></div>
-      <div class="col-sm-6"><lable>污染源类型: </lable><span>${e.polluteTypeName}</span></div>
+      <div class="col-sm-12"><lable>名称 :</lable><span>${e.polluteName || ''}</span></div>
     </div>
     <div class="row">
-      <div class="col-sm-6"><lable>经度: </lable><span>${e.baiduLongitude}</span></div>
-      <div class="col-sm-6"><lable>纬度: </lable><span>${e.baiduLatitude}</span></div></div>
-    <div class="row">
-      <div class="col-sm-6"><lable>开始时间: </lable><span>${e.startTime === '-' ? '-' : e.startTime}</span></div>
-      <div class="col-sm-6"><lable>结束时间: </lable><span>${e.endTime === '-' ? '-' : e.endTime}</span></div>
+      <div class="col-sm-6"><lable>位置 :</lable><span>${e.areacode.village || e.areacode.town || e.areacode.county || ''}</span></div>
+      <div class="col-sm-6"><lable>污染源类型 :</lable><span>${e.polluteTypeName}</span></div>
     </div>
     <div class="row">
-      <div class="col-sm-12"><lable>处理状态: </lable><span>${e.handlingStatusName}</span></div>
+      <div class="col-sm-6"><lable>经度 :</lable><span>${e.baiduLongitude}</span></div>
+      <div class="col-sm-6"><lable>纬度 :</lable><span>${e.baiduLatitude}</span></div>
     </div>
     <div class="row">
-      <div class="col-sm-6"><lable>负责人: </lable><span>${e.liablePerson}</span></div>
-      <div class="col-sm-6"><lable>负责主体: </lable><span>${e.liableSubject}</span></div>
+      <div class="col-sm-6"><lable>开始时间 :</lable><span>${e.startTime === '-' ? '-' : e.startTime}</span></div>
+      <div class="col-sm-6"><lable>结束时间 :</lable><span>${e.endTime === '3000-01-01' ? '- - - -' : e.endTime}</span></div>
     </div>
     <div class="row">
-      <div class="col-sm-12"><lable>联系电话: </lable><span>${e.liablePhoneNumber}</span></div>
+      <div class="col-sm-12"><lable>处理状态 :</lable><span>${e.handlingStatusName}</span></div>
     </div>
     <div class="row">
-      <div class="col-sm-6"><lable>污染面积: </lable><span>${e.area || ''}平方米</span></div>
-      <div class="col-sm-6"><lable>位置信息补充: </lable><span>${e.msg}</span></div></div>
+      <div class="col-sm-6"><lable>负责人 :</lable><span>张三</span></div>
+      <div class="col-sm-6"><lable>负责主体 :</lable><span>区居委会</span></div>
+    </div>
+    <h4 class="sourceMap-infoWindow-title">其他信息</h4>
     <div class="row">
-      <div class="col-sm-12"><lable>处理意见: </lable><span>${e.advise || ''}</span></div>
+      <div class="col-sm-12"><lable>联系电话 :</lable><span>${e.liablePhoneNumber}</span></div>
     </div>
     <div class="row">
-      <div class="col-sm-6">
-        <div class="col-sm-12" style="text-align: center;">
-          <lable>治理前图片: </lable>
-        </div>
-        <div class="col-sm-12" style="padding: 0;display: flex; justify-content: space-between;">` +
-          (e => {
-            let str = ''
-            if (!e.beforePhotoList) return str
+      <div class="col-sm-12"><lable>污染面积 :</lable><span>${e.area ? e.area + '平方米' : ''}</span></div>
+    <div class="row">
+      <div class="col-sm-12"><lable>位置信息补充 :</lable><span>${e.msg}</span></div></div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12"><lable>处理意见 :</lable><span>${e.advise || ''}</span></div>
+    </div>
+    <div class="row">
+      <div class="col-sm-6"><lable>处理前照片 :</lable><span></span></div>
+      <div class="col-sm-6"><lable>处理后照片 :</lable><span></span></div>
+    </div>
+    <div class="row">
+      <div class="col-sm-6">` +
+        (e => {
+          let str = ''
+          if (e.beforePhotoList) {
             e.beforePhotoList.forEach(item => {
-              str += `<img src="${item.saveName}" style="width: 100px;height: 100px;margin-bottom: 5px;">`
+              str += `<img src="${item.saveName}">`
             })
-            return str
-          })(e) +
-        `</div>
-      </div>
-      <div class="col-sm-6">
-        <div class="col-sm-12" style="text-align: center;">
-          <lable>治理后图片: </lable>
-        </div>
-        <div class="col-sm-12" style="padding: 0;display: flex; justify-content: space-between;">` +
-          (e => {
-            let str = ''
-            if (!e.afterPhotoList) return str
+          } else { // 没有后台返回null 使用一张默认图片
+            str += '<div class="mock-img"></div>'
+          }
+          return str
+        })(e) +
+      `</div>
+      <div class="col-sm-6">` +
+        (e => {
+          let str = ''
+          if (e.afterPhotoList) {
             e.afterPhotoList.forEach(item => {
-              str += `<img src="${item.saveName}" style="width: 100px;height: 100px;margin-bottom: 5px;">`
+              str += `<img src="${item.saveName}">`
             })
-            return str
-          })(e) +
-        `</div>
-      </div>
+          } else { // 没有后台返回null 使用一张默认图片
+            str += '<div class="mock-img"></div>'
+          }
+          return str
+        })(e) +
+      `</div>
     </div>
-    <div class="row">
-      <div class="col-sm-12" style="text-align: center;padding-top: 5px;"><a href="#/pollutionSource" class="btn btn-default">指派</a></div>
-    </div></div>
+    <div class="row designate">
+      <span>指派</span>
     </div>
   </div>
   `

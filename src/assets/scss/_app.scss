@@ -7,11 +7,18 @@
   #{$key}: $value;
 }
 
-// C3单行显示省略号 @include se();
-@mixin se() {
-  overflow: hidden;
+// 显示省略号
+@mixin ellipsis($n: 1) {
+  overflow : hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
+  @if $n == 1 {
+    white-space: nowrap;
+  }
+  @else {
+    display: -webkit-box; // 对象作为伸缩盒子模型显示
+    -webkit-line-clamp: $n; // 显示的行数
+    -webkit-box-orient: vertical; // 设置或检索伸缩盒对象的子元素的排列方式
+  }
 }
 
 $baseline-rem: 75; // 如果设计稿 宽度800px 基准字体大小 80
@@ -83,7 +90,7 @@ $baseline-rem: 75; // 如果设计稿 宽度800px 基准字体大小 80
   @include c3(transform, translate(-50%, -50%));
 }
 
-// 背景图完全放入设置
+// 背景图完全放入
 @mixin _icon($w, $h, $mt) {
   display: inline-block;
   vertical-align: middle;
@@ -97,6 +104,7 @@ $baseline-rem: 75; // 如果设计稿 宽度800px 基准字体大小 80
   }
 }
 
+// 背景图完全放入 水平居中
 @mixin _icondb($w, $h, $mt) {
   display: block;
   vertical-align: middle;
@@ -111,14 +119,14 @@ $baseline-rem: 75; // 如果设计稿 宽度800px 基准字体大小 80
   }
 }
 
-// 伪元素线 @include border(#ccc, right)
-@mixin border($color, $size: 1, $d:bottom) {
+// 伪元素线 @include border(#ccc, 1, left);
+@mixin border($color, $size: 1, $d: bottom) {
   position: relative;
   &::before {
     content: '';
     position: absolute;
     background-color: $color;
-    @if $d==left or $d==right {
+    @if $d == left or $d == right {
       top: 0;
       #{$d}: 0;
       height: 100%;
@@ -129,6 +137,33 @@ $baseline-rem: 75; // 如果设计稿 宽度800px 基准字体大小 80
       left: 0;
       width: 100%;
       height: $size + px;
+    }
+  }
+}
+
+// 非淘宝flexible 真正1px 细线 @include true-border(#ccc, 1, bottom);
+@mixin true-border($color, $size: 1, $d: bottom) {
+  @include border($color, $size, $d);
+  &::before {
+    @if $d == left or $d == right {
+      @media (-webkit-min-device-pixel-ratio: 1.5),(min-device-pixel-ratio: 1.5) {
+        -webkit-transform: scaleX(0.7);
+        transform: scaleX(0.7);
+      }
+      @media (-webkit-min-device-pixel-ratio: 2),(min-device-pixel-ratio: 2) {
+        -webkit-transform: scaleX(0.5);
+        transform: scaleX(0.5);
+      }
+    }
+    @else {
+      @media (-webkit-min-device-pixel-ratio: 1.5),(min-device-pixel-ratio: 1.5) {
+        -webkit-transform: scaleY(0.7);
+        transform: scaleY(0.7);
+      }
+      @media (-webkit-min-device-pixel-ratio: 2),(min-device-pixel-ratio: 2) {
+        -webkit-transform: scaleY(0.5);
+        transform: scaleY(0.5);
+      }
     }
   }
 }

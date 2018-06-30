@@ -1,5 +1,5 @@
 <template>
-  <div clsas="test">
+  <div clsas="test" style="background-color: red;">
     <div style="margin-bottom:10px;">
     </div>
     <div class="AirPlay">
@@ -133,6 +133,58 @@
     <svg id="fillgauge" width="250" height="250"></svg>
     <!-- highcharts测试 -->
     <div id="container"></div>
+    <div class="sourceMap-infoWindow">
+      <h4 class="sourceMap-infoWindow-title">基本信息</h4>
+      <div class="row">
+        <div class="col-sm-12"><lable>名称 :</lable><span>河工034</span></div>
+      </div>
+      <div class="row">
+        <div class="col-sm-6"><lable>位置 :</lable><span>刘刘刘刘刘刘刘刘刘刘刘刘</span></div>
+        <div class="col-sm-6"><lable>污染源类型 :</lable><span>刘刘刘刘刘刘刘刘刘刘刘刘</span></div>
+      </div>
+      <div class="row">
+        <div class="col-sm-6"><lable>经度 :</lable><span>36.6</span></div>
+        <div class="col-sm-6"><lable>纬度 :</lable><span>136.555</span></div>
+      </div>
+      <div class="row">
+        <div class="col-sm-6"><lable>开始时间 :</lable><span>2018-06-12</span></div>
+        <div class="col-sm-6"><lable>结束时间 :</lable><span>- - - -</span></div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12"><lable>处理状态 :</lable><span>未处理/疑似污染源等信息</span></div>
+      </div>
+      <div class="row">
+        <div class="col-sm-6"><lable>负责人 :</lable><span>张三</span></div>
+        <div class="col-sm-6"><lable>负责主体 :</lable><span>区居委会</span></div>
+      </div>
+      <h4 class="sourceMap-infoWindow-title">其他信息</h4>
+      <div class="row">
+        <div class="col-sm-12"><lable>联系电话 :</lable><span>15000 0000 0000 / 10154654565</span></div>
+      </div>
+      <div class="row">
+        <div class="col-sm-6"><lable>污染面积 :</lable><span>3000平方米</span></div>
+        <div class="col-sm-6"><lable>位置信息补充 :</lable><span>集体的位置信息</span></div></div>
+      <div class="row">
+        <div class="col-sm-12"><lable>处理意见 :</lable><span>增加湿扫，一直燕莎，。。。</span></div>
+      </div>
+      <div class="row">
+        <div class="col-sm-6"><lable>处理前照片 :</lable><span></span></div>
+        <div class="col-sm-6"><lable>处理后照片 :</lable><span></span></div>
+      </div>
+      <div class="row">
+        <div class="col-sm-6">
+          <img src="https://s1.ax1x.com/2018/06/26/PCqUyt.png">
+          <img src="http://p1.pstatp.com/large/435d000085555bd8de10">
+        </div>
+        <div class="col-sm-6">
+          <div class="mock-img"></div>
+        </div>
+      </div>
+      <div class="row designate">
+        <span>指派</span>
+      </div>
+    </div>
+    <div style="height:20px"></div>
   </div>
 </template>
 <script>
@@ -512,6 +564,121 @@ export default {
 <style lang='scss'>
 /*测试scss*/
 @import '../assets/scss/app';
+  .sourceMap-infoWindow {
+    position: relative;
+    background-color: #fff;
+    width: 506px;
+    padding: 0 9px;
+    border-top: 4px solid #0087FF;
+    border-radius: 5px;
+    &-title {
+      position: relative;
+      height: 36px;
+      padding: 10px 0 10px 12px;
+      font-size: 16px;
+      color: #333333;
+      &::before {
+        position: absolute;
+        top: 10px;
+        left: 0;
+        content: '';
+        height: 16px;
+        border-left: 2px solid #0087FF;
+      }
+    }
+    .row {
+      margin: 0;
+      line-height: 24px;
+      .col-sm-6, .col-sm-12 {
+        padding: 0;
+        padding-right: 9px;
+        font-size: 14px;
+        lable {
+          float: left;
+          padding-right: 5px;
+          color: #A8A8A8;
+        }
+        span {
+          display: block;
+          overflow: hidden;
+          color: #333333;
+        }
+        img {
+          float: left;
+          width: 112.5px;
+          height: 110px;
+          margin-top: 10px;
+          &:first-of-type {
+            margin-right: 9px;
+          }
+        }
+        .mock-img {
+          margin-top: 10px;
+          position: relative;
+          width: 112.5px;
+          height: 110px;
+          border: 1px solid #E6E6E6;
+          background-color: #F3F9FF;
+          &::before {
+            content: '';
+            width: 40px;
+            height: 2px;
+            background-color: #D6D8DA;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate3d(-50%, -50%, 0);
+          }
+          &::after {
+            content: '';
+            height: 40px;
+            width: 2px;
+            background-color: #D6D8DA;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate3d(-50%, -50%, 0);
+          }
+        }
+      }
+    }
+    .designate {
+      position: relative;
+      height: 77px;
+      line-height: 77px;
+      text-align: center;
+      span {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 100px;
+        height: 36px;
+        line-height: 36px;
+        cursor: pointer;
+        font-size: 18px;
+        color: #007FF5;
+        border: 1px solid #007FF5;
+        background-color: #fff;
+        transform: translate3d(-50%, -50%, 0);
+        border-radius: 5px;
+        &:active {
+          background-color: #007FF5;
+          color: #fff;
+        }
+      }
+    }
+    &::before {
+      position: absolute;
+      content: '';
+      left: 50%;
+      bottom: -16px;
+      transform: translateX(-50%);
+      border: 8px solid transparent;
+      border-left: 9px solid transparent;
+      border-right: 9px solid transparent;
+      border-top-color: #fff;
+    }
+  }
   // 注释 /**/ //
   // @import '../assets/css/test'; // 导入_.scss文件 不需写后缀 _test.scss中的变量及样式都会引入这里
   // 使用$声明变量 具有块级作用域(可以使用 $fz: 10px !global; 直接提升至全局)

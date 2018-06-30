@@ -2,7 +2,7 @@
   <div class="traceSource_vessel" v-loading="loading">
     <Weather></Weather>
     <MapTypeControl :map="map"></MapTypeControl>
-    <div id="echartsMap"></div>
+    <div id="traceSourceMap"></div>
   </div>
 </template>
 <script>
@@ -43,7 +43,7 @@ export default {
       this.$nextTick(this.initMap)
     },
     initMap() {
-      const map = this.map = new BMap.Map('echartsMap', { enableMapClick: false }) // 创建地图实例 直接写ID 容器要给大小
+      const map = this.map = new BMap.Map('traceSourceMap', { enableMapClick: false }) // 创建地图实例 直接写ID 容器要给大小
       const query = this.$route.query // 判断 是否传递了 点位 没有取默认
       const point = query.lat ? new BMap.Point(query.lon, query.lat) : new BMap.Point(mapCZ[0], mapCZ[1])
       map.centerAndZoom(point, mapCZ[2]) // 设置中心点坐标 地图级别 （也可以重新设置）
@@ -57,7 +57,7 @@ export default {
       this.traceSource.forEach(item => {
         // 报警每一项
         const itemPoint = new BMap.Point(item.lon, item.lat)
-        const myIcon = new BMap.Icon('http://wx4.sinaimg.cn/mw690/0060lm7Tly1fs8czpvcu4g3074074wef.gif', new BMap.Size(50, 50), {
+        const myIcon = new BMap.Icon('https://s1.ax1x.com/2018/06/26/PCqUyt.png', new BMap.Size(50, 50), {
           imageSize: new BMap.Size(50, 50) // background-size
         })
         const marker = new BMap.Marker(itemPoint, {icon: myIcon})
@@ -101,7 +101,7 @@ export default {
 <style lang="scss">
 @import '../../assets/scss/app';
 .traceSource_vessel {
-  #echartsMap {
+  #traceSourceMap {
     width: 100%;
     height: 100%;
   }

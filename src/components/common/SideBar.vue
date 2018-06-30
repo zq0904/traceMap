@@ -34,6 +34,7 @@
           <span slot="title" alias="溯源">溯点</span>
         </template>
         <el-menu-item index="/traceSource">溯点地图</el-menu-item>
+        <el-menu-item index="/alarmRuleConfig">报警规则配置</el-menu-item>
       </el-submenu>
       <el-submenu index="4">
         <template slot="title">
@@ -54,7 +55,7 @@ export default {
     return {
       indexs: {
         '2': ['/air', '/air/list'],
-        '3': ['/traceSource'],
+        '3': ['/traceSource', '/alarmRuleConfig'],
         '4': ['/pollutionSource', '/pollutionSource/list']
       }
     }
@@ -125,7 +126,8 @@ export default {
   .el-menu-vertical {
     .el-menu-item {
       min-width: 160px;
-      padding: 0 16px !important;
+      padding: 0 16px 0 52px !important;
+      text-align: left;
       box-sizing: border-box;
       font-size: 14px;
       &.is-active {

@@ -7,10 +7,11 @@ import Home from '../components/home/Home' // 二级路由入口
 import HomePage from '../components/home/HomePage' // 首页
 import AirMap from '../components/home/AirMap' // 空气地图
 import AirList from '../components/home/AirList' // 空气列表
+import TraceSourceMap from '../components/home/TraceSourceMap' // 溯源地图
+import AlarmRuleConfig from '../components/home/AlarmRuleConfig' // 报警规则配置
 import PollutionSourceMap from '../components/home/PollutionSourceMap' // 污染源地图
 import PollutionSourceList from '../components/home/PollutionSourceList' // 污染源列表
 import PollutionSourcCrud from '../components/home/PollutionSourcCrud' // 污染源详情
-import TraceSourceMap from '../components/home/TraceSourceMap' // 溯源地图
 
 Vue.use(Router)
 
@@ -27,10 +28,11 @@ export default new Router({
         { path: '', component: HomePage },
         { path: 'air', component: AirMap },
         { path: 'air/list', component: AirList },
+        { path: 'traceSource', component: TraceSourceMap },
+        { path: 'alarmRuleConfig', component: AlarmRuleConfig },
         { path: 'pollutionSource', component: PollutionSourceMap },
         { path: 'pollutionSource/list', component: PollutionSourceList },
-        { path: 'pollutionSource/crud', component: PollutionSourcCrud },
-        { path: 'traceSource', component: TraceSourceMap }
+        { path: 'pollutionSource/crud', component: PollutionSourcCrud }
       ]
     }
   ]

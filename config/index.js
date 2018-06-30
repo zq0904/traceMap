@@ -72,7 +72,7 @@ module.exports = {
      */
 
     productionSourceMap: true,
-    // productionSourceMap: false, // 上线这里 设置为false 环境设置为生产环境
+    // productionSourceMap: false, // 上线 置为false 不需要映射调试
     // https://webpack.js.org/configuration/devtool/#production
     devtool: '#source-map',
 

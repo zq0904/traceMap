@@ -21,7 +21,14 @@ const state = {
   pollutionlistCreate: p2 + '/pollutionSoil/savePollute', // 污染源报表 添加单个
   pollutionListUploadImg: p2 + '/attach/upload', // 污染源 上传图片
   pollutionListDelImg: p2 + '/pollutionSoil/deleteAttach', // 污染源 删除图片
-  traceMap: p2 + '/warn/traceSource' // 溯源地图
+  traceMap: p2 + '/warn/traceSource', // 溯源地图
+  alarmList: p2 + '/warn/getGkWarnPageList', // 报警规则列表
+  alarmListCreate: p2 + '/warn//saveGkDeviceWarn', // 报警规则列表 新增修改保存
+  alarmListDel: p2 + '/warn/deleteGkDeviceWarn', // 报警规则列表 删除
+  device: p2 + '/device/getWebGkStationAll', // 报警规则 设备
+  findRuleByDevice: p2 + '/warn/selectGkDWByDeviceid', // 报警规则 根据设备 查找规则
+  findDeviceByRule: p2 + '/warn/selectDeviceByGkDwId', // 报警规则 根据规则 查找设备
+  setLinkSave: p2 + '/warn/saveDeviceRelatedDwId' // 报警规则 设置关联 保存
 }
 
 const actions = {}

@@ -66,6 +66,7 @@
     <div class="table_wrap">
       <el-table
         :data="tableData"
+        border
         style="width: 100%"
         max-height="580"
         @selection-change="handleSelectionChange">

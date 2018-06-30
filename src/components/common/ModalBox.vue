@@ -38,7 +38,8 @@ export default {
       deflate: false
     },
     imgUrl: {
-      type: String
+      type: String,
+      default: ''
     }
   },
   data () {
@@ -50,7 +51,10 @@ export default {
 
 <style lang="scss">
 .modal.fade .modal-dialog {
-  top: 160px;
+  top: 50%;
+  left: 50%;
+  margin: 0;
+  transform: translate3d(-50%, -50%, 0);
 }
 .hideModal {
   display: none;

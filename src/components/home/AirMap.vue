@@ -446,6 +446,8 @@ export default {
   width: 400px;
   padding: 10px;
   text-align: center;
+  background-color: rgba(0, 0, 0, .3);
+  border-radius: 4px;
   .text {
     margin-bottom: 20px;
     line-height: 16px;

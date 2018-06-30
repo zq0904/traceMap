@@ -16,9 +16,6 @@
       v-for="(item, index) in mapBtn" :key="index"
       :class="nowIndex === index ? 'on' : ''"
       @click.stop="nowIndex = index">{{ item.text }}</span>
-      <!--
-      :format="dateRule"
-      :value-format="dateRule" -->
   </div>
 </template>
 
@@ -89,7 +86,7 @@ export default {
 <style lang="scss">
   .TimeComponent {
     position: absolute;
-    top: 30px;
+    top: 25px;
     right: 20px;
     z-index: 100;
     &-span {

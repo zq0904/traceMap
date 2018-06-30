@@ -1,16 +1,24 @@
 <template>
   <div class="ListLineTitle">
-    <div class="line"></div>
+    <RowLine v-if="showLine"></RowLine>
     <div class="ListLineTitle-name" v-if="title">{{title}}</div>
   </div>
 </template>
 
 <script>
+import RowLine from './RowLine'
+
 export default {
   props: {
     title: {
       default: ''
+    },
+    showLine: {
+      default: false
     }
+  },
+  components: {
+    RowLine
   },
   data () {
     return {
@@ -21,11 +29,7 @@ export default {
 
 <style lang="scss">
   .ListLineTitle {
-    .line {
-      width: 100%;
-      height: 20px;
-      background-color: #F5F7FA;
-    }
+    overflow: hidden;
     &-name {
       position: relative;
       height: 24px;
