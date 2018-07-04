@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import store from '../store'
 import Router from 'vue-router'
 import Test from '../components/test' // 测试文件
 import Login from '../components/Login' // 登录
@@ -15,7 +16,7 @@ import PollutionSourcCrud from '../components/home/PollutionSourcCrud' // 污染
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   linkActiveClass: 'active',
   routes: [
     { path: '/test', component: Test }, // 测试文件
@@ -37,3 +38,19 @@ export default new Router({
     }
   ]
 })
+
+router.beforeEach(async (to, from, next) => {
+  // console.log(to, from, next)
+  // if (to.path === '/login' || to.path === '/register') return next() // 登录 注册 不校验权限
+  // if (store.state.userInfo.baseInfo.token === '') return router.push('/login') // 先从本地存储中拿 在从vuex中那 token 没有 去登录
+  // const {data} = await Vue.prototype.$fetch({
+  //   url: store.state.api.weatherInfo
+  // })
+  // if (data) {
+  //   console.log('判断是否 具有权限')
+  //   next()
+  // }
+  next()
+})
+
+export default router

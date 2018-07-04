@@ -3,12 +3,12 @@
     <Weather></Weather>
     <Btns @select-point="selectPoint"></Btns>
     <MapTypeControl :map="map"></MapTypeControl>
+    <span class="realDataBtn" :class="{'on': isShowRealData}" @click.stop="isShowRealData = true">实时数据</span>
     <div id="echartsMap"></div>
     <!-- 必须保证nowDataIndex有了默认值 再去渲染AirPlay 才能变更后的dataLength作为初始值 -->
     <AirPlay
-      v-show="false"
       v-if="nowDataIndex !== false"
-      :dataLength="data.length"
+      :dataLength="historyData.length"
       :nowDateTime="nowDateTime"
       @nowSelectIndex="nowSelectIndex"></AirPlay>
   </div>
@@ -17,6 +17,7 @@
 import { mapGetters } from 'vuex'
 import $ from 'jquery'
 import echarts from 'echarts'
+import moment from 'moment'
 import { debugMap, styleJson, AQIColor, airDetails } from '../../lib/common'
 import { mapCZ, drawPolygon } from '../../lib/config'
 import Weather from '../common/Weather'
@@ -24,7 +25,6 @@ import Btns from '../common/Bths'
 import MapTypeControl from '../common/MapTypeControl'
 import AirPlay from '../common/AirPlay'
 import Highcharts from 'highcharts'
-import moment from 'moment'
 
 export default {
   components: {
@@ -44,15 +44,10 @@ export default {
       map: {}, // 百度地图实例对象
       bmapCZ: [mapCZ[0], mapCZ[1], mapCZ[2]], // bmap 中心点 和 缩放级别 实现持久
       myChart: {}, // echarts实例对象
-      data: [ // 最终的数据格式
-        // {
-        //   alarm: [],
-        //   state: [],
-        //   province: [], // 暂缺 预留
-        //   gridding: []
-        // }
-      ],
-      nowDataIndex: false, // 当前应取data索引值 初次值fasle 默认值取data.length - 1
+      isShowRealData: true, // 是否显示 实时数据 （默认显示）
+      realData: {}, // 实时数据 (数据组装后的)
+      historyData: [], // 48小时历史数据 (数据组装后的)
+      nowDataIndex: false, // 当前应取historyData索引值 初次值fasle 默认值取data.length - 1
       nowPoint: 'aqi', // 当前选中按钮值
       nowDateTime: '', // 设置当前日期时间
       xAxisCategories: [], // AQI24小时 动态X轴
@@ -61,32 +56,40 @@ export default {
     }
   },
   watch: {
-    nowPoint() {
-      this.afreshMap()
+    // 再次显示 实时数据 仍更新视图
+    isShowRealData(val) {
+      if (val) { this.afreshMap() }
     }
   },
   computed: {
     ...mapGetters({
       api: 'getApi'
-    })
+    }),
+    // 当前数据项
+    nowData() {
+      return this.isShowRealData ? this.realData : this.historyData[this.nowDataIndex]
+    }
   },
-  created() {
-    this.request()
+  async created() {
+    await this.request()
   },
   methods: {
-    // 子组件通知 修改当前 应选中data索引
-    nowSelectIndex(val) {
-      this.nowDataIndex = val - 1
+    // Btns子组件 1.修改point值 2.更新视图
+    selectPoint(val) {
+      this.nowPoint = val
       this.afreshMap()
     },
-    // btns选择按钮 point值
-    selectPoint(val) { this.nowPoint = val },
-    // 根据当前 对应索引nowDataIndex 及 nowPoint 去重新计算颜色 重新配置echarts
+    // AirPlay子组件 1.修改当前应选中data索引 2.切换为历史数据 3.更新视图
+    nowSelectIndex(val) {
+      this.nowDataIndex = val - 1
+      this.isShowRealData = false
+      this.afreshMap()
+    },
+    // 更新视图 根据当前数据 去重新计算颜色(禁计算当前数据的颜色) 重新配置echarts
     afreshMap() {
-      // 只计算当前nowDataIndex对应data颜色!!! 计算所有data 也是性能消耗
-      for (let key in this.data[this.nowDataIndex]) {
+      for (let key in this.nowData) {
         if (key === 'alarm') continue // 警报不计算颜色 初始红色 已经正确
-        this.data[this.nowDataIndex][key].map(e => {
+        this.nowData[key].map(e => {
           const nowPoint = this.nowPoint === 'synthesis' ? 'aqi' : this.nowPoint // 综合指数 使用 aqi规则计算
           e.itemStyle.color = AQIColor(nowPoint, e.rest[nowPoint])
           return e
@@ -94,120 +97,139 @@ export default {
       }
       this.setOption()
     },
-    // 第一次请求数据 数据项中的itemStyle 需要计算一次
+    // 请求数据 数据组装 设置初始值 首次渲染
     async request() {
       this.loading = true
-      const {data} = await this.$fetch({ url: this.api.AirMap })
-      // console.log(data)
+      const {data: realData} = await this.$fetch({ url: this.api.AirMap })
+      const {data: historyData} = await this.$fetch({ url: this.api.AirMapHistory })
       this.loading = false
 
-      // mock
-      const dataMock = []
-      const trueData = JSON.parse(JSON.stringify(data.result))
-      for (let i = 1; i <= 36; i++) {
-        data.result.state[0].aqi = i * 10
-        data.result.state[0].co = i * 4
-        dataMock.push(i === 36 ? trueData : JSON.parse(JSON.stringify(data.result)))
-      }
+      // 对实时数据 数据组装
+      this.realData = this.assemble(realData.result)
 
-      // 对所有数据 数据组装
+      // 对历史数据 数据组装
       const middleData = []
-      for (let item of dataMock) {
-        const middleO = {} // { alarm: [], state: [], province: [], gridding: [] }
-        for (let key in item) {
-          middleO[key] = item[key].map(e => {
-            const extraNowPoint = this.nowPoint === 'synthesis' ? 'aqi' : this.nowPoint // 综合指数 使用 aqi规则计算
-            return {
-              name: key,
-              value: [e.lon, e.lat],
-              itemStyle: { // 报警 只显示红色 其余
-                color: key === 'alarm' ? 'red' : AQIColor(extraNowPoint, e[extraNowPoint])
-              },
-              rest: e, // 自定义信息
-              aqi24: [{ // mock
-                val: Number((Math.random() * 100).toFixed(0)),
-                time: '2018-01-01 16:00:00'
-              }, {
-                val: 20,
-                time: '2018-01-01 17:00:00'
-              }, {
-                val: -1,
-                time: '2018-01-01 18:00:00'
-              }, {
-                val: 60,
-                time: '2018-01-01 19:00:00'
-              }, {
-                val: 70,
-                time: '2018-01-01 20:00:00'
-              }, {
-                val: 400,
-                time: '2018-01-01 21:00:00'
-              }, {
-                val: 400,
-                time: '2018-01-01 22:00:00'
-              }, {
-                val: 400,
-                time: '2018-01-01 23:00:00'
-              }, {
-                val: 400,
-                time: '2018-01-02 00:00:00'
-              }, {
-                val: 400,
-                time: '2018-01-02 01:00:00'
-              }, {
-                val: 400,
-                time: '2018-01-02 02:00:00'
-              }, {
-                val: 400,
-                time: '2018-01-02 03:00:00'
-              }, {
-                val: 400,
-                time: '2018-01-02 04:00:00'
-              }, {
-                val: 400,
-                time: '2018-01-02 05:00:00'
-              }, {
-                val: 400,
-                time: '2018-01-02 06:00:00'
-              }, {
-                val: 400,
-                time: '2018-01-02 07:00:00'
-              }, {
-                val: 400,
-                time: '2018-01-02 08:00:00'
-              }, {
-                val: 400,
-                time: '2018-01-02 09:00:00'
-              }, {
-                val: 400,
-                time: '2018-01-02 10:00:00'
-              }, {
-                val: 400,
-                time: '2018-01-02 11:00:00'
-              }, {
-                val: 400,
-                time: '2018-01-02 12:00:00'
-              }, {
-                val: 400,
-                time: '2018-01-02 13:00:00'
-              }, {
-                val: 400,
-                time: '2018-01-02 14:00:00'
-              }, {
-                val: 400,
-                time: '2018-01-02 15:00:00'
-              }]
-            }
-          })
-        }
-        middleData.push(middleO)
+      for (let item of historyData.result) {
+        middleData.push(this.assemble(item))
       }
-      this.data = middleData // 保证轮询时 完全替换
-      this.nowDateTime = this.data[this.data.length - 1].state[0].rest.time // 设置当前日期时间
-      this.nowDataIndex = this.data.length - 1 // 设置默认选择 为数组最后一个
+      this.historyData = middleData // 保证轮询时 完全替换
+      this.nowDateTime = moment(this.historyData[this.historyData.length - 1].state[0].rest.time).format('YYYY-MM-DD HH:mm:ss') // 设置当前日期时间
+      this.nowDataIndex = this.historyData.length - 1 // 设置默认选择 为数组最后一个
+
       this.$nextTick(this.initMap) // 保证dom已经更新
     },
-    // 返回配置option
+    // 将单个的 o: { alarm: [], state: [], province: [], gridding: [] } 转化为对应格式的数据
+    assemble(o) {
+      const centreData = {}
+      for (let key in o) {
+        centreData[key] = o[key].map(e => {
+          const extraNowPoint = this.nowPoint === 'synthesis' ? 'aqi' : this.nowPoint // 综合指数 使用 aqi规则计算
+          return {
+            name: key,
+            value: [e.lon, e.lat],
+            itemStyle: { // 报警 只显示红色 其余
+              color: key === 'alarm' ? 'red' : AQIColor(extraNowPoint, e[extraNowPoint])
+            },
+            rest: e, // 自定义信息
+            aqi24: [{ // mock
+              val: Number((Math.random() * 100).toFixed(0)),
+              time: '2018-01-01 16:00:00'
+            }, {
+              val: 20,
+              time: '2018-01-01 17:00:00'
+            }, {
+              val: -1,
+              time: '2018-01-01 18:00:00'
+            }, {
+              val: 60,
+              time: '2018-01-01 19:00:00'
+            }, {
+              val: 70,
+              time: '2018-01-01 20:00:00'
+            }, {
+              val: 400,
+              time: '2018-01-01 21:00:00'
+            }, {
+              val: 400,
+              time: '2018-01-01 22:00:00'
+            }, {
+              val: 400,
+              time: '2018-01-01 23:00:00'
+            }, {
+              val: 400,
+              time: '2018-01-02 00:00:00'
+            }, {
+              val: 400,
+              time: '2018-01-02 01:00:00'
+            }, {
+              val: 400,
+              time: '2018-01-02 02:00:00'
+            }, {
+              val: 400,
+              time: '2018-01-02 03:00:00'
+            }, {
+              val: 400,
+              time: '2018-01-02 04:00:00'
+            }, {
+              val: 400,
+              time: '2018-01-02 05:00:00'
+            }, {
+              val: 400,
+              time: '2018-01-02 06:00:00'
+            }, {
+              val: 400,
+              time: '2018-01-02 07:00:00'
+            }, {
+              val: 400,
+              time: '2018-01-02 08:00:00'
+            }, {
+              val: 400,
+              time: '2018-01-02 09:00:00'
+            }, {
+              val: 400,
+              time: '2018-01-02 10:00:00'
+            }, {
+              val: 400,
+              time: '2018-01-02 11:00:00'
+            }, {
+              val: 400,
+              time: '2018-01-02 12:00:00'
+            }, {
+              val: 400,
+              time: '2018-01-02 13:00:00'
+            }, {
+              val: 400,
+              time: '2018-01-02 14:00:00'
+            }, {
+              val: 400,
+              time: '2018-01-02 15:00:00'
+            }]
+          }
+        })
+      }
+      return centreData
+    },
+    // 初始化 echarts 与 百度地图
+    initMap() {
+      const myChart = this.myChart = echarts.init($('#echartsMap')[0]) // 初始化实例 dom元素
+      myChart.setOption(this.deployOption()) // 配置图表
+      // myChart.on('click', function (params) {
+      //   console.log(params)
+      // })
+      const map = this.map = myChart.getModel().getComponent('bmap').getBMap() // 在echarts与百度地图结合中 获取百度地图实例
+      // 实现保持
+      map.addEventListener('dragend', e => {
+        const center = map.getCenter()
+        this.bmapCZ[0] = center.lng
+        this.bmapCZ[1] = center.lat
+      })
+      map.addEventListener('zoomend', e => {
+        this.bmapCZ[2] = map.getZoom()
+      })
+      debugMap(map)
+      drawPolygon(map)
+    },
+    // 根据现有条件 返回配置option
     deployOption () {
       return {
         bmap: {
@@ -275,7 +297,7 @@ export default {
           name: '报警', // 排名靠前
           type: 'effectScatter', // 扩散式的
           coordinateSystem: 'bmap',
-          data: this.data[this.nowDataIndex].alarm,
+          data: this.nowData.alarm,
           symbolSize: 25,
           symbol: 'circle', // '针头水滴状' 'pin'  '正方形' 'rect' '钻石' 'diamond' '圆形' 'circle' '圆角矩形' 'roundRect' '正三角' 'triangle' '箭头' 'arrow'
           showEffectOn: 'render', // 配置何时显示特效 绘制完成后显示特效
@@ -295,7 +317,7 @@ export default {
           name: '国',
           type: 'scatter',
           coordinateSystem: 'bmap',
-          data: this.data[this.nowDataIndex].state,
+          data: this.nowData.state,
           symbolSize: (val, p) => { // 标记点的大小
             // console.log(p.data.rest[this.nowPoint])
             return p.data.rest[this.nowPoint] === '-' ? 40 : p.data.rest[this.nowPoint] / 20 + 45
@@ -316,7 +338,7 @@ export default {
         //   name: '省',
         //   type: 'scatter',
         //   coordinateSystem: 'bmap',
-        //   data: this.data[this.nowDataIndex].province,
+        //   data: this.historyData[this.nowDataIndex].province,
         //   symbolSize: 25,
         //   symbol: 'rect',
         //   label: {
@@ -334,7 +356,7 @@ export default {
           name: '网格',
           type: 'scatter',
           coordinateSystem: 'bmap',
-          data: this.data[this.nowDataIndex].gridding,
+          data: this.nowData.gridding,
           symbolSize: 35,
           symbol: 'diamond',
           label: {
@@ -349,26 +371,6 @@ export default {
           }
         }]
       }
-    },
-    // 初始化 echarts 与 百度地图
-    initMap() {
-      const myChart = this.myChart = echarts.init($('#echartsMap')[0]) // 初始化实例 dom元素
-      myChart.setOption(this.deployOption()) // 配置图表
-      // myChart.on('click', function (params) {
-      //   console.log(params)
-      // })
-      const map = this.map = myChart.getModel().getComponent('bmap').getBMap() // 在echarts与百度地图结合中 获取百度地图实例
-      // 实现保持
-      map.addEventListener('dragend', e => {
-        const center = map.getCenter()
-        this.bmapCZ[0] = center.lng
-        this.bmapCZ[1] = center.lat
-      })
-      map.addEventListener('zoomend', e => {
-        this.bmapCZ[2] = map.getZoom()
-      })
-      debugMap(map)
-      drawPolygon(map)
     },
     // 重新配置echarts
     setOption() {
@@ -439,6 +441,27 @@ export default {
   #echartsMap {
     width: 100%;
     height: 100%;
+  }
+  .realDataBtn {
+    position: absolute;
+    top: 70px;
+    right: 33px;
+    display: inline-block;
+    height: 36px;
+    line-height: 36px;
+    padding: 0 10px;
+    border: 1px solid #E6E6E6;
+    border-radius: 4px;
+    font-size: 14px;
+    text-align: center;
+    color: #333;
+    background-color: #fff;
+    cursor: pointer;
+    z-index: 100;
+    &.on {
+      color: #0087FF;
+      border-color: #0087FF;
+    }
   }
 }
 // 报警提示框

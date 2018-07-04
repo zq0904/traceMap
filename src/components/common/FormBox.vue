@@ -1,9 +1,9 @@
 <template>
   <transition name="FormBox">
-    <div class="FormBox" v-show="show">
+    <div class="FormBox" v-if="show">
       <div class="FormBox-body">
         <div class="FormBox-body-title">报警规则</div>
-        <el-form ref="form" :model="form" label-width="80px" :disabled="formType === 2">
+        <el-form ref="form" :model="form" :rules="rules" label-width="80px" :disabled="formType === 2">
           <el-form-item label="规则类型 :" prop="dwType">
             <el-select v-model="form.dwType" placeholder="请选择规则类型" :disabled="formType === 3">
               <el-option v-for="(e, i) in type" :key="i" :label="e" :value="Number(i)"></el-option>
@@ -17,15 +17,15 @@
             </el-col>
             <el-col :span="12" class="short">
               <el-form-item :label="form.dwType === 3 ? '断线时长 :' : '连续超标 :'" prop="isDwCount">
-                <el-input v-model="form.isDwCount" :placeholder="form.dwType === 3 ? '输入断线时长' : '输入连续超标'"></el-input>
+                <el-input v-model.number="form.isDwCount" :placeholder="form.dwType === 3 ? '输入断线时长' : '输入连续超标'"></el-input>
               </el-form-item>
               <span>{{form.dwType === 3 ? '小时' : '次数'}}</span>
             </el-col>
           </el-row>
-          <el-row v-show="form.dwType !== 3">
+          <el-row v-if="form.dwType !== 3">
             <el-col :span="12" class="short">
               <el-form-item label="对比粒度 :" prop="dwTime">
-                <el-input v-model="form.dwTime" placeholder="输入对比粒度"></el-input>
+                <el-input v-model.number="form.dwTime" placeholder="输入对比粒度"></el-input>
               </el-form-item>
               <span>分钟</span>
             </el-col>
@@ -37,34 +37,34 @@
               </el-form-item>
             </el-col>
           </el-row>
-          <el-row v-show="form.dwType === 1">
+          <el-row v-if="form.dwType === 1">
             <el-col :span="12">
               <el-form-item label="范围上限 :" prop="lowerLimit">
-                <el-input v-model="form.lowerLimit" placeholder="请输入范围上限"></el-input>
+                <el-input v-model.number="form.lowerLimit" placeholder="请输入范围上限"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="范围下限 :" prop="upperLimit">
-                <el-input v-model="form.upperLimit" placeholder="请输入范围下限"></el-input>
+                <el-input v-model.number="form.upperLimit" placeholder="请输入范围下限"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
-          <el-form-item label="比对设备 :" prop="dwDeviceid" v-show="form.dwType === 1">
+          <el-form-item label="比对设备 :" prop="dwDeviceid" v-if="form.dwType === 1">
             <el-select v-model="form.dwDeviceid" placeholder="请选择比对设备">
               <el-option v-for="(e, i) in device" :key="i" :label="e.label" :value="e.value"></el-option>
             </el-select>
           </el-form-item>
-          <el-row v-show="form.dwType !== 3">
+          <el-row v-if="form.dwType !== 3">
             <el-col :span="12" class="short">
               <el-form-item label="警告门限 :" prop="absoluteLimit">
-                <el-input v-model="form.absoluteLimit" placeholder="输入警告门限"></el-input>
+                <el-input v-model.number="form.absoluteLimit" placeholder="输入警告门限"></el-input>
               </el-form-item>
               <span style="font-size: 12px;padding-left: 2px;">{{units}}</span>
             </el-col>
           </el-row>
           <div class="FormBox-body-btnWrap">
             <SingleButton text="取消" :fixedSize="true" :active="true" @click="cancel"></SingleButton>
-            <SingleButton text="保存" v-show="formType !== 2" :fixedSize="true" :active="true" @click="save"></SingleButton>
+            <SingleButton text="保存" v-if="formType !== 2" :fixedSize="true" :active="true" @click="save"></SingleButton>
           </div>
         </el-form>
       </div>
@@ -112,6 +112,9 @@ export default {
     SingleButton
   },
   data () {
+    const scopeValidator = (rule, value, callback) => {
+      return value >= 0 && value <= 9999 ? callback() : callback(new Error('数字范围在0-9999'))
+    }
     return {
       show: false, // 整个表单的显示
       form: {
@@ -125,16 +128,51 @@ export default {
         absoluteLimit: '', // 警告门限
         lowerLimit: '', // 范围下限
         upperLimit: '' // 范围上限
+      },
+      rules: { // 校验
+        dwName: [
+          { required: true, message: '请输入别名', trigger: ['change', 'blur'] },
+          { max: 20, message: '长度不能超过20个字符', trigger: ['change', 'blur'] }
+        ],
+        dwParam: [
+          { required: true, message: '请选择参数', trigger: 'change' }
+        ],
+        dwDeviceid: [
+          { required: true, message: '请选择比对设备', trigger: 'change' }
+        ],
+        dwTime: [
+          { required: true, message: '请输入对比粒度', trigger: ['change', 'blur'] },
+          { type: 'number', message: '请输入数字类型', trigger: ['change', 'blur'] },
+          { validator: scopeValidator, trigger: ['change', 'blur'] }
+        ],
+        isDwCount: [
+          { required: true, message: '该值为必填项', trigger: ['change', 'blur'] },
+          { type: 'number', message: '请输入数字类型', trigger: ['change', 'blur'] },
+          { validator: scopeValidator, trigger: ['change', 'blur'] }
+        ],
+        absoluteLimit: [
+          { required: true, message: '请输入告警门限', trigger: ['change', 'blur'] },
+          { type: 'number', message: '请输入数字类型', trigger: ['change', 'blur'] },
+          { validator: scopeValidator, trigger: ['change', 'blur'] }
+        ],
+        lowerLimit: [
+          { required: true, message: '请输入范围下限', trigger: ['change', 'blur'] },
+          { type: 'number', message: '请输入数字类型', trigger: ['change', 'blur'] },
+          { validator: scopeValidator, trigger: ['change', 'blur'] }
+        ],
+        upperLimit: [
+          { required: true, message: '请输入范围上限', trigger: ['change', 'blur'] },
+          { type: 'number', message: '请输入数字类型', trigger: ['change', 'blur'] },
+          { validator: scopeValidator, trigger: ['change', 'blur'] }
+        ]
       }
     }
   },
   watch: {
     // 深拷贝传递 必执行
     row(val) {
-      // 2详情 3修改 使用row数据
-      if (this.formType !== 1) {
-        this.form = val
-      }
+      // 2详情 3修改 使用row数据 1添加需重置
+      this.form = val
     },
     // 表单内切换 dwType 重置表单
     'form.dwType': function(val) {
@@ -158,30 +196,33 @@ export default {
     },
     // 保存
     async save() {
-      const {data} = await this.$fetch({
-        url: this.api.alarmListCreate,
-        data: { // 这里由于后台接收多余参数报错问题 只传递这些
-          dwId: this.form.dwId, // 序号
-          dwType: this.form.dwType, // 相对 1  绝对 2  断线 3
-          dwName: this.form.dwName, // 别名
-          dwParam: this.form.dwParam, // 参数
-          dwDeviceid: this.form.dwDeviceid, // 比对设备id
-          dwTime: this.form.dwTime, // 对比粒度
-          isDwCount: this.form.isDwCount, // 连续超标 断线时长
-          absoluteLimit: this.form.absoluteLimit, // 警告门限
-          lowerLimit: this.form.lowerLimit, // 范围下限
-          upperLimit: this.form.upperLimit // 范围上限
+      this.$refs.form.validate(async (valid) => {
+        if (!valid) return
+        const {data} = await this.$fetch({
+          url: this.api.alarmListCreate,
+          data: { // 这里由于后台接收多余参数报错问题 只传递这些
+            dwId: this.form.dwId, // 序号
+            dwType: this.form.dwType, // 相对 1  绝对 2  断线 3
+            dwName: this.form.dwName, // 别名
+            dwParam: this.form.dwParam, // 参数
+            dwDeviceid: this.form.dwDeviceid, // 比对设备id
+            dwTime: this.form.dwTime, // 对比粒度
+            isDwCount: this.form.isDwCount, // 连续超标 断线时长
+            absoluteLimit: this.form.absoluteLimit, // 警告门限
+            lowerLimit: this.form.lowerLimit, // 范围下限
+            upperLimit: this.form.upperLimit // 范围上限
+          }
+        })
+        if (data) {
+          this.resetFields()
+          this.show = false
+          this.$message({
+            message: '保存成功',
+            type: 'success'
+          })
+          this.$emit('refresh')
         }
       })
-      if (data) {
-        this.show = false
-        this.resetFields()
-        this.$message({
-          message: '保存成功',
-          type: 'success'
-        })
-        this.$emit('refresh')
-      }
     },
     // 重置表单
     resetFields(val = 1) { // 再次提示 重置必须有prop属性
@@ -229,12 +270,15 @@ export default {
         }
       }
       .el-form-item {
-        margin-bottom: 6px;
+        margin-bottom: 20px;
         .el-form-item__label {
           width: 74px !important;
           padding-right: 2px;
           text-align: right;
           color: #999;
+          &::before {
+            content: none;
+          }
         }
         .el-input input{
           width: 396px;

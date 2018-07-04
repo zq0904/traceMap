@@ -73,7 +73,7 @@ export default {
           const ePoint = new BMap.Point(e.baiduLongitude, e.baiduLatitude)
           // 添加封装好的 自定义覆盖物
           this.map.addOverlay(new ComplexCustomOverlay(
-            ePoint, 'http://iconfont.alicdn.com/t/1520749823689.jpg@100h_100w.jpg', '距离: ' + (Number(e.distance) >= 1000 ? Number(e.distance / 1000).toFixed(1) + '公里' : e.distance + '米')
+            ePoint, 'http://iconfont.alicdn.com/t/1520749823689.jpg@100h_100w.jpg', '距离: ' + (Number(e.distance) >= 1000 ? (e.distance / 1000).toFixed(1) + '公里' : (e.distance - 0).toFixed(0) + '米')
           ))
           // 添加 透明的marker点 以便 触发infoWindow
           const myIcon = new BMap.Icon('https://s1.ax1x.com/2018/05/23/CRjQ7n.png', new BMap.Size(30, 44), {

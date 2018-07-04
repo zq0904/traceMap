@@ -10,6 +10,8 @@ import $http from './lib/httpPlugin' // 简单封装$ftach
 import sessionStorage from './lib/sessionStoragePlugin' // 兼容safari无痕模式
 import formVerify from './lib/formVerify' // 自定义校验
 
+// 全局注册基础组件
+import './components/base/globalRegister'
 // 引入样式
 import './assets/css/reset_m.css'
 import './assets/fonts/iconfont.css'

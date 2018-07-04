@@ -2,11 +2,12 @@
 import axios from 'axios'
 import qs from 'qs'
 import _ from 'lodash'
+import store from '../store'
 
 const $httpPlugin = {}
 // 初始化axios
 let instance = axios.create({
-  timeout: 60000
+  timeout: 120000 // 超时时间2分钟
 })
 
 $httpPlugin.install = function (Vue) {
@@ -20,7 +21,8 @@ $httpPlugin.install = function (Vue) {
           headers = _.merge(headers, {
             // 需要额外封装进请求头中的参数
             'version': '1.0',
-            't': new Date().getTime()
+            't': new Date().getTime(),
+            'token': store.state.userInfo.baseInfo.token
           })
           return instance({
             method: type,
@@ -32,7 +34,7 @@ $httpPlugin.install = function (Vue) {
             const status = data.data.status
             // // 1008 token失效的处理
             // if (status === 1008) {
-            //   // 清除 用户的登录信息
+            //   // 清除 用户的登录信息 （本地存储 和 vuex中的）
             //   // 去登录
             //   return false
             // }

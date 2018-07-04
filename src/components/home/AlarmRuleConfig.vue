@@ -257,7 +257,18 @@ export default {
     cList(val) {
       console.log('添加', val)
       this.formType = 1
-      this.row = {}
+      this.row = {
+        dwId: '', // 序号
+        dwType: 1, // 相对 1  绝对 2  断线 3
+        dwName: '', // 别名
+        dwParam: '', // 参数
+        dwDeviceid: '', // 比对设备id
+        dwTime: '', // 对比粒度
+        isDwCount: '', // 连续超标 断线时长
+        absoluteLimit: '', // 警告门限
+        lowerLimit: '', // 范围下限
+        upperLimit: '' // 范围上限
+      }
       this.$refs.FormBox.show = true
     },
     // 详情
