@@ -4,8 +4,8 @@
       <div class="content1">
         <h2>用户登录</h2>
         <form id="form" @submit.prevent="loginRequest">
-          <input type="text" v-model="form.username" reg="email" placeholder="请输入邮箱">
-          <input type="password" v-model="form.password" reg="registerPwd" placeholder="请输入密码" auto-complete="off">
+          <input type="text" v-model="form.username" reg="loginUserName" placeholder="请输入账号">
+          <input type="password" v-model="form.password" reg="loginPassword" placeholder="请输入密码" auto-complete="off">
           <div class="button-row">
             <input type="submit" class="sign-in" value="登录">
             <input type="reset" class="reset" value="重置">
@@ -48,19 +48,23 @@ export default {
     ...mapActions([
       'updataUserInfo'
     ]),
+    // 登录请求
     async loginRequest() {
+      // 校验
       const text = this.check('form')
       if (text) return this.$message.error(text)
 
       const {data} = await this.$fetch({
-        url: this.api.weatherInfo,
+        url: this.api.login,
         data: this.form
       })
       if (data) {
-        // token 存储进vuex + 本地存储  跳到首页
-        const baseInfo = { token: 123456798 }
+        // console.log(data)
+        // 存储token 本地存储 + vuex  跳到首页
+        const token = data.result.tokenType + ' ' + data.result.accessToken
+        window.localStorage.token = token
         this.updataUserInfo({
-          baseInfo: baseInfo
+          baseInfo: { token }
         })
         this.$router.push('/')
       }

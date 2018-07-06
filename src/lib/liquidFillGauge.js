@@ -22,26 +22,26 @@ export const liquidFillGaugeDefaultSettings = () => { // 液体填满计默认�
     displayPercent: true, // 如果是true，则在值之后显示%符号
     textColor: '#045681', // 当波不重叠时，值文本的颜色
     waveTextColor: '#A4DBf8', // 当波重叠时，数值文本的颜色
-    // 自定义
+    // 自定义 扩展部分
+    isShowLine: true, // 是否显示警戒线
+    lineValue: 100, // 警戒线考核值
     lineWidth: 2, // 线的宽度
     lineInterval: 5, // 虚线间隔
-    lineColor: '#ff4444', // 线颜色
+    lineColor: '#D31949', // 线颜色
     lineText: '警戒线文本', // 警戒线文本
-    lineTextSize: 12, // 警戒线文本大小
-    lineTextColor: '#ff4444' // 警戒线文本颜色
-
+    lineTextSize: 16, // 警戒线文本大小
+    lineTextColor: '#F000FF' // 警戒线文本颜色
   }
 }
 
-export const loadLiquidFillGauge = (elementId, value, checkvalue, config) => {
-  if (config == null) config = liquidFillGaugeDefaultSettings()
+export const loadLiquidFillGauge = (elementId, value, config) => {
+  if (!config) config = liquidFillGaugeDefaultSettings()
 
   var gauge = d3.select('#' + elementId)
-  var radius = Math.min(parseInt(gauge.style('width')), parseInt(gauge.style('height'))) / 2
-  var locationX = parseInt(gauge.style('width')) / 2 - radius
+  var radius = Math.min(parseInt(gauge.style('width')), parseInt(gauge.style('height'))) / 2 // 元素的宽高 取最小值 / 2
+  var locationX = parseInt(gauge.style('width')) / 2 - radius // 中心点 xy 坐标
   var locationY = parseInt(gauge.style('height')) / 2 - radius
-  var fillPercent = Math.max(config.minValue, Math.min(config.maxValue, value)) / config.maxValue
-  var checkfillPercent = Math.max(config.minValue, Math.min(config.maxValue, checkvalue)) / config.maxValue
+  var fillPercent = Math.max(config.minValue, Math.min(config.maxValue, value)) / config.maxValue // 当前值限制在 最大值 和 最小值之前 / 最大值 计算比例
 
   var waveHeightScale
   if (config.waveHeightScaling) {
@@ -154,28 +154,32 @@ export const loadLiquidFillGauge = (elementId, value, checkvalue, config) => {
     .style('fill', config.waveColor)
 
   // 数值警戒线
-  var r = fillCircleRadius // 圆半径
-  var w2 = Math.sqrt(Math.pow(r, 2) - Math.pow(r - 2 * r * checkfillPercent, 2)) // 数学计算
-  gaugeGroup.append('line')
-    .datum(data)
-    .attr('class', 'warnLine')
-    .attr('x1', radius - w2)
-    .attr('x2', radius + w2)
-    .attr('y1', waveRiseScale(checkfillPercent))
-    .attr('y2', waveRiseScale(checkfillPercent))
-    .style('stroke-width', config.lineWidth)
-    .style('stroke-dasharray', config.lineInterval)
-    .style('stroke', config.lineColor)
+  if (config.isShowLine) {
+    var checkfillPercent = Math.max(config.minValue, Math.min(config.maxValue, config.lineValue)) / config.maxValue
+    var r = fillCircleRadius // 圆半径
+    var w2 = Math.sqrt(Math.pow(r, 2) - Math.pow(r - 2 * r * checkfillPercent, 2)) // 警戒线长 一半
+    // 警戒线
+    gaugeGroup.append('line')
+      .datum(data)
+      .attr('class', 'warnLine')
+      .attr('x1', radius - w2)
+      .attr('x2', radius + w2)
+      .attr('y1', waveRiseScale(checkfillPercent))
+      .attr('y2', waveRiseScale(checkfillPercent))
+      .style('stroke-width', config.lineWidth)
+      .style('stroke-dasharray', config.lineInterval)
+      .style('stroke', config.lineColor)
 
-  // 警戒线文字
-  gaugeGroup.append('text')
-    .text(config.lineText)
-    .attr('class', 'textWarn')
-    .attr('text-anchor', 'middle')
-    .attr('font-size', config.lineTextSize + 'px')
-    .style('fill', config.lineTextColor)
-    .attr('transform', 'translate(' + radius + ',' + (waveRiseScale(checkfillPercent) - 10) + ')')
-  // console.log(checkfillPercent, waveRiseScale(checkfillPercent), waveRiseScale(checkfillPercent) - 10)
+    // 警戒线文字
+    gaugeGroup.append('text')
+      .text(config.lineText)
+      .attr('class', 'textWarn')
+      .attr('text-anchor', 'middle')
+      .attr('font-size', config.lineTextSize + 'px')
+      .style('fill', config.lineTextColor)
+      .attr('transform', 'translate(' + radius + ',' + ((3 / 2 - checkfillPercent) * radius + 5) + ')') // 5 为误差值
+  }
+
   // Text where the wave does overlap.
   var text2 = fillCircleGroup.append('text')
     .text(textRounder(textStartValue) + percentText)

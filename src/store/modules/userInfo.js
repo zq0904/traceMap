@@ -3,7 +3,11 @@ import _ from 'lodash'
 
 const state = {
   baseInfo: {
-    token: ''
+    name: '',
+    status: '',
+    avatar: '',
+    roles: [],
+    token: window.localStorage.token || ''
   }
 }
 
@@ -18,6 +22,9 @@ const mutations = {
   // 更新用户信息
   [UPDATAUSERINFO] (state, obj) { // state 为 局部状态
     _.merge(state, obj)
+    if (obj.baseInfo && obj.baseInfo.roles && obj.baseInfo.roles.length) {
+      state.baseInfo.roles = obj.baseInfo.roles
+    }
   }
 }
 

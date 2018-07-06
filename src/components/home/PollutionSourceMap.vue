@@ -145,7 +145,20 @@ export default {
       // 使用 过滤后的数据
       this.fData.forEach(item => {
         const itemPoint = new BMap.Point(item.baiduLongitude, item.baiduLatitude)
-        const myIcon = new BMap.Icon('https://s1.ax1x.com/2018/06/26/PPkGtA.png', new BMap.Size(30, 41.25), {
+        // 临时图床链接
+        let url = ''
+        switch (item.handlingStatus) {
+          case '0': case '1':
+            url = 'https://s1.ax1x.com/2018/07/06/PZM5Nj.png'
+            break
+          case '2':
+            url = 'https://s1.ax1x.com/2018/07/06/PZMI4s.png'
+            break
+          case '3':
+            url = 'https://s1.ax1x.com/2018/07/06/PZM4EQ.png'
+            break
+        }
+        const myIcon = new BMap.Icon(url, new BMap.Size(30, 41.25), {
           imageSize: new BMap.Size(30, 41.25) // background-size
         })
         const marker = new BMap.Marker(itemPoint, {icon: myIcon})

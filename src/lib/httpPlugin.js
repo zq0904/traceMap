@@ -3,6 +3,7 @@ import axios from 'axios'
 import qs from 'qs'
 import _ from 'lodash'
 import store from '../store'
+import router from '../router'
 
 const $httpPlugin = {}
 // 初始化axios
@@ -22,7 +23,7 @@ $httpPlugin.install = function (Vue) {
             // 需要额外封装进请求头中的参数
             'version': '1.0',
             't': new Date().getTime(),
-            'token': store.state.userInfo.baseInfo.token
+            'authorization': store.state.userInfo.baseInfo.token
           })
           return instance({
             method: type,
@@ -32,12 +33,17 @@ $httpPlugin.install = function (Vue) {
           }).then(data => {
             // console.log(data)
             const status = data.data.status
-            // // 1008 token失效的处理
-            // if (status === 1008) {
-            //   // 清除 用户的登录信息 （本地存储 和 vuex中的）
-            //   // 去登录
-            //   return false
-            // }
+            // token失效的处理 清除用户的登录信息 去登录
+            if (status === 1008) {
+              Vue.prototype.$message({
+                message: data.data.msg,
+                type: 'warning'
+              })
+              window.localStorage.removeItem('token')
+              store.dispatch('updataUserInfo', { baseInfo: { token: '' } })
+              router.push('/login')
+              return false
+            }
             if (status !== 1) { // 只要 status状态不为1 信息由后端指定
               Vue.prototype.$message({
                 message: data.data.msg,

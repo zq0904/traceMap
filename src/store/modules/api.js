@@ -8,6 +8,8 @@ let p3 = '/cc'
 
 // 接口地址
 const state = {
+  login: p2 + '/oauthWeb/token', // 用户登录
+  logout: p2 + '/oauthWeb/logout', // 用户登出
   weatherInfo: p2 + '/data/reTimeWeather', // 实时天气信息
   AirMap: p2 + '/data/airMap', // 空气地图
   AirMapHistory: p3 + '/data/selectHistory', // 空气地图48小时历史回放
