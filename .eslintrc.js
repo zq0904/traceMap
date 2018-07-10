@@ -24,6 +24,7 @@ module.exports = {
     // allow async-await
     'generator-star-spacing': 'off',
     'space-before-function-paren': 0, // 去除 函数()前必须加空格 规则
+    'no-return-assign': 0, // 去除 赋值返回语句
     // allow debugger during development
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off'
   }

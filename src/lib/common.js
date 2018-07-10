@@ -4,6 +4,8 @@ import moment from 'moment'
 
 // jQ清空form表单 removeForm('#form1')
 export const removeForm = formId => $(formId + ' :input').not(':button, :submit, :reset').val('').prop({ 'checked': false, 'selected': false })
+// 根据 最近天数 获取 时间段 getTimeByDay(1) -> [1531115921607, 1531202358086]
+export const getTimeByDay = day => [Date.now() - 3600 * 1000 * 24 * day, Date.now()]
 // 污染物名字 转换 大写  nameUpperCase(pm25) -> PM2.5  O3_E_H -> O3-E-H  无 -> 无
 export const nameUpperCase = name => name.trim() === 'pm25' ? 'PM2.5' : name.trim().toLocaleUpperCase().replace(/_/g, '-')
 // 污染物名字 转换 小写  nameLowerCase(PM2.5) -> pm25

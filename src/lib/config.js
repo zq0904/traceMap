@@ -17,6 +17,7 @@ export const drawPolygon = (map, fillColor = 'rgba(0,0,0,0)', strokeColor = 'rgb
       let pointArray = []
       for (let i = 0; i < count; i++) {
         const ply = new BMap.Polygon(rs.boundaries[i], { fillColor, strokeWeight: 2, strokeColor }) // 创建多边形
+        ply.addEventListener('click', () => map.closeInfoWindow()) // 解决 由于绘制行政区 导致的infowindow不能自动关闭问题
         map.addOverlay(ply) // 添加覆盖物
         pointArray = pointArray.concat(ply.getPath())
       }

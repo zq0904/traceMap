@@ -1,7 +1,7 @@
 <template>
   <div class="air_vessel" v-loading="loading">
     <Weather></Weather>
-    <Btns @select-point="selectPoint"></Btns>
+    <Btns :point.sync="nowPoint"></Btns>
     <MapTypeControl :map="map"></MapTypeControl>
     <span class="realDataBtn" :class="{'on': isShowRealData}" @click.stop="isShowRealData = true">实时数据</span>
     <div id="echartsMap"></div>
@@ -59,6 +59,10 @@ export default {
     // 再次显示 实时数据 仍更新视图
     isShowRealData(val) {
       if (val) { this.afreshMap() }
+    },
+    // 监听point值 更新视图
+    nowPoint() {
+      this.afreshMap()
     }
   },
   computed: {
@@ -74,18 +78,13 @@ export default {
     await this.request()
   },
   methods: {
-    // Btns子组件 1.修改point值 2.更新视图
-    selectPoint(val) {
-      this.nowPoint = val
-      this.afreshMap()
-    },
     // AirPlay子组件 1.修改当前应选中data索引 2.切换为历史数据 3.更新视图
     nowSelectIndex(val) {
       this.nowDataIndex = val - 1
       this.isShowRealData = false
       this.afreshMap()
     },
-    // 更新视图 根据当前数据 去重新计算颜色(禁计算当前数据的颜色) 重新配置echarts
+    // 更新视图 根据当前数据 去重新计算颜色(仅计算当前数据的颜色) 重新配置echarts
     afreshMap() {
       for (let key in this.nowData) {
         if (key === 'alarm') continue // 警报不计算颜色 初始红色 已经正确
@@ -212,7 +211,16 @@ export default {
     // 初始化 echarts 与 百度地图
     initMap() {
       const myChart = this.myChart = echarts.init($('#echartsMap')[0]) // 初始化实例 dom元素
-      myChart.setOption(this.deployOption()) // 配置图表
+      myChart.setOption(Object.assign(this.deployOption(), { // 配置图表 只有在初始化的时候 配置bmap(为解决 拖拽带来的bmap点位回弹问题)
+        bmap: {
+          center: [this.bmapCZ[0], this.bmapCZ[1]], // 地图中心
+          zoom: this.bmapCZ[2], // 地图级别
+          roam: true, // 是否开启 可拖拽 可缩放
+          mapStyle: { // 自定义样式
+            styleJson
+          }
+        }
+      }))
       // myChart.on('click', function (params) {
       //   console.log(params)
       // })
@@ -229,17 +237,9 @@ export default {
       debugMap(map)
       drawPolygon(map)
     },
-    // 根据现有条件 返回配置option
+    // 根据现有条件 返回配置option (不含bmap配置项 为解决 拖拽带来的bmap点位回弹问题)
     deployOption () {
       return {
-        bmap: {
-          center: [this.bmapCZ[0], this.bmapCZ[1]], // 地图中心
-          zoom: this.bmapCZ[2], // 地图级别
-          roam: true, // 是否开启 可拖拽 可缩放
-          mapStyle: { // 自定义样式
-            styleJson
-          }
-        },
         tooltip: { // 是否显示提示工具
           triggerOn: 'click', // 点击触发
           confine: true, // 是否将 tooltip 框限制在图表的区域内

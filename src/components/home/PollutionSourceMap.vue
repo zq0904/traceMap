@@ -24,9 +24,6 @@
         </el-option>
       </el-select>
     </div>
-    <!-- <div class="color-info">
-      <p v-if="item.value !== ''" v-for="(item, index) in status" :key="index">{{item.color}}: {{item.name}}</p>
-    </div> -->
     <div class="pollutionSource-vessel-day">
       <span class="pollutionSource-vessel-day-button"
         :class="{'on': isTodayAdd}"
@@ -271,31 +268,6 @@ export default {
       padding: 0 18px 0 12px;
       font-size: 12px;
     }
-  }
-  // 覆盖infoWindow样式
-  .BMap_pop {
-    > div {
-      display: none;
-    }
-    // 主体样式显示 偏移
-    > div:nth-child(9) {
-      display: block;
-      margin: 35px -17px;
-    }
-    // 删除按钮
-    > img:first-of-type {
-      top: 63px !important;
-      left: 475px !important;
-      width: 20px !important;
-      height: 20px !important;
-      border: 1px solid #8E8F91 !important;
-      border-radius: 50% !important;
-      padding: 2px !important;
-    }
-  }
-  // 去阴影
-  .BMap_shadow {
-    display: none;
   }
 }
 

@@ -62,8 +62,7 @@ export default {
         })
         const marker = new BMap.Marker(itemPoint, {icon: myIcon})
         const infoWindow = new BMap.InfoWindow(airDetails(item), {
-          // width: 420,
-          title: '<h4 style="text-align: center; color: transparent;">标题</h4>' // 信息窗口标题
+          // width: 420
         })
         marker.addEventListener('click', () => this.map.openInfoWindow(infoWindow, itemPoint))
         this.map.addOverlay(marker)
@@ -81,8 +80,7 @@ export default {
           })
           const marker = new BMap.Marker(ePoint, {icon: myIcon})
           const infoWindow = new BMap.InfoWindow(pollutionInfoWindow(e), {
-            // width: 530,
-            title: '<h4 style="text-align: center;font-size: 18px;padding-bottom: 5px;border-bottom: 1px solid #000;">' + e.polluteName + '</h4>' // 信息窗口标题
+            // width: 530
           })
           marker.addEventListener('click', () => this.map.openInfoWindow(infoWindow, ePoint))
           this.map.addOverlay(marker)
@@ -105,72 +103,28 @@ export default {
     width: 100%;
     height: 100%;
   }
+  // 覆盖infoWindow样式
+  .BMap_pop {
+    // 主体样式显示 偏移
+    > div:nth-child(9) {
+      margin: 47px -17px;
+      overflow: visible;
+    }
+  }
+  .air-tooltip {
+    // 三角
+    &::before {
+      position: absolute;
+      content: '';
+      left: 50%;
+      bottom: -16px;
+      transform: translateX(-50%);
+      border: 8px solid transparent;
+      border-left: 9px solid transparent;
+      border-right: 9px solid transparent;
+      border-top-color: #fff;
+    }
+  }
 }
 
-// 正常提示框
-.details {
-  @include c3(display, flex);
-  @include c3(flex-wrap, wrap);
-  @include c3(justify-content, space-between);
-  @include c3(align-content, flex-start);
-  width: 420px;
-  padding: 20px;
-  text-align: center;
-  background-color: rgba(0,0,0,.7);
-  color: #000;
-  .i {
-    height: 44px;
-    margin-bottom: 8px;
-    background-color: #EAEAEA;
-  }
-  .item1 {
-    width: 188px;
-    div {
-      height: 27px;
-      line-height: 27px;
-      font-size: 21px;
-    }
-    p {
-      height: 17px;
-      line-height: 17px;
-      font-size: 10px;
-    }
-  }
-  .item2 {
-    width: 92px;
-    div {
-      height: 20px;
-      line-height: 20px;
-      font-size: 10px;
-    }
-    p {
-      height: 24px;
-      line-height: 24px;
-      font-size: 14px;
-    }
-  }
-  .item6 {
-    width: 60px;
-    div {
-      height: 20px;
-      line-height: 20px;
-      font-size: 10px;
-    }
-    p {
-      height: 24px;
-      line-height: 24px;
-      font-size: 14px;
-    }
-  }
-  .item3 {
-    width: 124px;
-    background-color: #F8F8F8;
-    margin-bottom: 0px;
-    p {
-      height: 22px;
-      line-height: 22px;
-      font-size: 14px;
-    }
-  }
-}
 </style>

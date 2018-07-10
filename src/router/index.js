@@ -35,7 +35,7 @@ export const asyncRouterMap = [
     path: '/',
     component: Home,
     children: [
-      { path: '', component: HomePage },
+      { path: '', component: HomePage, meta: { roles: ['disabled', 'admin'] } },
       { path: 'air', component: AirMap, meta: { roles: ['disabled', 'admin'] } },
       { path: 'air/list', component: AirList, meta: { roles: ['disabled', 'admin'] } },
       { path: 'traceSource', component: TraceSourceMap, meta: { roles: ['disabled', 'admin'] } },
