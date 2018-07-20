@@ -1,6 +1,14 @@
 <template>
   <div class="test">
-
+    <BaseButton v-if="per('990100')">微站</BaseButton><br>
+    <BaseButton v-if="per('990200')">国控</BaseButton><br>
+    <BaseButton v-if="per('990300')">逻辑</BaseButton><br>
+    <br>
+    <br>
+    <br>
+    <BaseButton v-if="per('990400')">整体保存</BaseButton><br>
+    <BaseAa v-if="per('990500')"></BaseAa>
+    <BaseBb v-if="per('990600')"></BaseBb>
   </div>
 </template>
 <script>
@@ -21,7 +29,7 @@ export default {
     ...mapGetters({
       api: 'getApi',
       test: 'getTest',
-      regex: 'getRegex'
+      regexp: 'getRegexp'
     })
   },
   async created() {

@@ -46,28 +46,17 @@ export default {
   },
   methods: {
     ...mapActions([
-      'updataUserInfo'
+      'login'
     ]),
     // 登录请求
-    async loginRequest() {
+    loginRequest() {
       // 校验
       const text = this.check('form')
       if (text) return this.$message.error(text)
-
-      const {data} = await this.$fetch({
-        url: this.api.login,
-        data: this.form
-      })
-      if (data) {
-        // console.log(data)
-        // 存储token 本地存储 + vuex  跳到首页
-        const token = data.result.tokenType + ' ' + data.result.accessToken
-        window.localStorage.token = token
-        this.updataUserInfo({
-          baseInfo: { token }
-        })
+      // 登录成功跳首页
+      this.login(this.form).then(response => {
         this.$router.push('/')
-      }
+      })
     }
   }
 }

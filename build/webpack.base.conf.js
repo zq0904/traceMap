@@ -23,9 +23,6 @@ module.exports = {
   context: path.resolve(__dirname, '../'),
   // npm install --save babel-polyfill 配置 E6 Api 转 E5
   entry: ["babel-polyfill", './src/main.js'], // 打包的入口文件路径
-  // entry: {
-  //   app: './src/main.js'
-  // },
   output: {
     path: config.build.assetsRoot,
     filename: '[name].js',
@@ -33,7 +30,6 @@ module.exports = {
       config.build.assetsPublicPath :
       config.dev.assetsPublicPath
   },
-  devtool: 'inline-source-map', // source map 错误和警告 在源文件中的映射位置
   externals: { // 防止将import的包打入bundle中 而是在运行时直接用全局变量
     // a: 'zhaoqi' 当我们去import ZQ from 'a' 不去从node_modules里找依赖 而直接使用全局变量zhaoqi
     'BMap': 'BMap',

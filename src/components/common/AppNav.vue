@@ -3,7 +3,7 @@
     <a class="logo" href="#">
       <div class="logo-img" style="width: 50px;height: 50px;"></div>溯源地图
     </a>
-    <el-button type="danger" @click.stop="logout">退出</el-button>
+    <el-button type="danger" @click.stop="quit">退出</el-button>
     <ul class="pull-right">
       <li class="navbar-li">Aimer<span class="triangle"></span></li>
       <li class="navbar-li">通知</li>
@@ -25,19 +25,12 @@ export default {
   },
   methods: {
     ...mapActions([
-      'updataUserInfo'
+      'logout'
     ]),
-    async logout() {
-      const {data} = await this.$fetch({ url: this.api.logout })
-      if (data) {
-        window.localStorage.removeItem('token')
-        this.updataUserInfo({
-          baseInfo: {
-            token: ''
-          }
-        })
+    quit() {
+      this.logout().then(response => {
         this.$router.push('/login')
-      }
+      })
     }
   }
 }

@@ -2,9 +2,9 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import test from './modules/test' // 测试
 import api from './modules/api' // 接口地址
-import regex from './modules/regex' // 正则校验规则
+import permission from './modules/permission' // 权限表
+import regexp from './modules/regexp' // 正则校验规则
 import userInfo from './modules/userInfo' // 用户信息
-import asyncRouterMap from './modules/asyncRouterMap' // 异步路由映射
 import getters from './getters' // 派生模块路径
 
 Vue.use(Vuex)
@@ -13,9 +13,9 @@ const store = new Vuex.Store({
   modules: { // state actions异步 mutations同步
     test,
     api,
-    regex,
-    userInfo,
-    asyncRouterMap
+    permission,
+    regexp,
+    userInfo
   },
   getters
 })

@@ -19,7 +19,10 @@ const state = {
   loginPassword: { reg: /^[0-9A-Za-z_-]{5,16}$/, tips: '密码长度应大于为5位，且不包含非法字符', required: '请输入密码' }, // 登录 密码
 
   // 截取类
-  echoPhone: /(\d{3})(\d{4})(\d{4})/ // 手机回显
+  echoPhone: /(\d{3})(\d{4})(\d{4})/, // 手机回显
+  routesCode: /^(0[1-9]|[1-9][0-9])0000$/, // 路由级权限 code码
+  componentCode: /^\d{2}(0[1-9]|[1-9][0-9])00$/, // 组件级权限 code码
+  btnsCode: /^\d{4}(0[1-9]|[1-9][0-9])$/ // 按钮级权限 code码
 }
 
 const actions = {}

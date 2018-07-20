@@ -6,6 +6,7 @@ const formVerify = {}
 
 formVerify.install = function(Vue) {
   Object.defineProperties(Vue.prototype, {
+    // this.check(rootSelector, theRestSelector) 校验通过返回undefined 校验不通过返回String文本提示语
     check: { // 全局校验方法 支持非表单元素 支持多reg=","校验 支持一个 reg有2个检验规则
       get() {
         return (rootSelector, theRestSelector) => {
@@ -17,15 +18,15 @@ formVerify.install = function(Vue) {
             const keys = item.attr('reg').split(',') // 有多少个校验规则
             const val = inputArr.includes(all[i].nodeName.toLocaleLowerCase()) ? item.val().trim() : item.text() // 表单元素val() 其余text() 需要校验的字段
             for (let key of keys) {
-              const obj = this.$store.state.regex[key]
-              const regex = obj['reg'] // 正则表达式 可能是数组
+              const obj = this.$store.state.regexp[key]
+              const regexp = obj['reg'] // 正则表达式 可能是数组
               if (val === '') return obj['required'] // 非空校验
-              if (_.isArray(regex)) {
-                for (let o of regex) {
+              if (_.isArray(regexp)) {
+                for (let o of regexp) {
                   if (!o['reg'].test(val)) return o['tips']
                 }
               } else {
-                if (!regex.test(val)) return obj['tips']
+                if (!regexp.test(val)) return obj['tips']
               }
             }
           }

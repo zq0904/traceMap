@@ -7,10 +7,10 @@
     <section class="home-wrap">
       <section class="home-amount">
         <div class="home-amount-left">
-          <div class="home-amount-left-item" v-for="(e, i) in latelyInfo" :key="i">
+          <div class="home-amount-left-item" v-for="(item, index) in latelyInfo" :key="index">
             <div class="home-amount-left-item-p">
-              <h6 class="home-amount-left-item-p-h6">{{e.text}}</h6>
-              <span class="home-amount-left-item-p-span">{{e.value}}<em class="home-amount-left-item-p-span-em">{{i < 3 ? '次' : '个'}}</em></span>
+              <h6 class="home-amount-left-item-p-h6">{{item.text}}</h6>
+              <span class="home-amount-left-item-p-span">{{item.value}}<em class="home-amount-left-item-p-span-em">{{ index > 2 ? '个' : '次' }}</em></span>
             </div>
           </div>
         </div>

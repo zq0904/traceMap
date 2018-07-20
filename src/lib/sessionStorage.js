@@ -1,20 +1,19 @@
 // safari手机开启无痕模式 localStroage，sessionStorage虽然存在但是不让使用
 // 不支持则保存到cookie中
 
-// 添加cookie
-function addCookie(name, value) {
-  let exdate = new Date()
-  exdate.setDate(exdate.getDate() + 50 * 365)
-  document.cookie = name + '=' + escape(value) + ';expires=' + exdate.toGMTString()
+// 添加cookie  timestamp 到期日时间戳 默认值一年后
+export const setCookie = (name, val, timestamp = Date.now() + 1000 * 60 * 60 * 24 * 365) => {
+  const t = new Date(timestamp)
+  document.cookie = name + '=' + val + ';' + 'expires=' + t.toUTCString()
 }
 // 获取cookie
-function getCookie(name) {
+export const getCookie = name => {
   const reg = new RegExp('(^| )' + name + '=([^;]*)(;|$)')
   const arr = document.cookie.match(reg)
   return arr ? unescape(arr[2]) : null
 }
 // 删除cookie
-function delCookie(name) {
+export const delCookie = name => {
   if (getCookie(name) !== null) {
     document.cookie = name + '=;'
   }
@@ -33,7 +32,7 @@ export default {
     return localOk
   },
   setItem: function(key, val) {
-    this.localOk() ? sessionStorage.setItem(key, val) : addCookie(this.prefix + key, val)
+    this.localOk() ? sessionStorage.setItem(key, val) : setCookie(this.prefix + key, val)
   },
   getItem: function(key) {
     return (this.localOk() ? sessionStorage.getItem(key) : getCookie(this.prefix + key)) || null

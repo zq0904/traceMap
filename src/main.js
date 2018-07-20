@@ -6,7 +6,8 @@ import router from './router'
 import store from './store'
 import VueLazyload from 'vue-lazyload'
 import ElementUI from 'element-ui' // 引入element-ui
-import $http from './lib/httpPlugin' // 简单封装$ftach
+import $http from './lib/httpPlugin' // 封装$ftach
+import permission from './lib/permission' // 权限校验
 import sessionStorage from './lib/sessionStoragePlugin' // 兼容safari无痕模式
 import formVerify from './lib/formVerify' // 自定义校验
 
@@ -23,6 +24,7 @@ import '../node_modules/moment/locale/zh-cn' // moment国际化
 Vue.use(ElementUI)
 Vue.use(VueLazyload) // 使用 :src="" 换成 v-lazy=""
 Vue.use($http)
+Vue.use(permission)
 Vue.use(sessionStorage)
 Vue.use(formVerify)
 
