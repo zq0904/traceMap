@@ -63,48 +63,47 @@ export default {
 
 </script>
 <style lang="scss">
-
-  .login {
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    background: url(../assets/images/banner.jpg) no-repeat;
-    background-attachment: fixed;
-    background-position: center;
-    background-size: cover;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    // 修改placeholder样式
-    input::-webkit-input-placeholder {
-      color: #fff;
-      opacity: 1;
-    }
-    input::-moz-placeholder {
-      color: #fff;
-      opacity: 1;
-    }
-    input:-ms-input-placeholder {
-      color: #fff;
-      opacity: 1;
-    }
-    input::placeholder {
-      color: #fff;
-      opacity: 1;
-    }
-    .log {
+.login {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background: url(../assets/images/banner.jpg) no-repeat;
+  background-attachment: fixed;
+  background-position: center;
+  background-size: cover;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  // 修改placeholder样式
+  input::-webkit-input-placeholder {
+    color: #fff;
+    opacity: 1;
+  }
+  input::-moz-placeholder {
+    color: #fff;
+    opacity: 1;
+  }
+  input:-ms-input-placeholder {
+    color: #fff;
+    opacity: 1;
+  }
+  input::placeholder {
+    color: #fff;
+    opacity: 1;
+  }
+  .log {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate3d(-50%, -50%, 0);
+    .content1 {
+      width: 600px;
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate3d(-50%, -50%, 0);
-      .content1 {
-        width: 600px;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate3d(-50%, -50%, 0);
-      }
     }
   }
+}
 </style>

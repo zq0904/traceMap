@@ -34,11 +34,11 @@ const state = {
   setLinkSave: p2 + '/warn/saveDeviceRelatedDwId' // 报警规则 设置关联 保存
 }
 
-const actions = {}
 const mutations = {}
+const actions = {}
 
 export default {
   state,
-  actions,
-  mutations
+  mutations,
+  actions
 }

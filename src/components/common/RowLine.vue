@@ -19,8 +19,8 @@ export default {
 </script>
 
 <style lang="scss">
-  .rowLine {
-    width: 100%;
-    height: 20px;
-  }
+.rowLine {
+  width: 100%;
+  height: 20px;
+}
 </style>

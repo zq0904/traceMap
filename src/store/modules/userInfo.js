@@ -19,20 +19,7 @@ const state = {
 const mutations = {
   // 更新用户信息
   [UPDATAUSERINFO](state, obj) { // state 为 局部状态
-    // 对象一律merge合并 数组采取替换
-    _.merge(state, obj)
-    if (obj.roles && obj.roles.length) {
-      state.roles = obj.roles
-    }
-    if (obj && obj.routes && obj.routes.length) {
-      state.routes = obj.routes
-    }
-    if (obj && obj.components && obj.components.length) {
-      state.components = obj.components
-    }
-    if (obj && obj.btns && obj.btns.length) {
-      state.btns = obj.btns
-    }
+    _.assign(state, obj)
   },
   // 设置token
   [SETTOKEN](state, token) {

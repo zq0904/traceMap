@@ -347,90 +347,95 @@ export default {
 </script>
 
 <style lang="scss">
-@import '../../assets/scss/app';
-
-  .AlarmRuleConfig {
-    &-wrapBtn {
-      position: absolute;
-      top: 14px;
-      right: 20px;
-      span {
-        float: left;
-      }
-      span:last-of-type {
-        margin-left: 10px;
-      }
+.AlarmRuleConfig {
+  &-wrapBtn {
+    position: absolute;
+    top: 14px;
+    right: 20px;
+    span {
+      float: left;
     }
-    &-ruleList {
-      padding: 0 20px;
-    }
-    .el-table tbody td {
-      padding: 3px 0;
-    }
-    &-relevance {
-      padding: 0 20px;
-      height: 66px;
-      &-ul {
-        float: left;
-        border: 1px solid #DDDEDF;
-        border-radius: 5px;
-        &-li {
-          position: relative;
-          float: left;
-          height: 46px;
-          line-height: 46px;
-          padding: 0 20px;
-          font-size: 14px;
-          text-align: center;
-          cursor: pointer;
-          color: #333333;
-          &.on {
-            color: #0087FF;
-          }
-          &::before {
-            content: '';
-            position: absolute;
-            top: 11px;
-            right: 0;
-            height: 24px;
-            border-right: 1px solid #DDDEDF;
-          }
-          &:last-of-type::before {
-            content: none;
-          }
-        }
-      }
-      &-selectText {
-        float: left;
-        margin: 0 10px 0 70px;
-        height: 46px;
-        line-height: 46px;
-        font-size: 14px;
-      }
-      .el-select {
-        input {
-          width: 160px;
-          height: 46px;
-        }
-      }
-      &-save {
-        float: right;
-        margin-top: 5px;
-      }
-    }
-    .el-transfer {
-      padding: 0 20px;
-    }
-    &-transfer {
-      @include c3(display, flex);
-      .el-transfer-panel {
-        @include c3(flex, 1);
-      }
-      .el-transfer__buttons {
-        margin-top: 110.5px;
-        height: 82px;
-      }
+    span:last-of-type {
+      margin-left: 10px;
     }
   }
-
+  &-ruleList {
+    padding: 0 20px;
+  }
+  .el-table tbody td {
+    padding: 3px 0;
+  }
+  &-relevance {
+    padding: 0 20px;
+    height: 66px;
+    &-ul {
+      float: left;
+      border: 1px solid #DDDEDF;
+      border-radius: 5px;
+      &-li {
+        position: relative;
+        float: left;
+        height: 46px;
+        line-height: 46px;
+        padding: 0 20px;
+        font-size: 14px;
+        text-align: center;
+        cursor: pointer;
+        color: #333333;
+        &.on {
+          color: #0087FF;
+        }
+        &::before {
+          content: '';
+          position: absolute;
+          top: 11px;
+          right: 0;
+          height: 24px;
+          border-right: 1px solid #DDDEDF;
+        }
+        &:last-of-type::before {
+          content: none;
+        }
+      }
+    }
+    &-selectText {
+      float: left;
+      margin: 0 10px 0 70px;
+      height: 46px;
+      line-height: 46px;
+      font-size: 14px;
+    }
+    .el-select {
+      input {
+        width: 160px;
+        height: 46px;
+      }
+    }
+    &-save {
+      float: right;
+      margin-top: 5px;
+    }
+  }
+  .el-transfer {
+    padding: 0 20px;
+  }
+  &-transfer {
+    @include c3(display, flex);
+    .el-transfer-panel {
+      @include c3(flex, 1);
+    }
+    .el-transfer__buttons {
+      margin-top: 110.5px;
+      height: 82px;
+    }
+  }
+  .el-table__fixed-right .el-table__fixed-header-wrapper th:nth-last-child(1)::before {
+    content: '';
+    position: absolute;
+    bottom: 2px;
+    left: 0;
+    width: 100%;
+    border-top: 1px solid #ebeef5;
+  }
+}
 </style>

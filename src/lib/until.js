@@ -30,3 +30,10 @@ export const isIosWX = () => {
   const ua = navigator.userAgent.toLocaleLowerCase()
   return (ua.indexOf('iphone') > -1 || ua.indexOf('ipad') > -1 || ua.indexOf('ipod') > -1 || ua.indexOf('macintosh') > -1) && ua.indexOf('micromessenger') > -1
 }
+
+// 获取path （不含#不含查询字符串）
+export const getPath = () => {
+  let url = window.location.hash.substr(1)
+  const indexEnd = url.indexOf('?')
+  return indexEnd === -1 ? url : url.substr(0, indexEnd)
+}

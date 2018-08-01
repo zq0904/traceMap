@@ -136,8 +136,6 @@ export default {
 </script>
 
 <style lang="scss">
-@import '../../assets/scss/app';
-
 .AirPlay {
   position: absolute;
   left: 0;

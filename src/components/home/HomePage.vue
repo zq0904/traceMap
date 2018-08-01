@@ -362,164 +362,163 @@ export default {
 
 </script>
 <style lang="scss">
-@import '../../assets/scss/app';
-  .home {
-    background-color: #fff;
-    &-title {
-      padding-left: 20px;
-      height: 97px;
-      &-h4 {
-        height: 54px;
-        line-height: 54px;
-        font-size: 24px;
-        font-weight: 600;
-        color: #333333;
-      }
-      &-p {
-        padding-top: 10px;
-        height: 42px;
-        font-size: 14px;
-        color: #999999;
-      }
+.home {
+  background-color: #fff;
+  &-title {
+    padding-left: 20px;
+    height: 97px;
+    &-h4 {
+      height: 54px;
+      line-height: 54px;
+      font-size: 24px;
+      font-weight: 600;
+      color: #333333;
     }
-    &-wrap {
-      position: absolute;
-      top: 97px;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      padding: 20px 20px 0;
-      background-color: #F5F7FA;
+    &-p {
+      padding-top: 10px;
+      height: 42px;
+      font-size: 14px;
+      color: #999999;
     }
-    &-amount {
+  }
+  &-wrap {
+    position: absolute;
+    top: 97px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 20px 20px 0;
+    background-color: #F5F7FA;
+  }
+  &-amount {
+    @include c3(display, flex);
+    &-left {
+      @include c3(flex, 1);
       @include c3(display, flex);
-      &-left {
-        @include c3(flex, 1);
-        @include c3(display, flex);
-        @include c3(flex-wrap, wrap);
-        &-item {
-          @include c3(flex, 0 0 25%);
-          width: 25%;
-          padding-right: 20px;
-          margin-bottom: 20px;
-          border-radius: 4px 0 0 4px;
-          overflow: hidden;
-          &-p {
-            padding-left: 20px;
-            height: 100px;
-            background-color: #fff;
-            border-radius: 0 4px 4px 0;
-            &-h6 {
-              height: 50px;
-              line-height: 50px;
+      @include c3(flex-wrap, wrap);
+      &-item {
+        @include c3(flex, 0 0 25%);
+        width: 25%;
+        padding-right: 20px;
+        margin-bottom: 20px;
+        border-radius: 4px 0 0 4px;
+        overflow: hidden;
+        &-p {
+          padding-left: 20px;
+          height: 100px;
+          background-color: #fff;
+          border-radius: 0 4px 4px 0;
+          &-h6 {
+            height: 50px;
+            line-height: 50px;
+            font-size: 14px;
+            color: #333;
+          }
+          &-span {
+            font-size: 30px;
+            color: #0087FF;
+            &-em {
               font-size: 14px;
               color: #333;
             }
-            &-span {
-              font-size: 30px;
-              color: #0087FF;
-              &-em {
-                font-size: 14px;
-                color: #333;
-              }
-            }
-          }
-        }
-      }
-      &-right {
-        position: relative;
-        overflow: hidden;
-        width: 220px;
-        height: 220px;
-        border-radius: 4px;
-        background-image: linear-gradient(to top, #534ADF, #1D9EEB);
-        .swiper-slide {
-          position: relative;
-          padding: 37px;
-          &-h6 {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 37px;
-            line-height: 37px;
-            font-size: 14px;
-            color: #fff;
-            text-align: center;
-          }
-          &-div {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            padding: 37px;
-            text-align: center;
-            &-p1 {
-              padding: 32px 0 0;
-              height: 78px;
-              font-size: 36px;
-              color: #fff;
-              &-em {
-                font-size: 14px;
-              }
-            }
-            &-p2 {
-              height: 22px;
-              line-height: 22px;
-              font-size: 12px;
-              color: #fff;
-            }
           }
         }
       }
     }
-    &-linepic {
-      height: 200px;
+    &-right {
+      position: relative;
+      overflow: hidden;
+      width: 220px;
+      height: 220px;
       border-radius: 4px;
-      background-color: #fff;
-      &-chart {
-        padding-top: 40px;
+      background-image: linear-gradient(to top, #534ADF, #1D9EEB);
+      .swiper-slide {
         position: relative;
-        &-sixMap.btns {
-          top: 0;
-          left: 10px;
-          transform: translateX(0);
-        }
-        &-timeMap.btns {
-          top: 0;
-          left: 462px;
-          transform: translateX(0);
-        }
-        &-picker {
+        padding: 37px;
+        &-h6 {
           position: absolute;
-          top: -52px;
-          right: 56px;
-          &.el-range-editor .el-range-input {
-            width: 100px;
-          }
-          &.el-range-editor.el-input__inner {
-            width: 270px;
-          }
-          .el-range-separator {
-            width: 20px;
-            padding: 0;
-          }
-        }
-        @media only screen and (min-width: 1424px) {
-          &-picker {
-            top: 1px;
-            right: 382px;
-            z-index: 2;
-          }
-        }
-        &-dayMap.btns {
           top: 0;
-          left: auto;
-          right: 10px;
-          transform: translateX(0);
+          left: 0;
+          width: 100%;
+          height: 37px;
+          line-height: 37px;
+          font-size: 14px;
+          color: #fff;
+          text-align: center;
+        }
+        &-div {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          padding: 37px;
+          text-align: center;
+          &-p1 {
+            padding: 32px 0 0;
+            height: 78px;
+            font-size: 36px;
+            color: #fff;
+            &-em {
+              font-size: 14px;
+            }
+          }
+          &-p2 {
+            height: 22px;
+            line-height: 22px;
+            font-size: 12px;
+            color: #fff;
+          }
         }
       }
     }
   }
+  &-linepic {
+    height: 200px;
+    border-radius: 4px;
+    background-color: #fff;
+    &-chart {
+      padding-top: 40px;
+      position: relative;
+      &-sixMap.btns {
+        top: 0;
+        left: 10px;
+        transform: translateX(0);
+      }
+      &-timeMap.btns {
+        top: 0;
+        left: 462px;
+        transform: translateX(0);
+      }
+      &-picker {
+        position: absolute;
+        top: -52px;
+        right: 56px;
+        &.el-range-editor .el-range-input {
+          width: 100px;
+        }
+        &.el-range-editor.el-input__inner {
+          width: 270px;
+        }
+        .el-range-separator {
+          width: 20px;
+          padding: 0;
+        }
+      }
+      @media only screen and (min-width: 1424px) {
+        &-picker {
+          top: 1px;
+          right: 382px;
+          z-index: 2;
+        }
+      }
+      &-dayMap.btns {
+        top: 0;
+        left: auto;
+        right: 10px;
+        transform: translateX(0);
+      }
+    }
+  }
+}
 </style>

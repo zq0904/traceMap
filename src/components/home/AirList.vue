@@ -276,9 +276,6 @@ export default {
       this.usualData = usualData
       // 动态计算 没有收藏表格 高度
       this.$nextTick(() => {
-        // (惰性函数)
-        // if (this.sluggishness) return
-        // this.sluggishness = true
         // 计算 收藏表格高度
         const collectTable = this.$refs.collectTable.$el
         this.collectTableMaxHeight = (document.body.offsetHeight - collectTable.offsetTop - 50 - 20 - 20) / 2
@@ -351,15 +348,16 @@ export default {
       })
       // console.log(data)
       this.loading = false
+      if (data) {
+        console.log(++this.index) // mock
 
-      console.log(++this.index) // mock
-
-      this.tableData = data.result.map((e, i) => {
-        e.most = nameUpperCase(e.most) // 对首要污染物转换大写
-        e.AQIlevel = AQIlevel('aqi', e.aqi) // 污染等级 按aqi排
-        e.isCollect = i < this.index ? 1 : 0 // mock
-        return e
-      })
+        this.tableData = data.result.map((e, i) => {
+          e.most = nameUpperCase(e.most) // 对首要污染物转换大写
+          e.AQIlevel = AQIlevel('aqi', e.aqi) // 污染等级 按aqi排
+          e.isCollect = i < this.index ? 1 : 0 // mock
+          return e
+        })
+      }
     }
   }
 }

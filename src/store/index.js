@@ -10,6 +10,7 @@ import getters from './getters' // 派生模块路径
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
+  strict: process.env.NODE_ENV !== 'production',
   modules: { // state actions异步 mutations同步
     test,
     api,

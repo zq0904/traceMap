@@ -50,39 +50,37 @@ export default {
 </script>
 
 <style lang="scss">
-@import '../../assets/scss/app';
-
-  .RankingBtn {
+.RankingBtn {
+  float: left;
+  margin: 20px 0 20px 20px;
+  height: 46px;
+  line-height: 46px;
+  text-align: center;
+  border: 1px solid #E6E6E6;
+  border-radius: 4px;
+  &-span {
     float: left;
-    margin: 20px 0 20px 20px;
+    position: relative;
     height: 46px;
-    line-height: 46px;
-    text-align: center;
-    border: 1px solid #E6E6E6;
-    border-radius: 4px;
-    &-span {
-      float: left;
-      position: relative;
-      height: 46px;
-      padding: 0 20px;
-      font-size: 14px;
-      color: #333333;
-      cursor: pointer;
-      &::before {
-        position: absolute;
-        content: '';
-        top: 50%;
-        right: 0;
-        height: 24px;
-        @include c3(transform, translate3d(0, -50%, 0));
-        border-right: 1px solid #E6E6E6;
-      }
-      &:last-of-type::before {
-        content: none;
-      }
-      &.on {
-        color: #0087FF;
-      }
+    padding: 0 20px;
+    font-size: 14px;
+    color: #333333;
+    cursor: pointer;
+    &::before {
+      position: absolute;
+      content: '';
+      top: 50%;
+      right: 0;
+      height: 24px;
+      @include c3(transform, translate3d(0, -50%, 0));
+      border-right: 1px solid #E6E6E6;
+    }
+    &:last-of-type::before {
+      content: none;
+    }
+    &.on {
+      color: #0087FF;
     }
   }
+}
 </style>

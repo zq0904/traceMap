@@ -3,6 +3,8 @@ import axios from 'axios'
 import qs from 'qs'
 import _ from 'lodash'
 import store from '@/store'
+import { getCookie, delCookie } from '@/lib/sessionStorage'
+import { getPath } from '@/lib/until'
 
 const $httpPlugin = {}
 // 初始化axios
@@ -15,6 +17,20 @@ $httpPlugin.install = function (Vue) {
     $fetch: {
       get() {
         return ({ url, data = {}, type = 'post' }) => {
+          // 不是白名单 token失效的处理
+          if (['/login', '/register'].indexOf(getPath()) === -1 && !getCookie('traceToken')) {
+            Vue.prototype.$message({
+              message: '登录超时，1秒后为您跳转至登录页',
+              type: 'warning'
+            })
+            setTimeout(() => {
+              delCookie('traceToken')
+              store.dispatch('updataUserInfo', { token: '' })
+              window.location.href = window.location.origin + '/#/login'
+            }, 1000)
+            return false
+          }
+
           let headers = {
             'Content-Type': 'application/x-www-form-urlencoded'
           }
@@ -31,17 +47,6 @@ $httpPlugin.install = function (Vue) {
           }).then(data => {
             // console.log(data)
             const status = data.data.status
-            // token失效的处理 清除用户的登录信息 去登录
-            // if (status === 1008) {
-            //   Vue.prototype.$message({
-            //     message: data.data.msg,
-            //     type: 'warning'
-            //   })
-            //   window.localStorage.removeItem('token')
-            //   store.dispatch('updataUserInfo', { token: '' })
-            //   router.push('/login')
-            //   return false
-            // }
             if (status !== 1) { // 只要 status状态不为1 信息由后端指定
               Vue.prototype.$message({
                 message: data.data.msg,

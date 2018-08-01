@@ -1,12 +1,12 @@
 <template>
-  <nav class="navbar navbar-inverse navbar-fixed-top">
+  <nav class="appNavbar">
     <a class="logo" href="#">
       <div class="logo-img" style="width: 50px;height: 50px;"></div>溯源地图
     </a>
     <el-button type="danger" @click.stop="quit">退出</el-button>
     <ul class="pull-right">
-      <li class="navbar-li">Aimer<span class="triangle"></span></li>
-      <li class="navbar-li">通知</li>
+      <li class="appNavbar-li">Aimer<span class="triangle"></span></li>
+      <li class="appNavbar-li">通知</li>
     </ul>
   </nav>
 </template>
@@ -37,7 +37,7 @@ export default {
 
 </script>
 <style lang="scss">
-.navbar {
+.appNavbar {
   height: 50px;
   margin-bottom: 0;
   background-color: #0087FF;
@@ -86,5 +86,4 @@ export default {
     }
   }
 }
-
 </style>

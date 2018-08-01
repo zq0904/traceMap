@@ -84,40 +84,40 @@ export default {
 </script>
 
 <style lang="scss">
-  .TimeComponent {
-    position: absolute;
-    top: 25px;
-    right: 20px;
-    z-index: 100;
-    &-span {
-      float: left;
-      height: 36px;
-      line-height: 36px;
-      padding: 0 10px;
-      margin-left: 10px;
-      text-align: center;
-      font-size: 14px;
-      color: #333333;
-      border: 1px solid #E6E6E6;
-      border-radius: 4px;
-      cursor: pointer;
-      &:first-of-type {
-        margin: 0;
-      }
-      &.on {
-        border-color: #0087FF;
-        color: #0087FF;
-      }
+.TimeComponent {
+  position: absolute;
+  top: 25px;
+  right: 20px;
+  z-index: 100;
+  &-span {
+    float: left;
+    height: 36px;
+    line-height: 36px;
+    padding: 0 10px;
+    margin-left: 10px;
+    text-align: center;
+    font-size: 14px;
+    color: #333333;
+    border: 1px solid #E6E6E6;
+    border-radius: 4px;
+    cursor: pointer;
+    &:first-of-type {
+      margin: 0;
     }
-    &-date {
-      float: left;
-      width: 140px !important;
-      margin-right: 10px;
-      .el-input__inner {
-        font-size: 14px;
-        text-align: center;
-        padding: 0 10px;
-      }
+    &.on {
+      border-color: #0087FF;
+      color: #0087FF;
     }
   }
+  &-date {
+    float: left;
+    width: 140px !important;
+    margin-right: 10px;
+    .el-input__inner {
+      font-size: 14px;
+      text-align: center;
+      padding: 0 10px;
+    }
+  }
+}
 </style>

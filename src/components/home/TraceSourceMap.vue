@@ -97,7 +97,6 @@ export default {
 
 </script>
 <style lang="scss">
-@import '../../assets/scss/app';
 .traceSource_vessel {
   #traceSourceMap {
     width: 100%;
@@ -126,5 +125,4 @@ export default {
     }
   }
 }
-
 </style>

@@ -14,12 +14,12 @@ import formVerify from './lib/formVerify' // 自定义校验
 // 全局注册基础组件
 import './components/base/globalRegister'
 // 引入样式
-import './assets/css/reset_m.css'
-import './assets/fonts/iconfont.css'
+import '../node_modules/bootstrap/dist/css/bootstrap.min.css' // 引入bootstrap
 import '../node_modules/swiper/dist/css/swiper.min.css'
 import '../node_modules/element-ui/lib/theme-chalk/index.css' // 引入element-ui
 import '../node_modules/moment/locale/zh-cn' // moment国际化
-// import '../node_modules/bootstrap/dist/css/bootstrap.min.css' // 引入bootstrap
+import './assets/fonts/iconfont.css'
+import './assets/css/reset_m.css'
 
 Vue.use(ElementUI)
 Vue.use(VueLazyload) // 使用 :src="" 换成 v-lazy=""

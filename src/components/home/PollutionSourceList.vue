@@ -63,12 +63,12 @@
       @click="request">搜索</el-button>
       <el-button type="primary" size="small" style="height: 32px;">导入<i class="el-icon-upload el-icon--right"></i></el-button>
     </div>
-    <div class="table_wrap">
+    <div class="table_wrap" ref="tableWrap">
       <el-table
         :data="tableData"
+        :max-height="tableMaxHeight"
         border
         style="width: 100%"
-        max-height="580"
         @selection-change="handleSelectionChange">
         <el-table-column
           type="selection"
@@ -187,6 +187,7 @@ export default {
     return {
       loading: false,
       tableData: [],
+      tableMaxHeight: 750, // 动态计算表格的最大高度
       status: [], // 污染源状态
       type: [], // 污染源类型
       areaDict: [], // 三级联动字典
@@ -214,11 +215,15 @@ export default {
     await this.request()
   },
   methods: {
+    // 动态计算表格高
+    computedTableHeight() {
+      this.tableMaxHeight = this.$refs.tableWrap.offsetParent.offsetHeight - 50 - 70
+    },
     // 三级联动字典
     async linkage3() {
       const {data} = await this.$fetch({ url: this.api.pollutionThreeLinkage, data: {type: 1} })
       // console.log(data)
-      this.areaDict = data.result.areaDict
+      if (data) { this.areaDict = data.result.areaDict }
     },
     // 区县级 change 下一级默认选中全部 变更索引
     changeCounty(val) {
@@ -240,13 +245,13 @@ export default {
     async statusList() {
       const {data} = await this.$fetch({ url: this.api.pollutionState })
       // console.log(data)
-      this.status = data.result.dict
+      if (data) { this.status = data.result.dict }
     },
     // 污染源类型列表
     async typeList() {
       const {data} = await this.$fetch({ url: this.api.pollutionType })
       // console.log(data)
-      this.type = data.result.list
+      if (data) { this.type = data.result.list }
     },
     // 请求 污染源分页列表
     async request() {
@@ -263,20 +268,17 @@ export default {
       })
       // console.log(data)
       this.loading = false
-      this.tableData = data.result.pageInfo.list // 列表数据
-      this.total = data.result.pageInfo.total // 总页数
+      if (data) {
+        this.tableData = data.result.pageInfo.list // 列表数据
+        this.total = data.result.pageInfo.total // 总页数
+      }
+      this.$nextTick(() => {
+        this.computedTableHeight()
+      })
     },
     // 时间格式化
     dateFormatter(row, column, cellValue) {
       return cellValue === '-' ? '-' : moment(Number(cellValue)).format('YYYY-MM-DD')
-    },
-    // 详情
-    particulars(row) {
-      console.log(row)
-    },
-    // 更新
-    update(row) {
-      console.log(row)
     },
     // 删除
     async destroy() {
@@ -332,7 +334,18 @@ export default {
     z-index: 10;
   }
   .table_wrap {
-    padding: 50px 10px 0;
+    padding: 50px 20px 0;
+    .el-table__fixed-header-wrapper .el-table__header th:nth-last-child(1)::before {
+      content: '';
+      position: absolute;
+      bottom: 2px;
+      left: 0;
+      width: 100%;
+      border-top: 1px solid #ebeef5;
+    }
+    .el-table__row td:nth-of-type(14) div{
+      @include ellipsis();
+    }
   }
 }
 </style>

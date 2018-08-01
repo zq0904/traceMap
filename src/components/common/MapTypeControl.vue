@@ -43,29 +43,29 @@ export default {
 </script>
 
 <style lang="scss">
-  .map-type-control {
-    position: absolute;
-    z-index: 300;
-    top: 20px;
-    right: 20px;
-    width: 104px;
+.map-type-control {
+  position: absolute;
+  z-index: 300;
+  top: 20px;
+  right: 20px;
+  width: 104px;
+  height: 30px;
+  background-color: #fff;
+  border-radius: 15px;
+  &-item {
+    width: 52px;
     height: 30px;
-    background-color: #fff;
+    line-height: 30px;
+    font-size: 12px;
+    text-align: center;
     border-radius: 15px;
-    &-item {
-      width: 52px;
-      height: 30px;
-      line-height: 30px;
-      font-size: 12px;
-      text-align: center;
-      border-radius: 15px;
-      background-color: #fff;
-      color: #000;
-      cursor: pointer;
-    }
-    .on {
-      background-color: #0087FF;
-      color: #fff;
-    }
+    background-color: #fff;
+    color: #000;
+    cursor: pointer;
   }
+  .on {
+    background-color: #0087FF;
+    color: #fff;
+  }
+}
 </style>

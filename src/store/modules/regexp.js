@@ -25,12 +25,11 @@ const state = {
   btnsCode: /^\d{4}(0[1-9]|[1-9][0-9])$/ // 按钮级权限 code码
 }
 
-const actions = {}
-
 const mutations = {}
+const actions = {}
 
 export default {
   state,
-  actions,
-  mutations
+  mutations,
+  actions
 }

@@ -37,30 +37,30 @@ export default {
 </script>
 
 <style lang="scss">
-  .SingleButton {
-    display: inline-block;
-    height: 36px;
-    line-height: 36px;
-    border: 1px solid #E6E6E6;
-    border-radius: 4px;
-    font-size: 14px;
-    text-align: center;
-    color: #333;
-    background-color: #fff;
-    cursor: pointer;
-    &.on {
-      color: #0087FF;
-      border-color: #0087FF;
-    }
-    &.active:active {
-      color: #0087FF;
-      border-color: #0087FF;
-    }
-    &.noFixed {
-      padding: 0 10px;
-    }
-    &.fixed {
-      width: 90px;
-    }
+.SingleButton {
+  display: inline-block;
+  height: 36px;
+  line-height: 36px;
+  border: 1px solid #E6E6E6;
+  border-radius: 4px;
+  font-size: 14px;
+  text-align: center;
+  color: #333;
+  background-color: #fff;
+  cursor: pointer;
+  &.on {
+    color: #0087FF;
+    border-color: #0087FF;
   }
+  &.active:active {
+    color: #0087FF;
+    border-color: #0087FF;
+  }
+  &.noFixed {
+    padding: 0 10px;
+  }
+  &.fixed {
+    width: 90px;
+  }
+}
 </style>

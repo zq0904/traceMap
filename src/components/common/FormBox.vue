@@ -234,92 +234,90 @@ export default {
 </script>
 
 <style lang="scss">
-@import '../../assets/scss/app';
-
-  .FormBox {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 10;
-    background-color: rgba(0, 0, 0, .3);
-    &-body {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 506px;
-      padding: 0 10px;
-      transform: translate3d(-50%, -50%, 0);
-      border-radius: 5px;
-      border-top: 4px solid #0087FF;
-      background-color: #fff;
-      &-title {
-        position: relative;
-        height: 36px;
-        padding: 10px 0 10px 12px;
-        font-size: 16px;
-        color: #333;
+.FormBox {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  background-color: rgba(0, 0, 0, .3);
+  &-body {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 506px;
+    padding: 0 10px;
+    transform: translate3d(-50%, -50%, 0);
+    border-radius: 5px;
+    border-top: 4px solid #0087FF;
+    background-color: #fff;
+    &-title {
+      position: relative;
+      height: 36px;
+      padding: 10px 0 10px 12px;
+      font-size: 16px;
+      color: #333;
+      &::before {
+        content: '';
+        position: absolute;
+        top: 10px;
+        left: 0;
+        height: 16px;
+        border-left: 2px solid #0087FF;
+      }
+    }
+    .el-form-item {
+      margin-bottom: 20px;
+      .el-form-item__label {
+        width: 74px !important;
+        padding-right: 2px;
+        text-align: right;
+        color: #999;
         &::before {
-          content: '';
-          position: absolute;
-          top: 10px;
-          left: 0;
-          height: 16px;
-          border-left: 2px solid #0087FF;
+          content: none;
         }
       }
-      .el-form-item {
-        margin-bottom: 20px;
-        .el-form-item__label {
-          width: 74px !important;
-          padding-right: 2px;
-          text-align: right;
-          color: #999;
-          &::before {
-            content: none;
-          }
-        }
-        .el-input input{
-          width: 396px;
-          height: 36px;
-          line-height: 36px;
-          color: #ccc;
+      .el-input input{
+        width: 396px;
+        height: 36px;
+        line-height: 36px;
+        color: #ccc;
+      }
+    }
+    .el-col-12 {
+      .el-form-item .el-input input {
+        width: 153px;
+      }
+      &.short .el-form-item {
+        float: left;
+        input {
+          width: 120px;
         }
       }
-      .el-col-12 {
-        .el-form-item .el-input input {
-          width: 153px;
-        }
-        &.short .el-form-item {
-          float: left;
-          input {
-            width: 120px;
-          }
-        }
-        span {
-          float: left;
-          padding-left: 5px;
-          height: 40px;
-          line-height: 40px;
-          color: #999;
-          font-size: 14px;
-        }
+      span {
+        float: left;
+        padding-left: 5px;
+        height: 40px;
+        line-height: 40px;
+        color: #999;
+        font-size: 14px;
       }
-      &-btnWrap {
-        padding: 10px 0 20px;
-        text-align: center;
-        .SingleButton:last-of-type {
-          margin-left: 14px;
-        }
+    }
+    &-btnWrap {
+      padding: 10px 0 20px;
+      text-align: center;
+      .SingleButton:last-of-type {
+        margin-left: 14px;
       }
     }
   }
-  // 进入过度
-  .FormBox-enter {
-    opacity: 0;
-  }
-  .FormBox-enter-active {
-    transition: .3s all linear;
-  }
+}
+// 进入过度
+.FormBox-enter {
+  opacity: 0;
+}
+.FormBox-enter-active {
+  transition: .3s all linear;
+}
 </style>

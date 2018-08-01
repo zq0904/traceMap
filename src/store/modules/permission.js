@@ -66,15 +66,11 @@ const state = {
   }
 }
 
-// 提交异步 mutaion
-const actions = {
-}
-
-const mutations = {
-}
+const mutations = {}
+const actions = {}
 
 export default {
   state,
-  actions,
-  mutations
+  mutations,
+  actions
 }

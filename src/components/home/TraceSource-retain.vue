@@ -149,7 +149,6 @@ export default {
 
 </script>
 <style lang="scss">
-@import '../../assets/scss/app';
 .traceSource_vessel {
   .btn-group {
     position: absolute;
@@ -162,7 +161,6 @@ export default {
     height: 100%;
   }
 }
-
 // 报警提示框
 .trace {
   width: 400px;
@@ -174,7 +172,6 @@ export default {
     white-space: normal;
   }
 }
-
 // 正常提示框
 .details {
   @include c3(display, flex);
@@ -241,5 +238,4 @@ export default {
     }
   }
 }
-
 </style>

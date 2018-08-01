@@ -110,59 +110,59 @@ export default {
 
 </script>
 <style lang="scss">
-  .sidebar {
-    position: fixed;
-    top: 50px;
-    bottom: 0;
-    left: 0;
-    width: 160px;
-    padding: 0;
-    text-align: center;
-    border: 0 none;
-    background-color: #fff;
-    border-right: 1px solid #E6E8EA;
-  }
-  // 侧栏样式
-  .el-menu-vertical {
-    .el-menu-item {
-      min-width: 160px;
-      padding: 0 16px 0 52px !important;
-      text-align: left;
-      box-sizing: border-box;
-      font-size: 14px;
-      &.is-active {
-        position: relative;
-        background-color: #ecf5ff;
-        &::before {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: 0;
-          height: 50px;
-          width: 2px;
-          border-left: 2px solid #0087ff;
-        }
+.sidebar {
+  position: fixed;
+  top: 50px;
+  bottom: 0;
+  left: 0;
+  width: 160px;
+  padding: 0;
+  text-align: center;
+  border: 0 none;
+  background-color: #fff;
+  border-right: 1px solid #E6E8EA;
+}
+// 侧栏样式
+.el-menu-vertical {
+  .el-menu-item {
+    min-width: 160px;
+    padding: 0 16px 0 52px !important;
+    text-align: left;
+    box-sizing: border-box;
+    font-size: 14px;
+    &.is-active {
+      position: relative;
+      background-color: #ecf5ff;
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 50px;
+        width: 2px;
+        border-left: 2px solid #0087ff;
       }
     }
-    &.el-menu {
-      border: 0 none;
-    }
-    .el-submenu__title, > .el-menu-item {
-      height: 50px;
-      line-height: 50px;
-      padding: 0 20px !important;
-      text-align: left;
-    }
-    // SideBar icon
-    .SideBar {
-      display: inline-block;
-      width: 20px;
-      height: 20px;
-      margin-right: 8px;
-      &.SideBar-01 { background: url('../../assets/images/SideBar-01.png'); }
-      &.SideBar-02 { background: url('../../assets/images/SideBar-02.png'); }
-      &.SideBar-03 { background: url('../../assets/images/SideBar-03.png'); }
-      &.SideBar-04 { background: url('../../assets/images/SideBar-04.png'); }
-    }
   }
+  &.el-menu {
+    border: 0 none;
+  }
+  .el-submenu__title, > .el-menu-item {
+    height: 50px;
+    line-height: 50px;
+    padding: 0 20px !important;
+    text-align: left;
+  }
+  // SideBar icon
+  .SideBar {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
+    &.SideBar-01 { background: url('../../assets/images/SideBar-01.png'); }
+    &.SideBar-02 { background: url('../../assets/images/SideBar-02.png'); }
+    &.SideBar-03 { background: url('../../assets/images/SideBar-03.png'); }
+    &.SideBar-04 { background: url('../../assets/images/SideBar-04.png'); }
+  }
+}
 </style>

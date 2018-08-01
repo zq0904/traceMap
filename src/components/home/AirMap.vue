@@ -436,7 +436,6 @@ export default {
 
 </script>
 <style lang="scss">
-@import '../../assets/scss/app';
 .air_vessel {
   #echartsMap {
     width: 100%;

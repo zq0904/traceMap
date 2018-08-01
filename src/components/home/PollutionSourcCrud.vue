@@ -147,9 +147,8 @@
     </el-form>
     <!-- 弹框 -->
     <ModalBox
+      ref="ModalBox"
       :width="450"
-      :show="preview"
-      @close="preview = false"
       :imgUrl="previewImageUrl"></ModalBox>
   </div>
 </template>
@@ -192,7 +191,6 @@ export default {
       afterFileList: [], // 处理后图片对象
       limit: 2, // 允许上传的最大图片个数
       previewImageUrl: '', // 当前预览图片url
-      preview: false, // 是否显示预览图
       rules: { // 校验规则
         polluteName: [ { required: true, message: '请输入名称', trigger: ['blur', 'change'] } ],
         baiduLongitude: [
@@ -242,15 +240,16 @@ export default {
     })
   },
   async created() {
+    this.loading = true
     await this.linkage3()
     await this.statusList()
     await this.typeList()
     await this.judge()
+    this.loading = false
   },
   methods: {
     // 判断业务流程
     async judge() {
-      this.loading = true
       const { operation, id } = this.$route.query
       let s, r // 文本 结果对象
       switch (operation) {
@@ -264,16 +263,15 @@ export default {
           this.disabled = true
           const {data} = await this.$fetch({ url: this.api.pollutionlistRetrieve, data: { polluteId: id } })
           // console.log(data)
-          r = data.result.info
+          if (data) { r = data.result.info }
           break
         case 'U': // 更新
           s = '更新'
           const {data: result} = await this.$fetch({ url: this.api.pollutionlistRetrieve, data: { polluteId: id } })
           // console.log(result)
-          r = result.result.info
+          if (result) { r = result.result.info }
           break
       }
-      this.loading = false
       this.title = s
 
       // 查询 更新 push表单 回显处理
@@ -318,25 +316,25 @@ export default {
     async linkage3() {
       const {data} = await this.$fetch({ url: this.api.pollutionThreeLinkage, data: {type: 0} })
       // console.log(data)
-      this.areaDict = data.result.areaDict
+      if (data) { this.areaDict = data.result.areaDict }
     },
     // 污染源状态列表
     async statusList() {
       const {data} = await this.$fetch({ url: this.api.pollutionState })
       // console.log(data)
-      this.status = data.result.dict
+      if (data) { this.status = data.result.dict }
     },
     // 污染源类型列表
     async typeList() {
       const {data} = await this.$fetch({ url: this.api.pollutionType })
       // console.log(data)
-      this.type = data.result.list
+      if (data) { this.type = data.result.list }
     },
     // 查看预览图钩子
     handlePictureCardPreview(file) {
       // console.log(file)
       this.previewImageUrl = file.url
-      this.preview = true
+      this.$refs.ModalBox.show = true // 显示模态框
     },
     // 删除图片前钩子 此时的fileList还是没有变更的
     beforeRemove(file, fileList) {

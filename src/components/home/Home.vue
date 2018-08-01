@@ -7,7 +7,6 @@
         <div class="main">
           <!-- 二级路由 -->
           <router-view></router-view>
-
         </div>
       </div>
     </div>
@@ -45,5 +44,4 @@ export default {
     height: 100%;
   }
 }
-
 </style>

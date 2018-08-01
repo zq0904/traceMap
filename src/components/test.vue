@@ -9,6 +9,8 @@
     <BaseButton v-if="per('990400')">整体保存</BaseButton><br>
     <BaseAa v-if="per('990500')"></BaseAa>
     <BaseBb v-if="per('990600')"></BaseBb>
+    <p>test: {{ test }}</p>
+    <button @click="$store.dispatch('updateTest', {testArr:[1]})">action</button>
   </div>
 </template>
 <script>
@@ -59,7 +61,7 @@ export default {
 
 </script>
 <style lang='scss'>
-@import '../assets/scss/app';
+// @import '../assets/scss/app'; 全局引入了
 
   // 注释 /**/ //
   // @import '../assets/css/test'; // 导入_.scss文件 不需写后缀 _test.scss中的变量及样式都会引入这里

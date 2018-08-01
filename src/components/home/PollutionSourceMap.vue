@@ -181,7 +181,6 @@ export default {
 
 </script>
 <style lang="scss">
-@import '../../assets/scss/app';
 .pollutionSource-vessel {
   .type-select {
     position: absolute;
@@ -270,5 +269,4 @@ export default {
     }
   }
 }
-
 </style>
