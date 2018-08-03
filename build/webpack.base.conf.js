@@ -22,7 +22,7 @@ const createLintingRule = () => ({
 module.exports = {
   context: path.resolve(__dirname, '../'),
   // npm install --save babel-polyfill 配置 E6 Api 转 E5
-  entry: ["babel-polyfill", './src/main.js'], // 打包的入口文件路径
+  entry: ['babel-polyfill', './src/main.js'], // 打包的入口文件路径
   output: {
     path: config.build.assetsRoot,
     filename: '[name].js',
@@ -32,13 +32,19 @@ module.exports = {
   },
   externals: { // 防止将import的包打入bundle中 而是在运行时直接用全局变量
     // a: 'zhaoqi' 当我们去import ZQ from 'a' 不去从node_modules里找依赖 而直接使用全局变量zhaoqi
+    'vue': 'Vue',
+    'axios': 'axios',
+    'lodash': '_',
+    'moment': 'moment',
+    'jquery': '$',
+    'highcharts': 'Highcharts',
+    'echarts': 'echarts',
+    'd3': 'd3',
     'BMap': 'BMap',
     'BMAP_ANCHOR_TOP_RIGHT': 'BMAP_ANCHOR_TOP_RIGHT',
     'BMAP_NORMAL_MAP': 'BMAP_NORMAL_MAP',
     'BMAP_SATELLITE_MAP': 'BMAP_SATELLITE_MAP',
-    'BMAP_HYBRID_MAP': 'BMAP_HYBRID_MAP',
-    'echarts': 'echarts',
-    'd3': 'd3'
+    'BMAP_HYBRID_MAP': 'BMAP_HYBRID_MAP'
   },
   resolve: {
     extensions: ['.js', '.vue', '.json'],
@@ -74,7 +80,7 @@ module.exports = {
         loader: 'url-loader',
         options: {
           limit: 10000,
-          name: utils.assetsPath('img/[name].[hash:7].[ext]')
+          name: utils.assetsPath('images/[name].[hash:7].[ext]') // 大于10K放入images目录
         }
       },
       {

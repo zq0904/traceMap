@@ -1,7 +1,7 @@
 // 代理
 // let p1 = '/proxy'
 let p2 = '/api'
-let p3 = '/cc'
+// let p3 = '/cc'
 
 // 上线 指定代理为 p1
 // p2 = p3 = p1
@@ -12,7 +12,7 @@ const state = {
   logout: p2 + '/oauthWeb/logout', // 用户登出
   weatherInfo: p2 + '/data/reTimeWeather', // 实时天气信息
   AirMap: p2 + '/data/airMap', // 空气地图
-  AirMapHistory: p3 + '/data/selectHistory', // 空气地图48小时历史回放
+  AirMapHistory: p2 + '/data/selectHistory', // 空气地图48小时历史回放
   AirList: p2 + '/data/airList', // 空气报表
   pollutionState: p2 + '/pollutionSoil/getHandlingStatusDict', // 污染源状态列表
   pollutionType: p2 + '/pollutionSoilType/getDict', // 污染源类型列表

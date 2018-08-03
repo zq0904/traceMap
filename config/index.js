@@ -64,8 +64,7 @@ module.exports = {
     // Paths
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
-    assetsPublicPath: '/',
-    // assetsPublicPath: './', // 上线这里改为 ./ 静态资源使用相对路径
+    assetsPublicPath: '/', // 这里必须使用绝对路径 没有转base64的图片资源相对路径 有问题
 
     /**
      * Source Maps
