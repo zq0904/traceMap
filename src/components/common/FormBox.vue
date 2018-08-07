@@ -275,7 +275,7 @@ export default {
         text-align: right;
         color: #999;
         &::before {
-          content: none;
+          content: none !important;
         }
       }
       .el-input input{

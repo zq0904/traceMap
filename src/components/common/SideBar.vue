@@ -111,6 +111,7 @@ export default {
 </script>
 <style lang="scss">
 .sidebar {
+  overflow: hidden;
   position: fixed;
   top: 50px;
   bottom: 0;

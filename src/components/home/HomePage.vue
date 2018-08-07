@@ -397,7 +397,7 @@ export default {
       @include c3(display, flex);
       @include c3(flex-wrap, wrap);
       &-item {
-        @include c3(flex, 0 0 25%);
+        @include c3(flex, 1 0 23.6%);
         width: 25%;
         padding-right: 20px;
         margin-bottom: 20px;
@@ -491,7 +491,7 @@ export default {
         transform: translateX(0);
       }
       &-picker {
-        position: absolute;
+        position: absolute !important;
         top: -52px;
         right: 56px;
         &.el-range-editor .el-range-input {
@@ -501,8 +501,8 @@ export default {
           width: 270px;
         }
         .el-range-separator {
-          width: 20px;
-          padding: 0;
+          width: 20px !important;
+          padding: 0 !important;
         }
       }
       @media only screen and (min-width: 1424px) {

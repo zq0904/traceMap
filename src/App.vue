@@ -45,46 +45,48 @@ export default {
   background-color: rgb(126, 0, 35) !important;
 }
 // 覆盖element-ui 面包屑
-.custom-breadcrumb {
+.custom-breadcrumb.el-breadcrumb {
   height: 45px;
   line-height: 45px;
   padding-left: 20px;
   font-size: 15px;
 }
 // 覆盖element-ui table
-.el-table {
-  th {
-    text-align: center;
-    background-color: #ECF5FF;
-    padding: 10px 0;
-  }
-  .has-gutter tr th {
-    height: 35px;
-    padding: 0;
-    font-size: 14px;
-    color: #333333;
-    background-color: #ECF5FF;
-    text-align: center;
-    .cell {
-      padding: 0;
+.air-list-warpTable, .AlarmRuleConfig-ruleList, .table_wrap {
+  .el-table {
+    th {
+      text-align: center;
+      background-color: #ECF5FF;
+      padding: 10px 0;
     }
-  }
-  tbody td {
-    text-align: center;
-    padding: 12px 0;
-  }
-  .el-table__fixed-right-patch {
-    background-color: #ECF5FF;
-  }
-  // 天坑的 高亮 样式！！！
-  &.el-table--enable-row-hover .el-table__body tr:hover>td {
-    background-color: #ECF5FF;
-  }
-  .cell {
-    font-size: 12px;
-    color: #666666;
-    line-height: 1.1;
-    padding: 0 10px;
+    .has-gutter tr th {
+      height: 35px;
+      padding: 0;
+      font-size: 14px;
+      color: #333333;
+      background-color: #ECF5FF;
+      text-align: center;
+      .cell {
+        padding: 0;
+      }
+    }
+    tbody td {
+      text-align: center;
+      padding: 12px 0;
+    }
+    .el-table__fixed-right-patch {
+      background-color: #ECF5FF;
+    }
+    // 天坑的 高亮 样式！！！
+    &.el-table--enable-row-hover .el-table__body tr:hover>td {
+      background-color: #ECF5FF;
+    }
+    .cell {
+      font-size: 12px;
+      color: #666666;
+      line-height: 1.1;
+      padding: 0 10px;
+    }
   }
 }
 // 修补最小分页 样式 :small="true"

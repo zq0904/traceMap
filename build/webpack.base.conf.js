@@ -40,6 +40,7 @@ module.exports = {
     'highcharts': 'Highcharts',
     'echarts': 'echarts',
     'd3': 'd3',
+    'swiper': 'Swiper',
     'BMap': 'BMap',
     'BMAP_ANCHOR_TOP_RIGHT': 'BMAP_ANCHOR_TOP_RIGHT',
     'BMAP_NORMAL_MAP': 'BMAP_NORMAL_MAP',

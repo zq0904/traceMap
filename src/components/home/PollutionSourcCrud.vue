@@ -120,6 +120,7 @@
               :class="beforeFileList.length < limit ? '' : 'hideAddBtn'"
               list-type="picture-card"
               :action="api.pollutionListUploadImg"
+              :headers="{'authorization': userInfo.token}"
               :file-list="beforeFileList"
               :on-preview="handlePictureCardPreview"
               :before-remove="beforeRemove"
@@ -135,6 +136,7 @@
               :class="afterFileList.length < limit ? '' : 'hideAddBtn'"
               list-type="picture-card"
               :action="api.pollutionListUploadImg"
+              :headers="{'authorization': userInfo.token}"
               :file-list="afterFileList"
               :on-preview="handlePictureCardPreview"
               :before-remove="beforeRemove"
@@ -236,7 +238,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      api: 'getApi'
+      api: 'getApi',
+      userInfo: 'getUserInfo'
     })
   },
   async created() {
@@ -437,7 +440,7 @@ export default {
   }
   // 选框宽
   .el-input--small {
-    width: 180px;
+    width: 180px !important;
   }
   // textarea高 禁用拖拽拉伸
   .el-textarea__inner {

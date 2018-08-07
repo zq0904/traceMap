@@ -47,12 +47,14 @@ export default {
 </script>
 
 <style lang="scss">
-.modal { display: block; }
-.fade { opacity: 1; }
+.modal.fade {
+  display: block;
+  opacity: 1;
+}
 .modal.fade .modal-dialog {
   top: 50%;
   left: 50%;
   margin: 0;
-  transform: translate3d(-50%, -50%, 0);
+  transform: translate3d(-50%, -50%, 0) !important;
 }
 </style>
