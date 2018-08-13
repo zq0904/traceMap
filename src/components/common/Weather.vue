@@ -1,6 +1,6 @@
 <template>
   <div class="weather">
-    <p class="time">今天{{formatTime}}更新</p>
+    <p class="time">{{ data.time || Date.now() | time('今天 HH:mm 更新') }}</p>
     <p class="info">
       <span class="temperature">{{data.temperature}}°</span>
       <img src="../../assets/images/暴雪.png" height="50" width="54" alt="">
@@ -17,7 +17,6 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import moment from 'moment'
 
 export default {
   data () {
@@ -59,9 +58,6 @@ export default {
           break
       }
       return str
-    },
-    formatTime() {
-      return moment(this.data.time || Date.now()).format('HH:mm')
     }
   },
   created() {

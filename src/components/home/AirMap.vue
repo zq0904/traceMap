@@ -112,7 +112,7 @@ export default {
         middleData.push(this.assemble(item))
       }
       this.historyData = middleData // 保证轮询时 完全替换
-      this.nowDateTime = moment(this.historyData[this.historyData.length - 1].state[0].rest.time).format('YYYY-MM-DD HH:mm:ss') // 设置当前日期时间
+      this.nowDateTime = this.historyData[this.historyData.length - 1].state[0].rest.time // 设置当前日期时间 时间戳
       this.nowDataIndex = this.historyData.length - 1 // 设置默认选择 为数组最后一个
 
       this.$nextTick(this.initMap) // 保证dom已经更新

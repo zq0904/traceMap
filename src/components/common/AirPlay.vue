@@ -52,8 +52,8 @@
         :style="`width: ${AirPlayWidth}`"
         @change="setIntervalStartVal = AirPlayValue"
         ></el-slider>
-      <div class="AirPlay-date-time pull-left">{{ formatTime[0] }}</div>
-      <div class="AirPlay-date-time pull-right">{{ formatTime[1] }}</div>
+      <div class="AirPlay-date-time pull-left">{{ (nowDateTime - 24 * 3600 * 1000) | time('YYYY-MM-DD (dddd)') }}</div>
+      <div class="AirPlay-date-time pull-right">{{ nowDateTime | time('YYYY-MM-DD (dddd)') }}</div>
     </div>
     <div class="AirPlay-flag pull-right">
       <div class="AirPlay-flag-item"><em class="AirPlay-flag-item-em rgb-0-228-0"></em>优</div>
@@ -67,7 +67,6 @@
 </template>
 
 <script>
-import moment from 'moment'
 
 export default {
   props: {
@@ -76,7 +75,7 @@ export default {
       required: true
     },
     nowDateTime: {
-      type: String,
+      type: Number,
       required: true
     }
   },
@@ -106,11 +105,6 @@ export default {
           return (i - 1) * 100 / this.AirPlayMax + '%'
         }
       }
-    },
-    // 格式化时间
-    formatTime() {
-      let timestamp = moment(this.nowDateTime).valueOf()
-      return [moment(timestamp - 24 * 3600 * 1000).format('YYYY-MM-DD (dddd)'), moment(timestamp).format('YYYY-MM-DD (dddd)')]
     }
   },
   methods: {

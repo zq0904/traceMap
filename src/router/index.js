@@ -3,7 +3,7 @@ import store from '@/store'
 import Router from 'vue-router'
 import { passVerify, injectRole } from './permission'
 // 异步组件 懒加载路由
-const Test = () => import('@/components/test') // 测试文件
+const Test = () => import('@/components/Test') // 测试文件
 const Login = () => import('@/components/Login') // 登录
 const Register = () => import('@/components/Register') // 注册
 const Error401 = () => import('@/components/Error401') // 没有权限页

@@ -276,10 +276,6 @@ export default {
         this.computedTableHeight()
       })
     },
-    // 时间格式化
-    dateFormatter(row, column, cellValue) {
-      return cellValue === '-' ? '-' : moment(Number(cellValue)).format('YYYY-MM-DD')
-    },
     // 删除
     async destroy() {
       const {data} = await this.$fetch({
