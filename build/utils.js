@@ -62,7 +62,7 @@ exports.cssLoaders = function (options) {
     sass: generateLoaders('sass', { indentedSyntax: true }),
     // scss: generateLoaders('sass'),
     scss: generateLoaders('sass').concat({ // 全局引入scss
-      loader: 'sass-resources-loader',
+      loader: 'sass-resources-loader', // npm i -D sass-resources-loader
       options: {
         resources: path.resolve(__dirname, '../src/assets/scss/_app.scss')
       }

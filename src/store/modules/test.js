@@ -10,7 +10,6 @@ const state = {
 }
 
 const mutations = {
-  // 更新test
   [UPDATETEST] (state, obj) { // state 为 局部状态
     // _.merge(state, obj)
     _.assign(state, obj)

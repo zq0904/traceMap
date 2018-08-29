@@ -20,6 +20,8 @@ import '../node_modules/element-ui/lib/theme-chalk/index.css' // 引入element-u
 import './assets/fonts/iconfont.css' // Iconfont 阿里字体图标
 import './assets/css/reset_m.css'
 
+if (process.env.NODE_ENV === 'development') require('../mock') // 开发环境 启用mockjs
+
 Vue.use(ElementUI)
 Vue.use(VueLazyload) // 使用 :src="" 换成 v-lazy=""
 Vue.use($http)

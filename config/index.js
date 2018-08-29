@@ -11,25 +11,16 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      '/proxy': { // 配代理
+      '/api': { // 配代理
         target: "http://localhost:3000", // 请求路径是以 /proxy 开头的 会代理到
-        pathRewrite: { "^/proxy": "" } // 路径重写规则
-      },
-      '/api': {
-        target: "http://192.168.199.222:8080",
-        pathRewrite: { "^/api": "" }
-      },
-      '/cc': {
-        target: "http://192.168.199.181:8080",
-        pathRewrite: { "^/cc": "" }
+        pathRewrite: { "^/api": "" } // 路径重写规则
       }
     },
 
     // Various Dev Server settings
-    // host: 'localhost', // can be overwritten by process.env.HOST
-    host: '192.168.199.142', // can be overwritten by process.env.HOST
-    port: 8080, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
-    autoOpenBrowser: false,
+    host: 'localhost', // can be overwritten by process.env.HOST
+    port: 5000, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
+    autoOpenBrowser: true,
     errorOverlay: true,
     notifyOnErrors: true,
     poll: false, // https://webpack.js.org/configuration/dev-server/#devserver-watchoptions-

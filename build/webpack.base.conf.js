@@ -64,17 +64,9 @@ module.exports = {
       },
       {
         test: /\.js$/,
+        loader: 'babel-loader',
         exclude: /(node_modules|bower_components)/, // 排除
-        include: [resolve('src'), resolve('test'), resolve('node_modules/webpack-dev-server/client')],
-        use: {
-          loader: 'babel-loader',
-          options: {
-            cacheDirectory: true, // babel-loader 编译 将从缓存（node_modules .cache）中读取 提速
-            presets: ['env'], // env 代表 babel-preset-env
-            // npm install babel-plugin-transform-runtime --save-dev 及 npm install babel-runtime --save
-            plugins: ['transform-runtime'] // 解决babel打包所带来的 插入辅助代码 导致代码体积过大的问题
-          }
-        }
+        include: [resolve('src'), resolve('test'), resolve('node_modules/webpack-dev-server/client')]
       },
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
