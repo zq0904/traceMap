@@ -3,7 +3,7 @@
     <a class="logo" href="#">
       <div class="logo-img" style="width: 50px;height: 50px;"></div>溯源地图
     </a>
-    <el-button type="danger" @click.stop="quit">退出</el-button>
+    <el-button type="danger" @click.stop="quit">test退出</el-button>
     <ul class="pull-right">
       <li class="appNavbar-li">Aimer<span class="triangle"></span></li>
       <li class="appNavbar-li">通知</li>

@@ -176,7 +176,7 @@ export default {
     },
     // 请求接口
     async request() {
-      const {data: asd} = await this.$fetch({
+      const {data} = await this.$fetch({
         url: this.api.weatherInfo,
         data: {
           timeType: this.timePoint,
@@ -184,6 +184,7 @@ export default {
           dateTime: ['0', '1', '2', '3'].indexOf(this.dayPoint) === -1 ? this.dateTime.join(',') : ''
         }
       })
+      console.log(data)
       // mock后台返回的查询时间
       const st = 1530547200000
       const et = 1531152000000
